@@ -150,7 +150,7 @@ The most important unattended manager is:
 python scripts/windows/manage_psalm_family_screen.py \
   --repo C:\Users\sethcodex\work\virtue-bench-2 \
   --poll-seconds 60 \
-  --stale-minutes 45
+  --stale-minutes 10
 ```
 
 That manager watches the five-family by four-scale sweep, starts the next leg

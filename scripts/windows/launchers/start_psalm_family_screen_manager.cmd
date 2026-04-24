@@ -12,6 +12,6 @@ set PYTHONIOENCODING=utf-8
 start "" /min "%REPO%\.venv\Scripts\python.exe" "%REPO%\scripts\windows\manage_psalm_family_screen.py" ^
   --repo "%REPO%" ^
   --poll-seconds 60 ^
-  --stale-minutes 45
+  --stale-minutes 10
 
 endlocal

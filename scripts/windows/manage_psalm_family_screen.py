@@ -423,7 +423,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--temperature", type=float, default=0.0)
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--poll-seconds", type=int, default=60)
-    parser.add_argument("--stale-minutes", type=float, default=45.0)
+    parser.add_argument("--stale-minutes", type=float, default=10.0)
     parser.add_argument("--manager-log", default="psalm_family_screen_manager.log")
     parser.add_argument("--manager-status", default="psalm_family_screen_manager.status.json")
     parser.add_argument("--summary-output-prefix", default="psalm_family_screen_summary")
