@@ -120,6 +120,7 @@ For constrained GPUs, do not insist on running them all at once. Prefer:
 - `scripture_only_compare` profile when you want a GospelVec-style scripture-family run without also benchmarking the virtue corpus lane
 - `reasoning_primary` profile when the main question is simply baseline vs pooled `virtue_steer` vs psalm steering and you want a fast scale sweep before a heavier reasoning run
 - `psalm_reasoning_primary` profile when the main question is baseline vs explicit Psalm-family steering lanes and you want to drop the virtue lane entirely
+- `scripture_reasoning_primary` profile when the main question is baseline vs explicit scripture book lanes such as Psalms, Proverbs, Romans, or Petrine
 - `reasoning_compare` profile when the question is how baseline reasoning differs from matched `virtue_steer` and psalm steering on the same model; treat `control` as the neutral lane and keep the null steering controls in the run
   For this comparison, prefer one pooled virtue vector and a broadened psalm mix rather than four separate virtue vectors against a tiny psalm set.
 - `prompt_only` or `prompt_heavy` profile in a separate run
@@ -143,6 +144,8 @@ For constrained GPUs, do not insist on running them all at once. Prefer:
   - use `--psalm-family-alpha-scale trust=2.0` for one family without changing the others
   - use `--merged-psalm-family-alpha-scale` for the pair lane after a short merged mini-sweep
 - Use `control` as the headline comparison. Treat null steers as secondary mechanism checks, not the main scoreboard.
+- For book-level scripture screens, treat `petrine` as 1 Peter and 2 Peter combined unless a later study explicitly separates them.
+- If the purpose is to find a ceiling, use broader strength steps like `1.0`, `2.0`, and `3.0` before spending budget on fine-grained values.
 
 ### Windows / remote GPU launch discipline
 

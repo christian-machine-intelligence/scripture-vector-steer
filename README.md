@@ -36,7 +36,7 @@ religious language sounds different from another.
 
 ## Current Experiment Track
 
-The active screening workflow evaluates five Christian-tradition Psalm families:
+The completed Psalm-family screening workflow evaluated five Christian-tradition Psalm families:
 
 - `penitential`
 - `wisdom`
@@ -64,6 +64,18 @@ three Psalm lanes:
 - family A
 - family B
 - merged family A+B
+
+The next active screen widens the question from Psalm families to distinct
+book-level scripture lanes suggested by the 66-book prompt-injection results:
+
+- `psalms`
+- `proverbs`
+- `romans`
+- `petrine` (1 Peter and 2 Peter together)
+
+That screen starts fresh: each lane extracts a new book vector against the same
+generic non-scripture background, then tests steering scales `1.0`, `2.0`, and
+`3.0`.
 
 ## Quick Start
 
@@ -131,6 +143,23 @@ virtue-bench iconoclast \
   --output-prefix experiments/iconoclast/qwen35_ratio_psalm_pair_final_v1
 ```
 
+Run one deterministic book-level scripture screen leg:
+
+```bash
+virtue-bench iconoclast \
+  --model Qwen/Qwen3.5-9B \
+  --stage ratio \
+  --runs 1 \
+  --limit 20 \
+  --temperature 0.0 \
+  --condition-profile scripture_reasoning_primary \
+  --scripture-targets romans \
+  --extraction-method scripture_contrast \
+  --scripture-alpha-scale 2.0 \
+  --preflight-policy off \
+  --output-prefix experiments/iconoclast/qwen35_ratio_scripture_book_romans_x200_v1
+```
+
 Summarize a completed family screen:
 
 ```bash
@@ -153,6 +182,19 @@ python scripts/windows/manage_psalm_family_screen.py \
   --stale-minutes 10
 ```
 
+For the book-level scripture screen, use:
+
+```bash
+python scripts/windows/manage_scripture_book_screen.py \
+  --repo C:\Users\sethcodex\work\virtue-bench-2 \
+  --poll-seconds 60 \
+  --stale-minutes 10
+```
+
+That manager runs Psalms, Proverbs, Romans, and the combined Petrine epistles at
+`1.0`, `2.0`, and `3.0`, relaunches stale legs, and writes a final scripture
+book summary.
+
 That manager watches the five-family by four-scale sweep, starts the next leg
 when the current leg finishes, relaunches stale legs with a fresh version suffix,
 and writes the final Psalm-family summary when the sweep is complete.
@@ -161,6 +203,12 @@ The convenience launcher is:
 
 ```text
 scripts/windows/launchers/start_psalm_family_screen_manager.cmd
+```
+
+The scripture-book launcher is:
+
+```text
+scripts/windows/launchers/start_scripture_book_screen_manager.cmd
 ```
 
 Other curated Windows launchers live in `scripts/windows/launchers/`. The old

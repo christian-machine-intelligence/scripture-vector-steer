@@ -144,6 +144,19 @@ def test_requested_vector_targets_stay_scripture_only_when_virtues_are_not_reque
     assert targets == ["psalms", "proverbs", "gospels"]
 
 
+def test_requested_vector_targets_include_explicit_book_lanes_without_corpus_pairs():
+    config = IconoclastConfig(
+        name="test",
+        model="qwen",
+        conditions=["control", "scripture_steer"],
+        scripture_targets=["psalms", "proverbs", "romans", "petrine"],
+    )
+
+    targets = _requested_vector_targets(config, load_steering_corpus())
+
+    assert targets == ["psalms", "proverbs", "romans", "petrine"]
+
+
 def test_requested_vector_targets_include_distinct_psalm_family_lanes():
     config = IconoclastConfig(
         name="test",
@@ -249,6 +262,22 @@ def test_steering_targets_expand_to_distinct_psalm_family_labels():
         "psalms[trust]",
         "psalms[wisdom]",
         "psalms[trust+wisdom]",
+    ]
+
+
+def test_steering_targets_keep_explicit_book_lanes_in_order():
+    config = IconoclastConfig(
+        name="test",
+        model="qwen",
+        conditions=["control", "scripture_steer"],
+        scripture_targets=["psalms", "proverbs", "romans", "petrine"],
+    )
+
+    assert _steering_targets(config, "ratio", "prudence", "scripture_steer") == [
+        "psalms",
+        "proverbs",
+        "romans",
+        "petrine",
     ]
 
 

@@ -7,6 +7,9 @@ experiments.
 
 - `manage_psalm_family_screen.py`: keeps the Psalm-family screening sweep moving
   automatically.
+- `manage_scripture_book_screen.py`: keeps the book-level scripture screen
+  moving automatically across Psalms, Proverbs, Romans, and combined Petrine
+  lanes.
 - `run_iconoclast_job.py`: launches one Iconoclast job in a detached Windows
   process and writes status/wrapper logs.
 - `schedule_iconoclast_task.ps1`: optional scheduled-task launcher for cases

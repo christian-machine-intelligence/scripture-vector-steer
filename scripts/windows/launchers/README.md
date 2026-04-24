@@ -11,6 +11,9 @@ Run these from Windows by double-clicking or from `cmd.exe`.
 - `start_psalm_family_screen_manager.cmd`: preferred launcher for the active
   five-family by four-scale Psalm screen. It starts the autonomous manager,
   which advances legs, relaunches stale attempts, and writes the final summary.
+- `start_scripture_book_screen_manager.cmd`: preferred launcher for the
+  book-level scripture screen across Psalms, Proverbs, Romans, and combined
+  Petrine lanes at `1.0`, `2.0`, and `3.0`.
 - `run_psalm_scale_probe.cmd`: older but still useful Psalm push-strength probe.
   It sweeps a pooled Psalm vector across several alpha scales.
 - `run_scripture_family_compare.cmd`: GospelVec-style scripture-family

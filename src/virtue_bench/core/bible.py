@@ -141,6 +141,10 @@ BOOK_SETS: Dict[str, Dict] = {
         "books": ["ROM"],
         "description": "Paul's Epistle to the Romans",
     },
+    "petrine": {
+        "books": ["1PE", "2PE"],
+        "description": "Petrine epistles (1 Peter and 2 Peter)",
+    },
     "james": {
         "books": ["JAS"],
         "description": "Epistle of James (faith and works)",

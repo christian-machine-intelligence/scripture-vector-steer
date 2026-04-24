@@ -68,9 +68,9 @@ def _is_completed_run(results_dir: Path, prefix: str) -> bool:
     )
 
 
-def _build_markdown_report(report: dict) -> str:
+def _build_markdown_report(report: dict, *, title: str) -> str:
     lines = [
-        "# Psalm Family Screening Summary",
+        f"# {title}",
         "",
         "## Representative scales",
     ]
@@ -132,6 +132,12 @@ def main() -> None:
         help="Prefix for the summary JSON and Markdown files",
     )
     parser.add_argument(
+        "--title",
+        type=str,
+        default="Psalm Family Screening Summary",
+        help="Markdown report title",
+    )
+    parser.add_argument(
         "--include-incomplete",
         action="store_true",
         help="Include partial or failed attempts instead of requiring completed status files",
@@ -187,7 +193,7 @@ def main() -> None:
     output_json = args.results_dir / f"{args.output_prefix}.json"
     output_md = args.results_dir / f"{args.output_prefix}.md"
     output_json.write_text(json.dumps(report, indent=2), encoding="utf-8")
-    output_md.write_text(_build_markdown_report(report), encoding="utf-8")
+    output_md.write_text(_build_markdown_report(report, title=args.title), encoding="utf-8")
 
     print(f"Wrote {output_json}")
     print(f"Wrote {output_md}")

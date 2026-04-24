@@ -25,6 +25,7 @@ from .core.constants import VIRTUES, VARIANTS
 from .core.psalms import PSALM_SETS, load_psalm_text, list_psalm_sets
 from .core.bible import BOOK_SETS, load_bible_text, list_book_sets
 from .core.schema import ExperimentConfig, RunResult
+from .steering.corpora import SCRIPTURE_TARGETS
 from .stats.bootstrap import aggregate_runs
 from .analysis.tables import print_comparison_table, print_aggregated_table, print_variant_grid
 from .artifacts.results import write_results, load_results
@@ -71,6 +72,10 @@ ICONOCLAST_CONDITION_PROFILES = {
         "scripture_steer",
     ],
     "psalm_reasoning_primary": [
+        "control",
+        "scripture_steer",
+    ],
+    "scripture_reasoning_primary": [
         "control",
         "scripture_steer",
     ],
@@ -726,7 +731,7 @@ def main():
     iconoclast_parser.add_argument(
         "--scripture-targets",
         nargs="+",
-        choices=["psalms", "proverbs", "gospels"],
+        choices=SCRIPTURE_TARGETS,
         default=None,
         help="Scripture-family steering targets to compare when using scripture_steer",
     )

@@ -14,6 +14,8 @@ CORPUS_FILE = Path(__file__).parent.parent.parent.parent / "data" / "steering" /
 DEFAULT_VIRTUE_TARGETS = ["prudence", "justice", "courage", "temperance"]
 POOLED_VIRTUE_TARGET = "virtues"
 SCRIPTURE_FAMILY_TARGETS = ["psalms", "proverbs", "gospels"]
+SCRIPTURE_BOOK_TARGETS = ["romans", "petrine"]
+SCRIPTURE_TARGETS = SCRIPTURE_FAMILY_TARGETS + SCRIPTURE_BOOK_TARGETS
 
 
 @dataclass(frozen=True)

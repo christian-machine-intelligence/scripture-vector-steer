@@ -18,6 +18,7 @@ from .corpora import (
     DEFAULT_VIRTUE_TARGETS,
     POOLED_VIRTUE_TARGET,
     SCRIPTURE_FAMILY_TARGETS,
+    SCRIPTURE_TARGETS,
     build_contrast_pairs,
     list_steering_targets,
     load_steering_corpus,
@@ -53,7 +54,7 @@ EXTRACTION_METHODS = {
 
 
 def _is_scripture_target_name(target: str) -> bool:
-    return target in SCRIPTURE_FAMILY_TARGETS or is_psalm_family_target(target)
+    return target in SCRIPTURE_TARGETS or is_psalm_family_target(target)
 
 
 def _require_torch():
@@ -443,6 +444,10 @@ def _scripture_books_for_target(target: str) -> List[str]:
         return ["PRO"]
     if target == "gospels":
         return ["MAT", "MRK", "LUK", "JHN"]
+    if target == "romans":
+        return ["ROM"]
+    if target == "petrine":
+        return ["1PE", "2PE"]
     raise ValueError(f"Unsupported scripture-family target: {target}")
 
 

@@ -19,6 +19,7 @@ from ..stats.bootstrap import aggregate_runs
 from .corpora import (
     POOLED_VIRTUE_TARGET,
     SCRIPTURE_FAMILY_TARGETS,
+    SCRIPTURE_TARGETS,
     build_length_matched_control,
     list_steering_targets,
     load_steering_corpus,
@@ -210,6 +211,7 @@ def _requested_vector_targets(config: IconoclastConfig, corpus_records) -> List[
     for target in requested_targets:
         if (
             target in available_targets
+            or target in SCRIPTURE_TARGETS
             or target == POOLED_VIRTUE_TARGET
             or parse_psalm_family_target(target) is not None
         ) and target not in ordered:

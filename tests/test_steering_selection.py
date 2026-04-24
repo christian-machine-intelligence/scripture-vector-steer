@@ -103,6 +103,8 @@ def test_scripture_family_auto_extraction_prefers_non_specific_methods():
     assert _resolve_extraction_method("auto", pair_count=6, target="psalms") == "scripture_contrast"
     assert _resolve_extraction_method("auto", pair_count=1, target="proverbs") == "scripture_contrast"
     assert _resolve_extraction_method("auto", pair_count=4, target="gospels") == "scripture_contrast"
+    assert _resolve_extraction_method("auto", pair_count=1, target="romans") == "scripture_contrast"
+    assert _resolve_extraction_method("auto", pair_count=1, target="petrine") == "scripture_contrast"
     assert _resolve_extraction_method("auto", pair_count=4, target="psalms[trust]") == "scripture_contrast"
 
 
@@ -118,6 +120,37 @@ def test_split_scripture_chunks_reserves_dev_and_test_examples():
 
 def test_scripture_comparison_targets_keep_reference_families_for_single_target_runs():
     assert _scripture_comparison_targets(["psalms"]) == ["psalms", "proverbs", "gospels"]
+
+
+def test_chunk_scripture_family_texts_can_extract_romans_book_lane():
+    class _FakeTokenizer:
+        def encode(self, text, add_special_tokens=False):
+            return text.split()
+
+    chunks = _chunk_scripture_family_texts(
+        _FakeTokenizer(),
+        target="romans",
+        max_length=80,
+    )
+
+    assert chunks
+    assert all(chunk.startswith("Romans ") for chunk in chunks)
+
+
+def test_chunk_scripture_family_texts_can_extract_combined_petrine_lane():
+    class _FakeTokenizer:
+        def encode(self, text, add_special_tokens=False):
+            return text.split()
+
+    chunks = _chunk_scripture_family_texts(
+        _FakeTokenizer(),
+        target="petrine",
+        max_length=80,
+    )
+
+    assert chunks
+    assert any(chunk.startswith("1 Peter ") for chunk in chunks)
+    assert any(chunk.startswith("2 Peter ") for chunk in chunks)
 
 
 def test_chunk_scripture_family_texts_can_focus_psalm_vector_on_named_set():
@@ -228,6 +261,15 @@ def test_psalm_reasoning_primary_profile_keeps_only_control_and_scripture_lane()
     from virtue_bench.cli import ICONOCLAST_CONDITION_PROFILES
 
     assert ICONOCLAST_CONDITION_PROFILES["psalm_reasoning_primary"] == [
+        "control",
+        "scripture_steer",
+    ]
+
+
+def test_scripture_reasoning_primary_profile_alias_keeps_only_control_and_scripture_lane():
+    from virtue_bench.cli import ICONOCLAST_CONDITION_PROFILES
+
+    assert ICONOCLAST_CONDITION_PROFILES["scripture_reasoning_primary"] == [
         "control",
         "scripture_steer",
     ]
