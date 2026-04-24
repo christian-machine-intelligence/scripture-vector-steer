@@ -1,26 +1,26 @@
-# Psalm Vector Steer
+# Scripture Vector Steer
 
-Psalm Vector Steer is a research workbench for testing whether activation
-steering toward Scripture, especially the Psalms, changes how language models
-make virtue decisions.
+Scripture Vector Steer is a research workbench for testing whether activation
+steering toward Scripture changes how language models make virtue decisions.
 
 The project is built on top of VirtueBench V2. The underlying Python package and
 CLI are still named `virtue_bench` / `virtue-bench` for compatibility, but the
 research focus of this repository is now narrower:
 
-- Extract Scripture and Psalm-family activation vectors from open-weight models.
+- Extract Scripture, Psalm-family, and book-level activation vectors from
+  open-weight models.
 - Compare those vectors against generic non-scripture activation baselines.
 - Push models toward those vectors at controlled strength levels.
 - Measure whether the steering improves VirtueBench decisions and whether the
-  visible reasoning changes in coherent, Psalm-shaped ways.
+  visible reasoning changes in coherent, Scripture-shaped ways.
 
 ## Research Thesis
 
 The working hypothesis is:
 
-> Steering a model toward Scripture activations, and especially toward cleanly
-> identified Psalm-family activations, should improve its ability to choose
-> virtue under pressure on VirtueBench.
+> Steering a model toward Scripture activations should improve its ability to
+> choose virtue under pressure on VirtueBench, and different biblical corpora
+> may vary in how efficiently they move that decision boundary.
 
 For the current phase, the main comparison is not "biblical text versus other
 biblical text." The main comparison is:
@@ -65,8 +65,8 @@ three Psalm lanes:
 - family B
 - merged family A+B
 
-The next active screen widens the question from Psalm families to distinct
-book-level scripture lanes suggested by the 66-book prompt-injection results:
+The current book-level screen widens the question from Psalm families to
+distinct scripture lanes suggested by the 66-book prompt-injection results:
 
 - `psalms`
 - `proverbs`
@@ -77,6 +77,18 @@ That screen starts fresh by extracting one new vector per book lane against the
 same generic non-scripture background. It then reuses that book vector at
 steering scales `1.0`, `2.0`, and `3.0`, so strength is the only thing changing
 inside each book comparison.
+
+Curated artifacts from the completed book-level screen live under:
+
+```text
+results/paper/scripture_book_screen/
+```
+
+The first paper draft lives at:
+
+```text
+paper/scripture_vector_steer_draft.md
+```
 
 ## Quick Start
 
@@ -220,7 +232,7 @@ versioned breadcrumbs from debugging specific failed runs.
 ## Repository Layout
 
 ```text
-psalm-vector-steer/
+scripture-vector-steer/
 ├── data/
 │   ├── bible_kjv.json
 │   ├── */scenarios.csv
@@ -247,9 +259,9 @@ psalm-vector-steer/
 
 ## Artifact Policy
 
-The repository should include the data that actually underpins the Psalm vector
-steering paper. It should not include old scratch runs, failed attempts, or
-large historical logs that are not part of the argument.
+The repository should include the data that actually underpins the Scripture
+vector steering paper. It should not include old scratch runs, failed attempts,
+or large historical logs that are not part of the argument.
 
 Use this split:
 
@@ -279,8 +291,8 @@ This project inherits the VirtueBench V2 benchmark structure:
   mechanism changes
 - runner support for API models, subscription CLIs, and local HuggingFace models
 
-That baseline matters because Psalm Vector Steer uses VirtueBench as the
-behavioral readout: if the Psalm vectors are meaningful, they should change
+That baseline matters because Scripture Vector Steer uses VirtueBench as the
+behavioral readout: if the Scripture vectors are meaningful, they should change
 choices and reasoning on those virtue-pressure scenarios.
 
 ## Key Docs

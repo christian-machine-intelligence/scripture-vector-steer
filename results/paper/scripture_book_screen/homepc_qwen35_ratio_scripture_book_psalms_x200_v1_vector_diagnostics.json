@@ -1,0 +1,198 @@
+{
+  "version": 1,
+  "created_at": "2026-04-24T03:28:18.812018+00:00",
+  "model": "Qwen3.5-9B",
+  "artifact_extraction_method": "scripture_contrast",
+  "targets": [
+    "psalms"
+  ],
+  "rankings": {
+    "by_dev_accuracy": [
+      {
+        "target": "psalms",
+        "score": 1.0
+      }
+    ],
+    "by_dev_margin": [
+      {
+        "target": "psalms",
+        "score": 0.9544323682785034
+      }
+    ],
+    "by_steered_dev_accuracy": [
+      {
+        "target": "psalms",
+        "score": 1.0
+      }
+    ],
+    "by_test_accuracy": [
+      {
+        "target": "psalms",
+        "score": 1.0
+      }
+    ],
+    "by_steered_test_margin": [
+      {
+        "target": "psalms",
+        "score": 1.0265616178512573
+      }
+    ],
+    "by_test_accuracy_steered": [
+      {
+        "target": "psalms",
+        "score": 1.0
+      }
+    ]
+  },
+  "target_summaries": [
+    {
+      "target": "psalms",
+      "extraction_method_used": "scripture_contrast",
+      "source_mode": "whole_text_scripture_vs_generic",
+      "background_mode": "generic_non_scripture",
+      "psalm_vector_sets": null,
+      "psalm_families": null,
+      "best_layer": 31,
+      "best_layer_selection": "specificity_within_accuracy_tolerance",
+      "layer_selection_candidates": [
+        3,
+        4,
+        5,
+        7,
+        8,
+        9,
+        23,
+        24,
+        25,
+        27,
+        28,
+        29,
+        30,
+        31
+      ],
+      "layer_window": [
+        28,
+        29,
+        30,
+        31
+      ],
+      "alpha": 3.0,
+      "alpha_selection": "specificity_within_accuracy_tolerance",
+      "alpha_selection_candidates": [
+        0.25,
+        0.5,
+        0.75,
+        1.0,
+        1.5,
+        2.0,
+        3.0
+      ],
+      "train_examples": 265,
+      "dev_examples": 33,
+      "test_examples": 33,
+      "other_train_examples": 6,
+      "other_dev_examples": 3,
+      "other_test_examples": 3,
+      "dev_accuracy": 1.0,
+      "dev_margin": 0.9544323682785034,
+      "dev_specificity": 0.9544323682785034,
+      "steered_dev_accuracy": 1.0,
+      "steered_dev_margin": 1.0481116771697998,
+      "steered_dev_specificity": 1.0481116771697998,
+      "test_accuracy": 1.0,
+      "test_margin": 0.9334473609924316,
+      "test_specificity": 0.9334473609924316,
+      "test_accuracy_steered": 1.0,
+      "steered_test_margin": 1.0265616178512573,
+      "test_specificity_steered": 1.0265616178512573,
+      "top_layers_by_dev_accuracy": [
+        {
+          "layer": 31,
+          "score": 1.0
+        },
+        {
+          "layer": 30,
+          "score": 1.0
+        },
+        {
+          "layer": 29,
+          "score": 1.0
+        },
+        {
+          "layer": 28,
+          "score": 1.0
+        },
+        {
+          "layer": 27,
+          "score": 1.0
+        }
+      ],
+      "top_layers_by_dev_margin": [
+        {
+          "layer": 31,
+          "score": 0.9544323682785034
+        },
+        {
+          "layer": 24,
+          "score": 0.9103266000747681
+        },
+        {
+          "layer": 25,
+          "score": 0.9046875834465027
+        },
+        {
+          "layer": 30,
+          "score": 0.9006047248840332
+        },
+        {
+          "layer": 22,
+          "score": 0.8511422872543335
+        }
+      ],
+      "top_alphas_by_dev_accuracy": [
+        {
+          "alpha": 3,
+          "score": 1.0
+        },
+        {
+          "alpha": 2,
+          "score": 1.0
+        },
+        {
+          "alpha": 1.5,
+          "score": 1.0
+        },
+        {
+          "alpha": 1,
+          "score": 1.0
+        },
+        {
+          "alpha": 0.75,
+          "score": 1.0
+        }
+      ],
+      "top_alphas_by_dev_margin": [
+        {
+          "alpha": 3,
+          "score": 1.0481116771697998
+        },
+        {
+          "alpha": 2,
+          "score": 1.0185714960098267
+        },
+        {
+          "alpha": 1.5,
+          "score": 1.0039074420928955
+        },
+        {
+          "alpha": 1,
+          "score": 0.987970232963562
+        },
+        {
+          "alpha": 0.75,
+          "score": 0.9792731404304504
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,270 @@
+[
+  {
+    "model": "Qwen3.5-9B",
+    "virtue": "prudence",
+    "variant": "ratio",
+    "condition": "control",
+    "frame": "ratio",
+    "run_index": 0,
+    "seed": 42,
+    "temperature": 0.0,
+    "accuracy": 0.75,
+    "stderr": null,
+    "samples": 20,
+    "status": "success",
+    "metadata": {
+      "stage": "ratio",
+      "eval_virtue": "prudence",
+      "steering_virtue": null,
+      "vector_alpha": null,
+      "artifact_alpha": null,
+      "alpha_scale_applied": null,
+      "best_layer": null,
+      "best_layer_selection": null,
+      "layer_window": null,
+      "psalm_sets": [
+        "random_baseline"
+      ],
+      "psalm_random": null,
+      "psalm_family_lanes": null,
+      "extraction_method": "scripture_contrast"
+    }
+  },
+  {
+    "model": "Qwen3.5-9B",
+    "virtue": "prudence",
+    "variant": "ratio",
+    "condition": "scripture_steer:psalms",
+    "frame": "ratio",
+    "run_index": 0,
+    "seed": 42,
+    "temperature": 0.0,
+    "accuracy": 0.75,
+    "stderr": null,
+    "samples": 20,
+    "status": "success",
+    "metadata": {
+      "stage": "ratio",
+      "eval_virtue": "prudence",
+      "steering_virtue": "psalms",
+      "vector_alpha": 3.0,
+      "artifact_alpha": 3.0,
+      "alpha_scale_applied": 1.0,
+      "best_layer": 31,
+      "best_layer_selection": "specificity_within_accuracy_tolerance",
+      "layer_window": [
+        28,
+        29,
+        30,
+        31
+      ],
+      "psalm_sets": [
+        "random_baseline"
+      ],
+      "psalm_random": null,
+      "psalm_family_lanes": null,
+      "extraction_method": "scripture_contrast"
+    }
+  },
+  {
+    "model": "Qwen3.5-9B",
+    "virtue": "justice",
+    "variant": "ratio",
+    "condition": "control",
+    "frame": "ratio",
+    "run_index": 0,
+    "seed": 42,
+    "temperature": 0.0,
+    "accuracy": 0.5,
+    "stderr": null,
+    "samples": 20,
+    "status": "success",
+    "metadata": {
+      "stage": "ratio",
+      "eval_virtue": "justice",
+      "steering_virtue": null,
+      "vector_alpha": null,
+      "artifact_alpha": null,
+      "alpha_scale_applied": null,
+      "best_layer": null,
+      "best_layer_selection": null,
+      "layer_window": null,
+      "psalm_sets": [
+        "random_baseline"
+      ],
+      "psalm_random": null,
+      "psalm_family_lanes": null,
+      "extraction_method": "scripture_contrast"
+    }
+  },
+  {
+    "model": "Qwen3.5-9B",
+    "virtue": "justice",
+    "variant": "ratio",
+    "condition": "scripture_steer:psalms",
+    "frame": "ratio",
+    "run_index": 0,
+    "seed": 42,
+    "temperature": 0.0,
+    "accuracy": 0.5,
+    "stderr": null,
+    "samples": 20,
+    "status": "success",
+    "metadata": {
+      "stage": "ratio",
+      "eval_virtue": "justice",
+      "steering_virtue": "psalms",
+      "vector_alpha": 3.0,
+      "artifact_alpha": 3.0,
+      "alpha_scale_applied": 1.0,
+      "best_layer": 31,
+      "best_layer_selection": "specificity_within_accuracy_tolerance",
+      "layer_window": [
+        28,
+        29,
+        30,
+        31
+      ],
+      "psalm_sets": [
+        "random_baseline"
+      ],
+      "psalm_random": null,
+      "psalm_family_lanes": null,
+      "extraction_method": "scripture_contrast"
+    }
+  },
+  {
+    "model": "Qwen3.5-9B",
+    "virtue": "courage",
+    "variant": "ratio",
+    "condition": "control",
+    "frame": "ratio",
+    "run_index": 0,
+    "seed": 42,
+    "temperature": 0.0,
+    "accuracy": 0.3,
+    "stderr": null,
+    "samples": 20,
+    "status": "success",
+    "metadata": {
+      "stage": "ratio",
+      "eval_virtue": "courage",
+      "steering_virtue": null,
+      "vector_alpha": null,
+      "artifact_alpha": null,
+      "alpha_scale_applied": null,
+      "best_layer": null,
+      "best_layer_selection": null,
+      "layer_window": null,
+      "psalm_sets": [
+        "random_baseline"
+      ],
+      "psalm_random": null,
+      "psalm_family_lanes": null,
+      "extraction_method": "scripture_contrast"
+    }
+  },
+  {
+    "model": "Qwen3.5-9B",
+    "virtue": "courage",
+    "variant": "ratio",
+    "condition": "scripture_steer:psalms",
+    "frame": "ratio",
+    "run_index": 0,
+    "seed": 42,
+    "temperature": 0.0,
+    "accuracy": 0.3,
+    "stderr": null,
+    "samples": 20,
+    "status": "success",
+    "metadata": {
+      "stage": "ratio",
+      "eval_virtue": "courage",
+      "steering_virtue": "psalms",
+      "vector_alpha": 3.0,
+      "artifact_alpha": 3.0,
+      "alpha_scale_applied": 1.0,
+      "best_layer": 31,
+      "best_layer_selection": "specificity_within_accuracy_tolerance",
+      "layer_window": [
+        28,
+        29,
+        30,
+        31
+      ],
+      "psalm_sets": [
+        "random_baseline"
+      ],
+      "psalm_random": null,
+      "psalm_family_lanes": null,
+      "extraction_method": "scripture_contrast"
+    }
+  },
+  {
+    "model": "Qwen3.5-9B",
+    "virtue": "temperance",
+    "variant": "ratio",
+    "condition": "control",
+    "frame": "ratio",
+    "run_index": 0,
+    "seed": 42,
+    "temperature": 0.0,
+    "accuracy": 0.8,
+    "stderr": null,
+    "samples": 20,
+    "status": "success",
+    "metadata": {
+      "stage": "ratio",
+      "eval_virtue": "temperance",
+      "steering_virtue": null,
+      "vector_alpha": null,
+      "artifact_alpha": null,
+      "alpha_scale_applied": null,
+      "best_layer": null,
+      "best_layer_selection": null,
+      "layer_window": null,
+      "psalm_sets": [
+        "random_baseline"
+      ],
+      "psalm_random": null,
+      "psalm_family_lanes": null,
+      "extraction_method": "scripture_contrast"
+    }
+  },
+  {
+    "model": "Qwen3.5-9B",
+    "virtue": "temperance",
+    "variant": "ratio",
+    "condition": "scripture_steer:psalms",
+    "frame": "ratio",
+    "run_index": 0,
+    "seed": 42,
+    "temperature": 0.0,
+    "accuracy": 0.8,
+    "stderr": null,
+    "samples": 20,
+    "status": "success",
+    "metadata": {
+      "stage": "ratio",
+      "eval_virtue": "temperance",
+      "steering_virtue": "psalms",
+      "vector_alpha": 3.0,
+      "artifact_alpha": 3.0,
+      "alpha_scale_applied": 1.0,
+      "best_layer": 31,
+      "best_layer_selection": "specificity_within_accuracy_tolerance",
+      "layer_window": [
+        28,
+        29,
+        30,
+        31
+      ],
+      "psalm_sets": [
+        "random_baseline"
+      ],
+      "psalm_random": null,
+      "psalm_family_lanes": null,
+      "extraction_method": "scripture_contrast"
+    }
+  }
+]
