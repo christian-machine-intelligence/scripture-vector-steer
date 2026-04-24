@@ -76,6 +76,7 @@ def test_condition_alpha_scale_routes_by_steering_family():
     assert _condition_alpha_scale(config, "null_control") == 1.25
     assert _condition_alpha_scale(config, "christian_steer") == 1.5
     assert _condition_alpha_scale(config, "scripture_steer") == 2.0
+    assert _condition_alpha_scale(config, "scripture_negative_alpha") == 2.0
     assert _condition_alpha_scale(config, "scripture_null_control") == 2.0
 
 
@@ -269,11 +270,17 @@ def test_steering_targets_keep_explicit_book_lanes_in_order():
     config = IconoclastConfig(
         name="test",
         model="qwen",
-        conditions=["control", "scripture_steer"],
+        conditions=["control", "scripture_steer", "scripture_negative_alpha"],
         scripture_targets=["psalms", "proverbs", "romans", "petrine"],
     )
 
     assert _steering_targets(config, "ratio", "prudence", "scripture_steer") == [
+        "psalms",
+        "proverbs",
+        "romans",
+        "petrine",
+    ]
+    assert _steering_targets(config, "ratio", "prudence", "scripture_negative_alpha") == [
         "psalms",
         "proverbs",
         "romans",
@@ -349,6 +356,29 @@ def test_artifact_to_runtime_applies_alpha_scale():
     assert null_runtime.layer_vectors == {20: "fake"}
 
 
+def test_artifact_to_runtime_can_force_absolute_runtime_alpha():
+    artifact = {
+        "virtues": {
+            "psalms": {
+                "alpha": 0.75,
+                "layer_vectors": {"20": "real"},
+                "null_vectors": {"20": "fake"},
+            }
+        }
+    }
+
+    runtime = _artifact_to_runtime(
+        artifact,
+        "psalms",
+        use_null=False,
+        alpha_scale=2.0,
+        runtime_alpha=-3.0,
+    )
+
+    assert runtime.alpha == -3.0
+    assert runtime.layer_vectors == {20: "real"}
+
+
 def test_run_artifact_paths_include_vector_diagnostics():
     config = IconoclastConfig(name="test", model="qwen", output_prefix="experiments/demo")
 
@@ -404,9 +434,11 @@ def test_vector_diagnostics_payload_surfaces_rankings_and_candidates():
         },
     }
 
-    payload = _vector_diagnostics_payload(artifact)
+    payload = _vector_diagnostics_payload(artifact, scripture_runtime_alpha=3.0)
 
+    assert payload["scripture_runtime_alpha"] == 3.0
     assert payload["rankings"]["by_steered_dev_accuracy"][0]["target"] == "psalms"
+    assert payload["target_summaries"][0]["scripture_runtime_alpha"] == 3.0
     assert payload["target_summaries"][0]["top_layers_by_dev_accuracy"][0] == {"layer": 24, "score": 0.7}
     assert payload["target_summaries"][0]["top_alphas_by_dev_accuracy"][0] == {"alpha": 1.5, "score": 0.75}
 

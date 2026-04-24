@@ -273,3 +273,14 @@ def test_scripture_reasoning_primary_profile_alias_keeps_only_control_and_script
         "control",
         "scripture_steer",
     ]
+
+
+def test_scripture_study2_profile_keeps_directional_scripture_controls():
+    from virtue_bench.cli import ICONOCLAST_CONDITION_PROFILES
+
+    assert ICONOCLAST_CONDITION_PROFILES["scripture_study2"] == [
+        "control",
+        "scripture_steer",
+        "scripture_negative_alpha",
+        "scripture_null_control",
+    ]

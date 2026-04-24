@@ -121,6 +121,7 @@ For constrained GPUs, do not insist on running them all at once. Prefer:
 - `reasoning_primary` profile when the main question is simply baseline vs pooled `virtue_steer` vs psalm steering and you want a fast scale sweep before a heavier reasoning run
 - `psalm_reasoning_primary` profile when the main question is baseline vs explicit Psalm-family steering lanes and you want to drop the virtue lane entirely
 - `scripture_reasoning_primary` profile when the main question is baseline vs explicit scripture book lanes such as Psalms, Proverbs, Romans, or Petrine
+- `scripture_study2` profile for the full-slice directionality study: baseline, positive scripture steering, negative-alpha scripture steering, and scripture null controls
 - `reasoning_compare` profile when the question is how baseline reasoning differs from matched `virtue_steer` and psalm steering on the same model; treat `control` as the neutral lane and keep the null steering controls in the run
   For this comparison, prefer one pooled virtue vector and a broadened psalm mix rather than four separate virtue vectors against a tiny psalm set.
 - `prompt_only` or `prompt_heavy` profile in a separate run
@@ -149,6 +150,9 @@ For constrained GPUs, do not insist on running them all at once. Prefer:
 - For strength sweeps, extract one fresh vector per corpus first and reuse that
   vector across scale levels. Do not re-extract the vector separately for each
   scale unless the explicit question is vector-extraction stability.
+- For negative-alpha studies, do not extract an "anti-scripture" vector. Reuse
+  the same scripture vector and flip the alpha sign so the comparison isolates
+  directionality.
 
 ### Windows / remote GPU launch discipline
 

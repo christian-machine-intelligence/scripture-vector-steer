@@ -79,6 +79,12 @@ ICONOCLAST_CONDITION_PROFILES = {
         "control",
         "scripture_steer",
     ],
+    "scripture_study2": [
+        "control",
+        "scripture_steer",
+        "scripture_negative_alpha",
+        "scripture_null_control",
+    ],
     "reasoning_compare": [
         "control",
         "virtue_steer",
@@ -461,6 +467,7 @@ def cmd_iconoclast(args: argparse.Namespace) -> None:
         virtue_alpha_scale=args.virtue_alpha_scale,
         christian_alpha_scale=args.christian_alpha_scale,
         scripture_alpha_scale=args.scripture_alpha_scale,
+        scripture_runtime_alpha=args.scripture_runtime_alpha,
         psalm_family_alpha_scales=psalm_family_alpha_scales,
         merged_psalm_family_alpha_scale=args.merged_psalm_family_alpha_scale,
         psalm_sets=args.psalm_set or ["random_baseline"],
@@ -722,6 +729,7 @@ def main():
                                        "virtue_steer",
                                        "christian_steer",
                                        "scripture_steer",
+                                       "scripture_negative_alpha",
                                        "combined",
                                        "null_control",
                                        "christian_null_control",
@@ -809,6 +817,12 @@ def main():
         type=float,
         default=1.0,
         help="Multiplier applied at benchmark time to scripture-family steering strength",
+    )
+    iconoclast_parser.add_argument(
+        "--scripture-runtime-alpha",
+        type=float,
+        default=None,
+        help="Fixed absolute scripture alpha used at benchmark time, overriding the artifact-tuned alpha",
     )
     iconoclast_parser.add_argument(
         "--psalm-family-alpha-scale",

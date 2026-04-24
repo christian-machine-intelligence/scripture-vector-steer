@@ -209,9 +209,24 @@ That manager runs Psalms, Proverbs, Romans, and the combined Petrine epistles at
 its stronger-scale legs, relaunches stale legs, and writes a final scripture
 book summary.
 
-That manager watches the five-family by four-scale sweep, starts the next leg
-when the current leg finishes, relaunches stale legs with a fresh version suffix,
-and writes the final Psalm-family summary when the sweep is complete.
+For Study 2, use:
+
+```bash
+python scripts/windows/manage_scripture_study2.py \
+  --repo C:\Users\sethcodex\work\virtue-bench-2 \
+  --poll-seconds 60 \
+  --stale-minutes 8
+```
+
+That manager runs Psalms, Romans, and the combined Petrine epistles across all
+five VirtueBench2 slices with positive scripture steering, matched negative
+alpha steering, matched scripture null controls, and a fixed runtime scripture
+alpha of `3.0`.
+
+The Psalm-family manager watches the five-family by four-scale sweep, starts
+the next leg when the current leg finishes, relaunches stale legs with a fresh
+version suffix, and writes the final Psalm-family summary when the sweep is
+complete.
 
 The convenience launcher is:
 
@@ -223,6 +238,12 @@ The scripture-book launcher is:
 
 ```text
 scripts/windows/launchers/start_scripture_book_screen_manager.cmd
+```
+
+The Study 2 launcher is:
+
+```text
+scripts/windows/launchers/start_scripture_study2_manager.cmd
 ```
 
 Other curated Windows launchers live in `scripts/windows/launchers/`. The old

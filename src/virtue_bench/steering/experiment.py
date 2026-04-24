@@ -36,6 +36,17 @@ STEERING_CONDITIONS = {
     "christian_steer",
     "christian_null_control",
     "scripture_steer",
+    "scripture_negative_alpha",
+    "scripture_null_control",
+}
+SCRIPTURE_STEERING_CONDITIONS = {
+    "scripture_steer",
+    "scripture_negative_alpha",
+    "scripture_null_control",
+}
+NULL_VECTOR_CONDITIONS = {
+    "null_control",
+    "christian_null_control",
     "scripture_null_control",
 }
 DEFAULT_CONDITIONS = [
@@ -86,6 +97,7 @@ class IconoclastConfig:
     virtue_alpha_scale: float = 1.0
     christian_alpha_scale: float = 1.0
     scripture_alpha_scale: float = 1.0
+    scripture_runtime_alpha: Optional[float] = None
     psalm_family_alpha_scales: Dict[str, float] = field(default_factory=dict)
     merged_psalm_family_alpha_scale: Optional[float] = None
     psalm_sets: List[str] = field(default_factory=lambda: ["random_baseline"])
@@ -158,7 +170,7 @@ def _steering_targets(config: IconoclastConfig, stage: str, eval_virtue: str, co
         return [None]
     if condition in {"christian_steer", "christian_null_control"}:
         return ["christian"]
-    if condition in {"scripture_steer", "scripture_null_control"}:
+    if condition in SCRIPTURE_STEERING_CONDITIONS:
         return _scripture_steering_targets(config)
     return _virtue_steering_targets(config, stage, eval_virtue)
 
@@ -178,7 +190,7 @@ def _condition_alpha_scale(
         return config.virtue_alpha_scale
     if condition in {"christian_steer", "christian_null_control"}:
         return config.christian_alpha_scale
-    if condition in {"scripture_steer", "scripture_null_control"}:
+    if condition in SCRIPTURE_STEERING_CONDITIONS:
         if steering_target is not None:
             psalm_families = parse_psalm_family_target(steering_target)
             if psalm_families is not None:
@@ -204,7 +216,7 @@ def _requested_vector_targets(config: IconoclastConfig, corpus_records) -> List[
                 requested_targets.extend(config.virtues)
         if any(condition in {"christian_steer", "christian_null_control"} for condition in config.conditions):
             requested_targets.append("christian")
-        if any(condition in {"scripture_steer", "scripture_null_control"} for condition in config.conditions):
+        if any(condition in SCRIPTURE_STEERING_CONDITIONS for condition in config.conditions):
             requested_targets.extend(_scripture_steering_targets(config))
 
     ordered = []
@@ -231,7 +243,7 @@ def _preflight_families(config: IconoclastConfig) -> List[Tuple[str, str, str]]:
         families.append(("virtue_steer", "null_control", "virtue"))
     if any(condition in {"christian_steer", "christian_null_control"} for condition in config.conditions):
         families.append(("christian_steer", "christian_null_control", "christian"))
-    if any(condition in {"scripture_steer", "scripture_null_control"} for condition in config.conditions):
+    if any(condition in SCRIPTURE_STEERING_CONDITIONS for condition in config.conditions):
         families.append(("scripture_steer", "scripture_null_control", "scripture"))
     return families
 
@@ -242,6 +254,7 @@ def _artifact_to_runtime(
     *,
     use_null: bool,
     alpha_scale: float = 1.0,
+    runtime_alpha: Optional[float] = None,
 ) -> SteeringRuntime:
     virtue_payload = artifact["virtues"][virtue]
     vector_key = "null_vectors" if use_null else "layer_vectors"
@@ -251,7 +264,11 @@ def _artifact_to_runtime(
     }
     return SteeringRuntime(
         layer_vectors=vectors,
-        alpha=float(virtue_payload["alpha"]) * alpha_scale,
+        alpha=(
+            float(runtime_alpha)
+            if runtime_alpha is not None
+            else float(virtue_payload["alpha"]) * alpha_scale
+        ),
         # VirtueBench scoring depends on the model's first generated token.
         # If we skip the prompt prefill pass, steering may never influence the
         # exact token the benchmark reads as the answer.
@@ -384,7 +401,11 @@ def _top_target_entries(artifact: dict, metric_name: str, *, limit: int = 5) -> 
     ]
 
 
-def _vector_diagnostics_payload(artifact: dict) -> dict:
+def _vector_diagnostics_payload(
+    artifact: dict,
+    *,
+    scripture_runtime_alpha: Optional[float] = None,
+) -> dict:
     targets = artifact.get("virtues", {})
     summaries = []
     for target, payload in targets.items():
@@ -401,6 +422,7 @@ def _vector_diagnostics_payload(artifact: dict) -> dict:
                 "layer_selection_candidates": payload.get("layer_selection_candidates"),
                 "layer_window": payload.get("layer_window"),
                 "alpha": payload.get("alpha"),
+                "scripture_runtime_alpha": scripture_runtime_alpha,
                 "alpha_selection": payload.get("alpha_selection"),
                 "alpha_selection_candidates": payload.get("alpha_selection_candidates"),
                 "train_examples": payload.get("train_examples"),
@@ -445,6 +467,7 @@ def _vector_diagnostics_payload(artifact: dict) -> dict:
         "created_at": datetime.now(timezone.utc).isoformat(),
         "model": artifact.get("model"),
         "artifact_extraction_method": artifact.get("extraction_method"),
+        "scripture_runtime_alpha": scripture_runtime_alpha,
         "targets": artifact.get("targets", []),
         "rankings": {
             "by_dev_accuracy": _top_target_entries(artifact, "dev_accuracy"),
@@ -459,7 +482,10 @@ def _vector_diagnostics_payload(artifact: dict) -> dict:
 
 
 def _write_vector_diagnostics(config: IconoclastConfig, artifact: dict) -> None:
-    diagnostics = _vector_diagnostics_payload(artifact)
+    diagnostics = _vector_diagnostics_payload(
+        artifact,
+        scripture_runtime_alpha=config.scripture_runtime_alpha,
+    )
     json_path = _vector_diagnostics_json_path(config)
     md_path = _vector_diagnostics_md_path(config)
     json_path.parent.mkdir(parents=True, exist_ok=True)
@@ -1121,22 +1147,30 @@ async def run_iconoclast_experiment(config: IconoclastConfig, runner) -> Dict[st
                                     steering_virtue,
                                 )
                                 stored_alpha = float(artifact["virtues"][steering_virtue]["alpha"])
+                                effective_alpha_scale = family_alpha_scale
+                                runtime_alpha = None
+                                if condition == "scripture_negative_alpha":
+                                    effective_alpha_scale = -abs(family_alpha_scale)
+                                if (
+                                    condition in SCRIPTURE_STEERING_CONDITIONS
+                                    and config.scripture_runtime_alpha is not None
+                                ):
+                                    runtime_alpha = abs(config.scripture_runtime_alpha)
+                                    if condition == "scripture_negative_alpha":
+                                        runtime_alpha = -runtime_alpha
                                 steering_runtime = _artifact_to_runtime(
                                     artifact,
                                     steering_virtue,
-                                    use_null=(
-                                        condition
-                                        in {
-                                            "null_control",
-                                            "christian_null_control",
-                                            "scripture_null_control",
-                                        }
-                                    ),
-                                    alpha_scale=family_alpha_scale,
+                                    use_null=(condition in NULL_VECTOR_CONDITIONS),
+                                    alpha_scale=effective_alpha_scale,
+                                    runtime_alpha=runtime_alpha,
                                 )
+                                vector_alpha = steering_runtime.alpha
                             else:
                                 family_alpha_scale = 1.0
                                 stored_alpha = None
+                                runtime_alpha = None
+                                vector_alpha = None
 
                             for run_index in range(stage_runs):
                                 key = (virtue, variant, label, run_index)
@@ -1183,11 +1217,7 @@ async def run_iconoclast_experiment(config: IconoclastConfig, runner) -> Dict[st
                                         "stage": stage,
                                         "eval_virtue": virtue,
                                         "steering_virtue": steering_virtue,
-                                        "vector_alpha": (
-                                            stored_alpha * family_alpha_scale
-                                            if steering_virtue is not None
-                                            else None
-                                        ),
+                                        "vector_alpha": vector_alpha,
                                         "artifact_alpha": (
                                             stored_alpha
                                             if steering_virtue is not None
@@ -1197,6 +1227,20 @@ async def run_iconoclast_experiment(config: IconoclastConfig, runner) -> Dict[st
                                             family_alpha_scale
                                             if steering_virtue is not None
                                             else None
+                                        ),
+                                        "runtime_alpha_override": runtime_alpha,
+                                        "alpha_direction": (
+                                            "negative"
+                                            if condition == "scripture_negative_alpha"
+                                            else (
+                                                "null"
+                                                if condition in NULL_VECTOR_CONDITIONS
+                                                else (
+                                                    "positive"
+                                                    if steering_virtue is not None
+                                                    else None
+                                                )
+                                            )
                                         ),
                                         "best_layer": (
                                             artifact["virtues"][steering_virtue]["best_layer"]
