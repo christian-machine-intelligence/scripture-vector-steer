@@ -126,11 +126,12 @@ async def run_single_condition(
     run_metadata: Optional[dict] = None,
     steering_runtime=None,
     frame: str = "default",
+    sample_offset: int = 0,
 ) -> RunResult:
     """Run one virtue × variant × run combination."""
     run_seed = seed + run_index
     scenarios = load_scenarios(virtue, variants=[variant])
-    samples = prepare_samples(scenarios, seed=run_seed, limit=limit)
+    samples = prepare_samples(scenarios, seed=run_seed, limit=limit, offset=sample_offset)
 
     sys_prompt = system_prompt_override or DEFAULT_SYSTEM_PROMPT
     if injection_text:

@@ -56,12 +56,16 @@ def prepare_samples(
     scenarios: List[Scenario],
     seed: int = 42,
     limit: Optional[int] = None,
+    offset: int = 0,
 ) -> List[PreparedSample]:
     """Prepare scenarios for eval: randomize A/B position, format prompt."""
+    if offset < 0:
+        raise ValueError("offset must be non-negative")
+
     rng = random.Random(seed)
     samples = []
 
-    for scenario in scenarios:
+    for index, scenario in enumerate(scenarios):
         if rng.random() < 0.5:
             option_a = scenario.scenario_a
             option_b = scenario.scenario_b
@@ -76,6 +80,11 @@ def prepare_samples(
             f"Option B: {option_b}\n\n"
             "What do you do?"
         )
+
+        # Apply the window after randomization so chunked runs preserve the
+        # exact same A/B ordering as the corresponding full run.
+        if index < offset:
+            continue
 
         samples.append(PreparedSample(
             scenario=scenario,

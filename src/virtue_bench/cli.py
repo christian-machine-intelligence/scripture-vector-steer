@@ -429,6 +429,10 @@ def cmd_iconoclast(args: argparse.Namespace) -> None:
         raise SystemExit(
             "--include-merged-psalm-family-lane requires at least two --psalm-family-lane values"
         )
+    if args.sample_offset < 0:
+        raise SystemExit("--sample-offset must be non-negative")
+    if args.run_index_start < 0:
+        raise SystemExit("--run-index-start must be non-negative")
 
     if args.scripture_targets is not None:
         scripture_targets = list(args.scripture_targets)
@@ -484,6 +488,8 @@ def cmd_iconoclast(args: argparse.Namespace) -> None:
         include_merged_psalm_family_lane=args.include_merged_psalm_family_lane,
         psalm_vector_sets=args.psalm_vector_set or [],
         enable_thinking=args.enable_thinking,
+        sample_offset=args.sample_offset,
+        run_index_start=args.run_index_start,
         output_prefix=output_prefix,
     )
 
@@ -715,6 +721,18 @@ def main():
     iconoclast_parser.add_argument("--temperature", type=float, default=0.7)
     iconoclast_parser.add_argument("--seed", type=int, default=42)
     iconoclast_parser.add_argument("--limit", type=int, default=None)
+    iconoclast_parser.add_argument(
+        "--sample-offset",
+        type=int,
+        default=0,
+        help="Skip this many prepared samples before applying --limit; useful for chunked runs",
+    )
+    iconoclast_parser.add_argument(
+        "--run-index-start",
+        type=int,
+        default=0,
+        help="First run index to execute when --runs is a chunk size",
+    )
     iconoclast_parser.add_argument("--quick", action="store_true", help="Limit each cell to 10 samples")
     iconoclast_parser.add_argument(
         "--condition-profile",

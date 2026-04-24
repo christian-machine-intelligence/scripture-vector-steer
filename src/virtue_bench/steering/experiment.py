@@ -105,6 +105,8 @@ class IconoclastConfig:
     psalm_vector_sets: List[str] = field(default_factory=list)
     window_center: Optional[int] = None
     enable_thinking: bool = False
+    sample_offset: int = 0
+    run_index_start: int = 0
     preflight_variant: str = "ratio"
     preflight_limit: int = 8
     preflight_max_tokens: int = 32
@@ -758,6 +760,7 @@ async def _run_steering_preflight(
             seed=config.seed,
             temperature=0.0,
             limit=config.preflight_limit,
+            sample_offset=config.sample_offset,
             concurrency=config.concurrency,
             retries=config.retries,
             timeout=config.preflight_timeout,
@@ -812,6 +815,7 @@ async def _run_steering_preflight(
                         seed=config.seed,
                         temperature=0.0,
                         limit=config.preflight_limit,
+                        sample_offset=config.sample_offset,
                         concurrency=config.concurrency,
                         retries=config.retries,
                         timeout=config.preflight_timeout,
@@ -840,6 +844,7 @@ async def _run_steering_preflight(
                         seed=config.seed,
                         temperature=0.0,
                         limit=config.preflight_limit,
+                        sample_offset=config.sample_offset,
                         concurrency=config.concurrency,
                         retries=config.retries,
                         timeout=config.preflight_timeout,
@@ -1172,7 +1177,10 @@ async def run_iconoclast_experiment(config: IconoclastConfig, runner) -> Dict[st
                                 runtime_alpha = None
                                 vector_alpha = None
 
-                            for run_index in range(stage_runs):
+                            for run_index in range(
+                                config.run_index_start,
+                                config.run_index_start + stage_runs,
+                            ):
                                 key = (virtue, variant, label, run_index)
                                 if key in completed:
                                     continue
@@ -1207,6 +1215,7 @@ async def run_iconoclast_experiment(config: IconoclastConfig, runner) -> Dict[st
                                     seed=config.seed,
                                     temperature=stage_temperature,
                                     limit=config.limit,
+                                    sample_offset=config.sample_offset,
                                     concurrency=config.concurrency,
                                     retries=config.retries,
                                     timeout=config.timeout,
@@ -1217,6 +1226,8 @@ async def run_iconoclast_experiment(config: IconoclastConfig, runner) -> Dict[st
                                         "stage": stage,
                                         "eval_virtue": virtue,
                                         "steering_virtue": steering_virtue,
+                                        "sample_offset": config.sample_offset,
+                                        "sample_limit": config.limit,
                                         "vector_alpha": vector_alpha,
                                         "artifact_alpha": (
                                             stored_alpha

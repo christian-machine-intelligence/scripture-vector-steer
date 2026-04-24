@@ -231,7 +231,11 @@ class HFLocalRunner(ModelRunner):
                 del output
             if inputs is not None:
                 del inputs
-            if self._model.device.type == "cuda" and self._query_count % 10 == 0:
+            if (
+                self._model.device.type == "cuda"
+                and not sys.platform.startswith("win")
+                and self._query_count % 10 == 0
+            ):
                 gc.collect()
                 torch.cuda.empty_cache()
                 if hasattr(torch.cuda, "ipc_collect"):
