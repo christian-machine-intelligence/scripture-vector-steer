@@ -73,9 +73,10 @@ book-level scripture lanes suggested by the 66-book prompt-injection results:
 - `romans`
 - `petrine` (1 Peter and 2 Peter together)
 
-That screen starts fresh: each lane extracts a new book vector against the same
-generic non-scripture background, then tests steering scales `1.0`, `2.0`, and
-`3.0`.
+That screen starts fresh by extracting one new vector per book lane against the
+same generic non-scripture background. It then reuses that book vector at
+steering scales `1.0`, `2.0`, and `3.0`, so strength is the only thing changing
+inside each book comparison.
 
 ## Quick Start
 
@@ -192,7 +193,8 @@ python scripts/windows/manage_scripture_book_screen.py \
 ```
 
 That manager runs Psalms, Proverbs, Romans, and the combined Petrine epistles at
-`1.0`, `2.0`, and `3.0`, relaunches stale legs, and writes a final scripture
+`1.0`, `2.0`, and `3.0`, reuses each book's freshly extracted `1.0` vector for
+its stronger-scale legs, relaunches stale legs, and writes a final scripture
 book summary.
 
 That manager watches the five-family by four-scale sweep, starts the next leg

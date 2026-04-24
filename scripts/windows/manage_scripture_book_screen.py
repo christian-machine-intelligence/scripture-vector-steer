@@ -461,7 +461,14 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--reuse-vectors",
         action="store_true",
-        help="Reuse the fresh x100 vector for later scale legs; default extracts a fresh vector every leg.",
+        default=True,
+        help="Reuse the fresh x100 vector for later scale legs. This is the default.",
+    )
+    parser.add_argument(
+        "--fresh-vectors-per-leg",
+        action="store_false",
+        dest="reuse_vectors",
+        help="Extract a new vector for every book-scale leg instead of reusing the book's x100 vector.",
     )
     parser.add_argument("--no-lock", action="store_true", help="Allow multiple managers to run at once")
     parser.add_argument("--once", action="store_true", help="Run one manager step and exit")

@@ -146,6 +146,9 @@ For constrained GPUs, do not insist on running them all at once. Prefer:
 - Use `control` as the headline comparison. Treat null steers as secondary mechanism checks, not the main scoreboard.
 - For book-level scripture screens, treat `petrine` as 1 Peter and 2 Peter combined unless a later study explicitly separates them.
 - If the purpose is to find a ceiling, use broader strength steps like `1.0`, `2.0`, and `3.0` before spending budget on fine-grained values.
+- For strength sweeps, extract one fresh vector per corpus first and reuse that
+  vector across scale levels. Do not re-extract the vector separately for each
+  scale unless the explicit question is vector-extraction stability.
 
 ### Windows / remote GPU launch discipline
 
