@@ -1,8 +1,10 @@
 @echo off
 setlocal
 
-cd /d C:\Users\sethcodex\work\virtue-bench-2
-set PYTHONPATH=C:\Users\sethcodex\work\virtue-bench-2\src
+for %%I in ("%~dp0..\..\..") do set REPO=%%~fI
+cd /d "%REPO%"
+
+set PYTHONPATH=%REPO%\src
 set PYTHONUNBUFFERED=1
 set PYTHONFAULTHANDLER=1
 set PYTHONIOENCODING=utf-8
@@ -11,7 +13,7 @@ set VIRTUE_BENCH_ICONOCLAST_CONSOLE=file
 set VECTOR_ARTIFACT=results\homepc_qwen35_ratio_psalm_scale_probe_vectors.pt
 
 REM Baseline Psalm push
-.venv\Scripts\python.exe -X faulthandler -u -m virtue_bench.cli iconoclast ^
+"%REPO%\.venv\Scripts\python.exe" -X faulthandler -u -m virtue_bench.cli iconoclast ^
   --model Qwen/Qwen3.5-9B ^
   --stage ratio ^
   --runs 1 ^
@@ -33,7 +35,7 @@ REM Baseline Psalm push
 if errorlevel 1 exit /b 1
 
 REM Slightly softer Psalm push
-.venv\Scripts\python.exe -X faulthandler -u -m virtue_bench.cli iconoclast ^
+"%REPO%\.venv\Scripts\python.exe" -X faulthandler -u -m virtue_bench.cli iconoclast ^
   --model Qwen/Qwen3.5-9B ^
   --stage ratio ^
   --runs 1 ^
@@ -55,7 +57,7 @@ REM Slightly softer Psalm push
 if errorlevel 1 exit /b 1
 
 REM Stronger Psalm push
-.venv\Scripts\python.exe -X faulthandler -u -m virtue_bench.cli iconoclast ^
+"%REPO%\.venv\Scripts\python.exe" -X faulthandler -u -m virtue_bench.cli iconoclast ^
   --model Qwen/Qwen3.5-9B ^
   --stage ratio ^
   --runs 1 ^
@@ -77,7 +79,7 @@ REM Stronger Psalm push
 if errorlevel 1 exit /b 1
 
 REM Much stronger Psalm push
-.venv\Scripts\python.exe -X faulthandler -u -m virtue_bench.cli iconoclast ^
+"%REPO%\.venv\Scripts\python.exe" -X faulthandler -u -m virtue_bench.cli iconoclast ^
   --model Qwen/Qwen3.5-9B ^
   --stage ratio ^
   --runs 1 ^

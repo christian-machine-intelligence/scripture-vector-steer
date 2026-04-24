@@ -1,9 +1,10 @@
 @echo off
 setlocal
 
-cd /d C:\Users\sethcodex\work\virtue-bench-2
+for %%I in ("%~dp0..\..\..") do set REPO=%%~fI
+cd /d "%REPO%"
 
-set PYTHONPATH=C:\Users\sethcodex\work\virtue-bench-2\src
+set PYTHONPATH=%REPO%\src
 set PYTHONUNBUFFERED=1
 set PYTHONFAULTHANDLER=1
 set PYTHONIOENCODING=utf-8
@@ -13,7 +14,7 @@ set PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True
 echo STARTED > results\homepc_qwen35_ratio_scripture_only_v1.status
 if exist results\homepc_qwen35_ratio_scripture_only_v1_wrapper_console.log del /q results\homepc_qwen35_ratio_scripture_only_v1_wrapper_console.log
 
-.venv\Scripts\python.exe -X faulthandler -u -m virtue_bench iconoclast ^
+"%REPO%\.venv\Scripts\python.exe" -X faulthandler -u -m virtue_bench.cli iconoclast ^
   --model Qwen/Qwen3.5-9B ^
   --stage ratio ^
   --runs 3 ^

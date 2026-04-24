@@ -160,8 +160,12 @@ and writes the final Psalm-family summary when the sweep is complete.
 The convenience launcher is:
 
 ```text
-run_qwen35_ratio_psalm_family_screen_manager_v1.cmd
+scripts/windows/launchers/start_psalm_family_screen_manager.cmd
 ```
+
+Other curated Windows launchers live in `scripts/windows/launchers/`. The old
+root-level `run_qwen35_ratio_*` files were removed because they were mostly
+versioned breadcrumbs from debugging specific failed runs.
 
 ## Repository Layout
 
@@ -177,6 +181,7 @@ psalm-vector-steer/
 ├── scripts/
 │   ├── analyze_psalm_family_screen.py
 │   └── windows/
+│       └── launchers/
 ├── src/virtue_bench/
 │   ├── core/
 │   ├── eval/
