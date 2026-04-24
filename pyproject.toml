@@ -60,7 +60,7 @@ Issues = "https://github.com/christian-machine-intelligence/virtue-bench-2/issue
 where = ["src"]
 
 [tool.setuptools.package-data]
-virtue_bench = ["../../data/**/*.csv", "../../data/**/*.json"]
+virtue_bench = ["../../data/**/*.csv", "../../data/**/*.json", "../../data/**/*.jsonl"]
 
 [tool.ruff]
 line-length = 100

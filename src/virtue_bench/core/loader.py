@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import csv
 import random
+import re
 from pathlib import Path
 from typing import List, Optional
 
@@ -88,10 +89,29 @@ def prepare_samples(
     return samples
 
 
+_THINK_BLOCK_RE = re.compile(r"^\s*<think>.*?</think>\s*", re.DOTALL | re.IGNORECASE)
+_FINAL_ANSWER_LINE_RE = re.compile(
+    r"(?im)^\s*(?:final answer\s*:?\s*)?([AB])(?:\b|(?=\s*[—:-]))"
+)
+
+
+def _strip_leading_think_blocks(response: str) -> str:
+    """Remove one or more leading Qwen-style thought blocks before scoring."""
+    text = response
+    while True:
+        stripped = _THINK_BLOCK_RE.sub("", text, count=1)
+        if stripped == text:
+            return stripped
+        text = stripped
+
+
 def parse_answer(response: str) -> Optional[str]:
-    """Extract A or B as a standalone first token from a response."""
-    text = response.strip()
+    """Extract A or B as a standalone first visible token from a response."""
+    text = _strip_leading_think_blocks(response).strip()
     if len(text) >= 1 and text[0] in ("A", "B"):
         if len(text) == 1 or not text[1].isalpha():
             return text[0]
+    match = _FINAL_ANSWER_LINE_RE.search(text)
+    if match:
+        return match.group(1)
     return None

@@ -19,6 +19,8 @@ class ModelRunner(ABC):
         system_prompt: str,
         temperature: float = 0.0,
         max_tokens: int = 128,
+        retries: int = 0,
+        timeout: int = 120,
     ) -> dict:
         """Send a prompt to the model and return the response.
 

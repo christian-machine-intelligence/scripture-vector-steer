@@ -40,6 +40,7 @@ async def _run_single_query_batch(
     retries: int,
     timeout: int,
     detailed: bool,
+    max_tokens: int,
 ) -> List[SampleResult]:
     """Run samples through a query-based runner with concurrency control."""
     sem = asyncio.Semaphore(concurrency)
@@ -51,6 +52,7 @@ async def _run_single_query_batch(
                 sample.prompt,
                 system_prompt,
                 temperature=temperature,
+                max_tokens=max_tokens,
                 retries=retries,
                 timeout=timeout,
             )
@@ -61,6 +63,13 @@ async def _run_single_query_batch(
 
     await asyncio.gather(*(process(i, s) for i, s in enumerate(samples)))
     return [r for r in results if r is not None]
+
+
+def _effective_max_tokens(runner: ModelRunner, max_tokens: int) -> int:
+    """Give thinking-mode local runs enough room to produce a final A/B answer."""
+    if max_tokens == 128 and getattr(runner, "_enable_thinking", False):
+        return 512
+    return max_tokens
 
 
 def _run_inspect_batch(
@@ -109,42 +118,64 @@ async def run_single_condition(
     retries: int,
     timeout: int,
     detailed: bool,
+    max_tokens: int = 128,
     injection_text: Optional[str] = None,
     log_dir: Optional[str] = None,
+    system_prompt_override: Optional[str] = None,
+    condition_name: Optional[str] = None,
+    run_metadata: Optional[dict] = None,
+    steering_runtime=None,
+    frame: str = "default",
 ) -> RunResult:
     """Run one virtue × variant × run combination."""
     run_seed = seed + run_index
     scenarios = load_scenarios(virtue, variants=[variant])
     samples = prepare_samples(scenarios, seed=run_seed, limit=limit)
 
-    sys_prompt = DEFAULT_SYSTEM_PROMPT
+    sys_prompt = system_prompt_override or DEFAULT_SYSTEM_PROMPT
     if injection_text:
         sys_prompt = injection_text + "\n\n---\n\n" + sys_prompt
 
-    condition = "default" if not injection_text else "default+injected"
+    condition = condition_name or ("default" if not injection_text else "default+injected")
+    metadata = dict(run_metadata or {})
 
-    if InspectAIRunner is not None and isinstance(runner, InspectAIRunner):
-        acc, stderr, n_samples, status, sample_results = _run_inspect_batch(
-            runner, samples, sys_prompt, temperature, log_dir,
-        )
-    else:
-        sample_results = await _run_single_query_batch(
-            runner, samples, sys_prompt, temperature,
-            concurrency, retries, timeout, detailed,
-        )
-        scored = [r for r in sample_results if r.infra_error is None]
-        correct = sum(1 for r in scored if r.correct)
-        n_samples = len(samples)
-        acc = correct / n_samples if scored and len(scored) == n_samples else None
-        stderr = None
-        status = "success" if len(scored) == n_samples else "partial"
+    steering_reset = getattr(runner, "set_steering_runtime", None)
+    previous_runtime = getattr(runner, "_steering_runtime", None)
+
+    try:
+        effective_max_tokens = _effective_max_tokens(runner, max_tokens)
+        if steering_reset is not None:
+            steering_reset(steering_runtime)
+
+        if InspectAIRunner is not None and isinstance(runner, InspectAIRunner):
+            acc, stderr, n_samples, status, sample_results = _run_inspect_batch(
+                runner, samples, sys_prompt, temperature, log_dir,
+            )
+        else:
+            sample_results = await _run_single_query_batch(
+                runner, samples, sys_prompt, temperature,
+                concurrency, retries, timeout, detailed, effective_max_tokens,
+            )
+            scored = [r for r in sample_results if r.infra_error is None]
+            correct = sum(1 for r in scored if r.correct)
+            n_samples = len(samples)
+            acc = correct / n_samples if scored and len(scored) == n_samples else None
+            stderr = None
+            status = "success" if len(scored) == n_samples else "partial"
+    finally:
+        if steering_reset is not None:
+            steering_reset(previous_runtime)
+
+    if metadata:
+        for sample_result in sample_results:
+            sample_result.metadata.update(metadata)
 
     return RunResult(
         model=runner.model_id(),
         virtue=virtue,
         variant=variant,
         condition=condition,
-        frame="default",
+        frame=frame,
         run_index=run_index,
         seed=run_seed,
         temperature=temperature,
@@ -152,6 +183,7 @@ async def run_single_condition(
         stderr=stderr,
         samples=n_samples,
         status=status,
+        metadata=metadata,
         sample_details=sample_results if detailed else [],
     )
 
@@ -222,6 +254,7 @@ async def run_experiment(
                     detailed=config.detailed,
                     injection_text=injection_text,
                     log_dir=log_dir,
+                    frame=config.frame,
                 )
                 all_results.append(result)
 

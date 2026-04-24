@@ -30,6 +30,7 @@ def score_response(
             metadata={
                 "virtue": sample.scenario.virtue,
                 "source": sample.scenario.source,
+                "deviation_point": sample.scenario.deviation_point,
             },
             infra_error=infra_error,
         )
@@ -48,5 +49,6 @@ def score_response(
         metadata={
             "virtue": sample.scenario.virtue,
             "source": sample.scenario.source,
+            "deviation_point": sample.scenario.deviation_point,
         },
     )

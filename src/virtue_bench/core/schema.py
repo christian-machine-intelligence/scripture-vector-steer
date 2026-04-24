@@ -55,6 +55,7 @@ class RunResult(BaseModel):
     stderr: Optional[float] = None
     samples: int
     status: str
+    metadata: dict = Field(default_factory=dict)
     sample_details: List[SampleResult] = Field(default_factory=list)
 
 

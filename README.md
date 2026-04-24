@@ -81,6 +81,10 @@ virtue-bench run --config configs/example_full_baseline.yaml
 # Analyze existing results
 virtue-bench analyze results/results_20260406.json
 
+# Watch a run in a local browser
+virtue-bench dashboard \
+  --output-prefix experiments/iconoclast/iconoclast_20260420_104500
+
 # Scripture injection
 virtue-bench run --psalm-set imprecatory
 virtue-bench run --bible Romans
@@ -89,7 +93,255 @@ virtue-bench run --bible-set sermon_on_the_mount
 # List available scripture options
 virtue-bench psalms
 virtue-bench bible
+
+# Iconoclast activation-space experiment (open-weight local model)
+virtue-bench iconoclast --model Qwen/Qwen2.5-7B-Instruct --stage ratio --quick
 ```
+
+## Iconoclast Activation-Space Experiment
+
+VirtueBench V2 now includes an **Iconoclast** experiment path for testing whether
+virtue can be imposed *geometrically* through activation steering rather than
+through persona-dependent prompting.
+
+### Current Steering Thesis
+
+The repo's current steering thesis is narrower than the older "virtue geometry"
+framing:
+
+- Primary question: does steering the model toward **scripture activations**,
+  especially **psalm activations**, improve VirtueBench performance?
+- Primary contrast: compare scripture activations against **generic
+  non-scripture activations**, not only against other biblical families.
+- Preferred first test: a **psalms-only** whole-text vector before broader
+  scripture mixes.
+- Secondary diagnostics: `psalms` vs `proverbs` vs `gospels`, blended
+  `christian` vectors, virtue-specific vectors, and thinking vs non-thinking
+  comparisons. These can still be useful, but they should not replace the main
+  scripture-vs-generic question.
+
+Operational notes for future steering runs live in:
+
+- `docs/experiment_playbook.md`
+- `docs/iconoclast_best_practices.md`
+- `results/experiments/`
+
+The broader workflow can still support several steering lanes:
+
+- extract one steering vector per cardinal virtue from a bundled contrastive corpus
+- extract a balanced `christian` steering vector from a bundled corpus built from
+  the popular Psalms, Proverbs `1/2/8`, and pooled Gospel passages
+- derive scripture-family steering vectors for `psalms`, `proverbs`, and `gospels`
+  so we can compare those families directly instead of only averaging them together
+- validate that the vectors separate virtue-aligned and counter-virtue texts
+- project out activation structure shared with the *other* virtues so the vectors
+  are less likely to collapse into a generic “moral/pious” direction
+- compare eight conditions on VirtueBench V2:
+  - `control`
+  - `psalm_baseline`
+  - `virtue_steer`
+  - `christian_steer`
+  - `scripture_steer`
+  - `combined`
+  - `null_control`
+  - `christian_null_control`
+  - `scripture_null_control`
+  - `length_control`
+- stage the benchmark as:
+  - `smoke`: deterministic ratio-only check
+  - `ratio`: multi-run ratio anchor
+  - `full`: full V2 variant grid
+
+For the current phase of the project, treat the `psalms` activation lane as the
+main line of evidence. Use the broader `christian`, `virtue`, and
+within-scripture comparison lanes as supporting or diagnostic runs unless the
+thesis is explicitly widened again.
+
+Example commands:
+
+```bash
+# Ratio anchor with bundled vector extraction
+virtue-bench iconoclast \
+  --model Qwen/Qwen2.5-7B-Instruct \
+  --stage ratio \
+  --quick
+
+# Research-style steer-only pilot with a hard divergence preflight
+virtue-bench iconoclast \
+  --model Qwen/Qwen3.5-9B \
+  --stage ratio \
+  --condition-profile steer_only \
+  --preflight-policy error \
+  --output-prefix experiments/iconoclast/qwen35_ratio_steer_only_v1
+
+# Direct baseline vs virtue-steer vs christian-steer comparison
+virtue-bench iconoclast \
+  --model Qwen/Qwen3.5-9B \
+  --stage ratio \
+  --condition-profile christian_compare \
+  --preflight-policy error \
+  --output-prefix experiments/iconoclast/qwen35_ratio_christian_compare_v1
+
+# Split biblical-family comparison
+virtue-bench iconoclast \
+  --model Qwen/Qwen3.5-9B \
+  --stage ratio \
+  --condition-profile scripture_compare \
+  --scripture-targets psalms proverbs gospels \
+  --preflight-policy error \
+  --output-prefix experiments/iconoclast/qwen35_ratio_scripture_compare_v1
+
+# GospelVec-style scripture-family comparison without the virtue lane
+virtue-bench iconoclast \
+  --model Qwen/Qwen3.5-9B \
+  --stage ratio \
+  --condition-profile scripture_only_compare \
+  --scripture-targets psalms proverbs gospels \
+  --preflight-policy error \
+  --output-prefix experiments/iconoclast/qwen35_ratio_scripture_only_v1
+
+# Psalms-only follow-up with a focused psalm steering corpus
+virtue-bench iconoclast \
+  --model Qwen/Qwen3.5-9B \
+  --stage ratio \
+  --condition-profile scripture_only_compare \
+  --scripture-targets psalms \
+  --extraction-method scripture_contrast \
+  --psalm-vector-set popular \
+  --alpha-candidates 0.5,1.0,2.0,4.0,6.0,8.0 \
+  --preflight-policy skip \
+  --output-prefix experiments/iconoclast/qwen35_ratio_psalms_popular_v1
+
+# Thinking-mode comparison on the same psalm vector
+virtue-bench iconoclast \
+  --model Qwen/Qwen3.5-9B \
+  --stage ratio \
+  --condition-profile scripture_only_compare \
+  --scripture-targets psalms \
+  --extraction-method scripture_contrast \
+  --psalm-vector-set popular \
+  --enable-thinking \
+  --alpha-candidates 0.5,1.0,2.0,4.0,6.0,8.0 \
+  --preflight-policy skip \
+  --output-prefix experiments/iconoclast/qwen35_ratio_psalms_popular_thinking_v1
+
+# Reasoning comparison: baseline vs virtue texts vs psalm steering
+virtue-bench iconoclast \
+  --model Qwen/Qwen3.5-9B \
+  --stage ratio \
+  --condition-profile reasoning_compare \
+  --scripture-targets psalms \
+  --pooled-virtue-steer \
+  --extraction-method scripture_contrast \
+  --psalm-vector-set popular \
+  --psalm-vector-set trust \
+  --psalm-vector-set wisdom \
+  --psalm-vector-set penitential \
+  --enable-thinking \
+  --alpha-candidates 0.5,1.0,2.0,4.0,6.0,8.0 \
+  --preflight-policy skip \
+  --output-prefix experiments/iconoclast/qwen35_ratio_reasoning_compare_thinking_v1
+
+# Deterministic Psalm-family screen: one family at a time, no virtue lane
+virtue-bench iconoclast \
+  --model Qwen/Qwen3.5-9B \
+  --stage ratio \
+  --runs 1 \
+  --limit 20 \
+  --temperature 0.0 \
+  --condition-profile psalm_reasoning_primary \
+  --psalm-family-lane trust \
+  --extraction-method scripture_contrast \
+  --scripture-alpha-scale 1.5 \
+  --preflight-policy off \
+  --output-prefix experiments/iconoclast/qwen35_ratio_psalm_family_trust_x150_v1
+
+# Final pair study: two family lanes plus one merged lane
+virtue-bench iconoclast \
+  --model Qwen/Qwen3.5-9B \
+  --stage ratio \
+  --runs 3 \
+  --limit 40 \
+  --temperature 0.0 \
+  --condition-profile psalm_reasoning_primary \
+  --psalm-family-lane trust \
+  --psalm-family-lane wisdom \
+  --include-merged-psalm-family-lane \
+  --extraction-method scripture_contrast \
+  --psalm-family-alpha-scale trust=2.0 \
+  --psalm-family-alpha-scale wisdom=1.5 \
+  --merged-psalm-family-alpha-scale 1.0 \
+  --preflight-policy off \
+  --output-prefix experiments/iconoclast/qwen35_ratio_psalm_pair_final_v1
+
+# Fixed-window comparison arm (GospelVec-style center layer)
+virtue-bench iconoclast \
+  --model Qwen/Qwen3.5-9B \
+  --stage ratio \
+  --condition-profile steer_only \
+  --window-center 21 \
+  --window-radius 3 \
+  --output-prefix experiments/iconoclast/qwen35_ratio_fixed_window_v1
+
+# Full grid with cross-virtue steering matrix and discernment prompts
+virtue-bench iconoclast \
+  --model Qwen/Qwen2.5-7B-Instruct \
+  --stage full \
+  --cross-matrix \
+  --discernment
+
+# Re-analyze a saved Iconoclast run
+virtue-bench analyze-iconoclast \
+  results/experiments/iconoclast/iconoclast_20260420_104500_ratio.json \
+  --write-heatmaps
+
+# Watch a remote Windows run over SSH
+export VIRTUE_BENCH_REMOTE_PASSWORD='your-password-here'
+virtue-bench dashboard \
+  --output-prefix homepc_iconoclast_qwen35_ratio_steer_v1 \
+  --remote-host home-pc.tail65a463.ts.net \
+  --remote-user sethcodex
+```
+
+Implementation notes:
+
+- The bundled steering corpus lives at `data/steering/corpora.jsonl`.
+- Vector artifacts are saved as `.pt` files alongside experiment results.
+- Each Iconoclast run now also writes
+  `<output-prefix>_vector_diagnostics.json` and
+  `<output-prefix>_vector_diagnostics.md`, which summarize the best Psalm layer,
+  near-best layers, tuned alpha, and the strongest dev/test margins.
+- If no `--output-prefix` is provided, Iconoclast runs default to
+  `results/experiments/iconoclast/iconoclast_<timestamp>_*`.
+- The local `hf-local` runner now supports temporary multi-layer steering hooks.
+- Steering strength can now be scaled at benchmark time with
+  `--virtue-alpha-scale`, `--christian-alpha-scale`, and
+  `--scripture-alpha-scale` so you can reuse one vector artifact and compare how
+  harder or softer pushes perform on VirtueBench.
+- Psalm-family steering lanes are now first-class targets:
+  - add one lane with `--psalm-family-lane trust`
+  - compare several by repeating the flag
+  - add a merged lane with `--include-merged-psalm-family-lane`
+  - override one family without affecting the others with
+    `--psalm-family-alpha-scale trust=2.0`
+  - set a separate merged-lane push with
+    `--merged-psalm-family-alpha-scale 1.0`
+- Psalm injection now falls back to the repo's bundled KJV corpus when no sibling
+  `psalm-alignment` checkout is present.
+- `virtue-bench dashboard` serves a lightweight live monitor for preflight,
+  stage progress, artifacts, and the console tail, and can poll a remote
+  Windows runner over SSH by reading the password from an environment variable.
+- For unattended Windows launches, prefer a detached direct `python.exe`
+  launcher that writes its own status and wrapper log. The repo helper for that
+  is `scripts/windows/run_iconoclast_job.py`, and
+  `run_qwen35_ratio_reasoning_compare_thinking_v5_detached.cmd` is the working
+  example entrypoint.
+- For a quick Psalm strength probe on the Windows box, use
+  `run_qwen35_ratio_psalm_scale_probe_v1.cmd`.
+- For the deterministic five-family screen on the Windows box, use
+  `run_qwen35_ratio_psalm_family_screen_v1.cmd`.
+- To summarize a completed family screen and prepare the reasoning review packs,
+  run `python scripts/analyze_psalm_family_screen.py`.
 
 ## Benchmark Results
 
@@ -135,6 +387,11 @@ virtue-bench-2/
 │   │   ├── loader.py                 # CSV loading, A/B randomization, parse_answer
 │   │   ├── psalms.py                 # Psalm injection with 11 named subsets
 │   │   └── bible.py                  # Bible book injection (66 books, bundled KJV)
+│   ├── steering/                     # Iconoclast activation-space pipeline
+│   │   ├── corpora.py                # Bundled virtue/counter-virtue corpus + secular controls
+│   │   ├── runtime.py                # Residual collection and multi-layer steering hooks
+│   │   ├── extract.py                # Vector extraction, layer selection, alpha tuning
+│   │   └── experiment.py             # Multi-condition Iconoclast runner
 │   ├── runners/                      # Model backend protocol (6 runners)
 │   │   ├── base.py                   # ModelRunner ABC
 │   │   ├── openai_api.py             # Direct OpenAI SDK
@@ -152,6 +409,7 @@ virtue-bench-2/
 │   │   └── regression.py             # Model version regression detection
 │   ├── analysis/                     # Reporting and visualization
 │   │   ├── tables.py                 # Comparison tables, variant grids
+│   │   ├── iconoclast.py             # Condition deltas and steering heatmaps
 │   │   ├── visualize.py              # Heatmap plots (matplotlib)
 │   │   └── discernment.py            # Ignatian retroactive discernment eval
 │   ├── artifacts/results.py          # Result I/O (summary + detailed logs)

@@ -117,6 +117,10 @@ BOOK_IDS: Dict[str, str] = {
 
 # Named book collections for common injection patterns
 BOOK_SETS: Dict[str, Dict] = {
+    "psalms": {
+        "books": ["PSA"],
+        "description": "Book of Psalms",
+    },
     "gospels": {
         "books": ["MAT", "MRK", "LUK", "JHN"],
         "description": "The four Gospels (Matthew, Mark, Luke, John)",
@@ -261,6 +265,73 @@ def load_bible_text(
                 parts.append(f"{header}\n{text}")
 
     return "\n\n".join(parts)
+
+
+def load_bible_chapters(
+    books: Optional[List[str]] = None,
+    book_set: Optional[str] = None,
+) -> List[dict]:
+    """Load Bible chapters with verse structure preserved.
+
+    Returns a list of chapter dictionaries in canonical order:
+    {
+        "book_id": "MAT",
+        "book": "Matthew",
+        "chapter": 5,
+        "verses": [{"verse": 1, "text": "..."}, ...],
+    }
+    """
+    specs = []
+
+    if book_set:
+        if book_set not in BOOK_SETS:
+            raise ValueError(
+                f"Unknown book set '{book_set}'. "
+                f"Choose from: {list(BOOK_SETS.keys())}"
+            )
+        specs.extend(BOOK_SETS[book_set]["books"])
+
+    if books:
+        specs.extend(books)
+
+    if not specs:
+        raise ValueError("No books specified. Use books or book_set parameter.")
+
+    data = _load_data()
+    books_by_id = {b["id"]: b for b in data["books"]}
+
+    chapters_out: List[dict] = []
+    for spec in specs:
+        book_id, start_ch, end_ch = parse_book_spec(spec)
+        if book_id not in books_by_id:
+            raise ValueError(
+                f"Book '{book_id}' not found in bundled KJV data. "
+                f"Available: {list(books_by_id.keys())}"
+            )
+
+        book = books_by_id[book_id]
+        chapters = book["chapters"]
+        if start_ch is None:
+            start_ch = chapters[0]["chapter"]
+            end_ch = chapters[-1]["chapter"]
+
+        for ch_data in chapters:
+            ch_num = ch_data["chapter"]
+            if ch_num < start_ch or ch_num > end_ch:
+                continue
+            chapters_out.append(
+                {
+                    "book_id": book_id,
+                    "book": book["book"],
+                    "chapter": ch_num,
+                    "verses": [
+                        {"verse": verse["verse"], "text": verse["text"]}
+                        for verse in ch_data["verses"]
+                    ],
+                }
+            )
+
+    return chapters_out
 
 
 def list_book_sets() -> Dict[str, str]:

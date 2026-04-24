@@ -26,7 +26,9 @@ import random
 from pathlib import Path
 from typing import Dict, List, Optional, Set
 
-# Default location for KJV psalm source — can be overridden
+from .bible import load_bible_text
+
+# Default location for legacy psalm source — can be overridden
 DEFAULT_PSALM_SOURCE = (
     Path(__file__).parent.parent.parent.parent.parent
     / "psalm-alignment" / "data" / "psalms_kjv.json"
@@ -135,6 +137,50 @@ def list_psalm_sets() -> Dict[str, str]:
     return {name: info["description"] for name, info in PSALM_SETS.items()}
 
 
+def normalize_psalm_family_names(psalm_families: List[str]) -> List[str]:
+    """Validate and deduplicate Psalm family names while preserving order."""
+    normalized: List[str] = []
+    seen: Set[str] = set()
+    for family in psalm_families:
+        if family not in PSALM_SETS:
+            raise ValueError(
+                f"Unknown psalm family '{family}'. "
+                f"Choose from: {list(PSALM_SETS.keys())}"
+            )
+        if family in seen:
+            continue
+        seen.add(family)
+        normalized.append(family)
+    return normalized
+
+
+def build_psalm_family_target(psalm_families: List[str]) -> str:
+    """Build a stable steering-target label for one or more Psalm families."""
+    normalized = normalize_psalm_family_names(psalm_families)
+    if not normalized:
+        raise ValueError("At least one psalm family is required to build a target label.")
+    return f"psalms[{'+'.join(normalized)}]"
+
+
+def parse_psalm_family_target(target: str) -> Optional[List[str]]:
+    """Parse a steering-target label like ``psalms[trust+wisdom]``."""
+    if not target.startswith("psalms[") or not target.endswith("]"):
+        return None
+    inner = target[len("psalms["):-1]
+    families = [part.strip() for part in inner.split("+") if part.strip()]
+    if not families:
+        raise ValueError(f"Malformed psalm family target: {target}")
+    return normalize_psalm_family_names(families)
+
+
+def is_psalm_family_target(target: str) -> bool:
+    """Return True when the target label encodes one or more named Psalm families."""
+    try:
+        return parse_psalm_family_target(target) is not None
+    except ValueError:
+        return False
+
+
 def get_psalm_numbers(
     psalm_set: Optional[str] = None,
     psalm_numbers: Optional[List[int]] = None,
@@ -216,29 +262,28 @@ def load_psalm_text(
         raise ValueError("No psalms specified. Use psalm_set, psalm_numbers, psalm_sets, or random_n.")
 
     path = source_path or DEFAULT_PSALM_SOURCE
-    if not path.exists():
-        raise FileNotFoundError(
-            f"Psalm source file not found: {path}. "
-            f"Expected KJV JSON at {DEFAULT_PSALM_SOURCE}"
-        )
+    if path.exists():
+        with open(path, encoding="utf-8") as f:
+            data = json.load(f)
 
-    with open(path, encoding="utf-8") as f:
-        data = json.load(f)
+        # Build chapter lookup: psalm number (int) -> list of verse texts
+        chapter_map: Dict[int, List[str]] = {}
+        for chapter in data["chapters"]:
+            num = int(chapter["chapter"])
+            verses = [v["text"] for v in chapter["verses"]]
+            chapter_map[num] = verses
 
-    # Build chapter lookup: psalm number (int) -> list of verse texts
-    chapter_map: Dict[int, List[str]] = {}
-    for chapter in data["chapters"]:
-        num = int(chapter["chapter"])
-        verses = [v["text"] for v in chapter["verses"]]
-        chapter_map[num] = verses
+        parts = []
+        for num in numbers:
+            if num not in chapter_map:
+                continue
+            verses = chapter_map[num]
+            header = f"Psalm {num}"
+            text = " ".join(verses)
+            parts.append(f"{header}\n{text}")
+        return "\n\n".join(parts)
 
-    parts = []
-    for num in numbers:
-        if num not in chapter_map:
-            continue
-        verses = chapter_map[num]
-        header = f"Psalm {num}"
-        text = " ".join(verses)
-        parts.append(f"{header}\n{text}")
-
-    return "\n\n".join(parts)
+    # Fall back to the bundled KJV corpus so psalm injection works in a
+    # standalone VirtueBench checkout with no sibling repositories present.
+    psalm_specs = [f"PSA:{num}" for num in numbers]
+    return load_bible_text(books=psalm_specs)
