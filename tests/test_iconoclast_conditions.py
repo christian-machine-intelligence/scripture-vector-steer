@@ -354,8 +354,10 @@ def test_run_artifact_paths_include_vector_diagnostics():
 
     paths = _run_artifact_paths(config, Path("/tmp/demo_vectors.pt"))
 
-    assert paths["vector_diagnostics_json"].endswith("experiments/demo_vector_diagnostics.json")
-    assert paths["vector_diagnostics_md"].endswith("experiments/demo_vector_diagnostics.md")
+    diagnostics_json = Path(paths["vector_diagnostics_json"]).as_posix()
+    diagnostics_md = Path(paths["vector_diagnostics_md"]).as_posix()
+    assert diagnostics_json.endswith("experiments/demo_vector_diagnostics.json")
+    assert diagnostics_md.endswith("experiments/demo_vector_diagnostics.md")
 
 
 def test_vector_diagnostics_payload_surfaces_rankings_and_candidates():
