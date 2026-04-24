@@ -3,9 +3,9 @@ requires = ["setuptools>=68.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "virtue-bench"
+name = "psalm-vector-steer"
 version = "2.2.0"
-description = "VirtueBench V2: Multi-dimensional virtue evaluation benchmark for LLMs with tripartite and Ignatian temptation models"
+description = "Psalm and Scripture activation-steering experiments built on VirtueBench V2"
 readme = "README.md"
 license = {text = "MIT"}
 requires-python = ">=3.10"
@@ -15,7 +15,8 @@ authors = [
 ]
 keywords = [
     "benchmark", "evaluation", "llm", "virtue-ethics",
-    "temptation", "alignment", "moral-reasoning",
+    "activation-steering", "scripture", "psalms",
+    "alignment", "moral-reasoning",
 ]
 classifiers = [
     "Development Status :: 4 - Beta",
@@ -51,10 +52,10 @@ all = ["inspect-ai>=0.3.0", "matplotlib", "torch", "transformers", "peft"]
 virtue-bench = "virtue_bench.cli:main"
 
 [project.urls]
-Homepage = "https://github.com/christian-machine-intelligence/virtue-bench-2"
-Documentation = "https://github.com/christian-machine-intelligence/virtue-bench-2#readme"
-Repository = "https://github.com/christian-machine-intelligence/virtue-bench-2"
-Issues = "https://github.com/christian-machine-intelligence/virtue-bench-2/issues"
+Homepage = "https://github.com/christian-machine-intelligence/psalm-vector-steer"
+Documentation = "https://github.com/christian-machine-intelligence/psalm-vector-steer#readme"
+Repository = "https://github.com/christian-machine-intelligence/psalm-vector-steer"
+Issues = "https://github.com/christian-machine-intelligence/psalm-vector-steer/issues"
 
 [tool.setuptools.packages.find]
 where = ["src"]

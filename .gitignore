@@ -6,6 +6,19 @@ build/
 .env
 .venv/
 results/logs/
+results/*.json
+results/*_logs.json
+results/**/*.json
+results/**/*.jsonl
+results/**/*.log
+results/**/*.pt
+results/**/*.status
+results/**/*.status.json
 results/*_checkpoint.json
+
+# Curated datasets/artifacts that directly support the paper are allowed.
+!results/paper/
+!results/paper/**
+
 .bible_cache/
 *.DS_Store

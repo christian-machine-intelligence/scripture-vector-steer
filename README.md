@@ -1,248 +1,101 @@
-<p align="center">
-  <img src="https://upload.wikimedia.org/wikipedia/commons/f/f2/Raffael_054.jpg" alt="Raphael, Cardinal and Theological Virtues (1511), Stanza della Segnatura, Vatican" width="100%">
-  <br>
-  <em>Raphael, Cardinal and Theological Virtues (1511), Stanza della Segnatura, Vatican</em>
-</p>
+# Psalm Vector Steer
 
-# VirtueBench V2
+Psalm Vector Steer is a research workbench for testing whether activation
+steering toward Scripture, especially the Psalms, changes how language models
+make virtue decisions.
 
-**Multi-dimensional virtue evaluation benchmark for large language models**
+The project is built on top of VirtueBench V2. The underlying Python package and
+CLI are still named `virtue_bench` / `virtue-bench` for compatibility, but the
+research focus of this repository is now narrower:
 
-VirtueBench tests whether LLMs can *choose* virtue under temptation — not just identify it in the abstract. Each scenario places the model in a concrete moral situation where the virtuous choice carries real costs (career, safety, comfort, relationships) and the non-virtuous option is rationalized through five theologically-grounded temptation mechanisms.
+- Extract Scripture and Psalm-family activation vectors from open-weight models.
+- Compare those vectors against generic non-scripture activation baselines.
+- Push models toward those vectors at controlled strength levels.
+- Measure whether the steering improves VirtueBench decisions and whether the
+  visible reasoning changes in coherent, Psalm-shaped ways.
 
-## What's New in V2
+## Research Thesis
 
-VirtueBench V2 is a substantial expansion of the [original VirtueBench](https://github.com/christian-machine-intelligence/virtue-bench) benchmark:
+The working hypothesis is:
 
-| Feature | V1 | V2 |
-|---------|----|----|
-| **Temptation types** | 1 (unclassified rationalization) | 5 (ratio, caro, mundus, diabolus, ignatian) |
-| **Scenarios per virtue** | 100 | 150 (100 original + 50 new) |
-| **Total scenarios** | 400 | 3,000 (150 base × 5 variants × 4 virtues) |
-| **Statistical rigor** | Single run, temperature=0 | Multi-run with bootstrap CIs, McNemar, chi-squared |
-| **Runner backends** | 3 separate scripts | 6 unified `ModelRunner` backends |
-| **Patristic sources** | Aquinas, Augustine, Ambrose | + Gregory the Great, John Chrysostom, Basil the Great |
-| **Scripture injection** | File-based only | 11 psalm subsets + Bible book injection (bundled KJV) |
-| **Source verification** | None | Automated patristic + Scripture citation verification |
-| **Configuration** | CLI flags only | YAML experiment configs |
+> Steering a model toward Scripture activations, and especially toward cleanly
+> identified Psalm-family activations, should improve its ability to choose
+> virtue under pressure on VirtueBench.
 
-## The Five Temptation Variants
+For the current phase, the main comparison is not "biblical text versus other
+biblical text." The main comparison is:
 
-Every base scenario has one fixed **virtuous choice** (scenario_a) paired with five **temptation variants** (scenario_b). The virtuous choice is identical across all five variants — only the temptation mechanism changes. This enables clean paired comparisons: any performance difference between variants is attributable to the temptation type, not the scenario.
+- `control`: no steering
+- `scripture_steer:psalms[...]`: Psalm-family activation steering
+- optional merged Psalm-family lanes
+- generic non-scripture contrast text during vector extraction
 
-| Variant | Latin Name | Mechanism | Theological Root |
-|---------|-----------|-----------|-----------------|
-| **Ratio** | *ratio* | Pragmatic utilitarian — acknowledges moral cost, argues outcomes justify it | Consequentialism |
-| **Mundus** | *mundus* | World — appeals to social pressure, peer consensus, institutional norms, career risk | Matt 4:8-9 ("kingdoms of the world") |
-| **Caro** | *caro* | Flesh — appeals to bodily comfort, fatigue, appetite, physical weakness | 1 John 2:16; Matt 4:3 ("stones to bread") |
-| **Diabolus** | *diabolus* | Devil — presents evil *under the aspect of good*; reframes the non-virtuous choice AS virtuous | Aquinas ST I-II Q.80; Matt 4:5-6 ("pinnacle of the temple") |
-| **Ignatian** | — | Angel of light — temptation couched in real Scripture and Christian theological reasoning | Ignatius, Spiritual Exercises (Second Week); 2 Cor 11:14 |
+This keeps the experiment pointed at the real question: whether Scripture-shaped
+activation movement changes moral decisions, not merely whether one kind of
+religious language sounds different from another.
 
-These are not ordered by difficulty — they test genuinely different temptation mechanisms that produce different vulnerability profiles across models and virtues.
+## Current Experiment Track
 
-**Key distinction between diabolus and ignatian:** Diabolus reframes vice as *secular* virtue ("institutional wisdom," "prudent leadership"). Ignatian reframes vice as *Christian* virtue, citing chapter and verse. The Ignatian variant specifically competes with Christian system prompt injection — you can't simply inject psalms to boost performance when the temptation quotes Scripture back.
+The active screening workflow evaluates five Christian-tradition Psalm families:
 
-Each Ignatian variant includes a **deviation_point** annotation marking where the theology subtly turns from genuine virtue to disguised vice.
+- `penitential`
+- `wisdom`
+- `trust`
+- `lament`
+- `royal`
 
-### Variant Generation Approach
+Each family is screened at four steering scales:
 
-For each of the 150 base scenarios per virtue, the virtuous choice (scenario_a) is fixed and five distinct temptations are generated:
+- `0.75`
+- `1.0`
+- `1.5`
+- `2.0`
 
-- **Ratio** variants for the original 100 scenarios are preserved verbatim from VirtueBench V1. Ratio variants for the 50 new scenarios were generated by Claude Opus 4.6 with human review.
-- **Caro, Mundus, Diabolus** variants were generated by Claude Opus 4.6 from the base scenario + ratio temptation as context, with variant-specific theological guidelines ensuring each temptation mechanism is distinct.
-- **Ignatian** variants were generated with explicit instructions to cite real Scripture (book/chapter/verse) and patristic sources, then verified for citation accuracy.
-- All patristic source citations were verified against their scenarios.
+The screen uses `Qwen/Qwen3.5-9B`, deterministic `ratio` runs, visible
+rationales, hidden thinking off, and the focused condition profile:
 
-This structure supports two independent analyses:
-1. **Across variants** (fixed scenario, varying temptation): Which temptation mechanisms are hardest for models to resist?
-2. **Across runs** (fixed scenario + variant, repeated at temperature > 0): How reliable is the model's performance? Bootstrap CIs quantify uncertainty.
+```text
+psalm_reasoning_primary = ["control", "scripture_steer"]
+```
+
+After screening, the plan is to promote two families into a larger run with
+three Psalm lanes:
+
+- family A
+- family B
+- merged family A+B
 
 ## Quick Start
 
+Use Python 3.10 or newer.
+
 ```bash
-# Install
-pip install -e .
-
-# Run full baseline (all virtues, all variants, 5 runs)
-virtue-bench run --model anthropic/claude-sonnet-4-20250514
-
-# Quick smoke test (10 samples per virtue)
-virtue-bench run --model anthropic/claude-sonnet-4-20250514 --quick
-
-# Single virtue, single variant
-virtue-bench run --subset courage --variant ignatian
-
-# V1 compatibility mode (reproduces V1 behavior exactly)
-virtue-bench run --deterministic --variant ratio
-
-# From YAML config
-virtue-bench run --config configs/example_full_baseline.yaml
-
-# Analyze existing results
-virtue-bench analyze results/results_20260406.json
-
-# Watch a run in a local browser
-virtue-bench dashboard \
-  --output-prefix experiments/iconoclast/iconoclast_20260420_104500
-
-# Scripture injection
-virtue-bench run --psalm-set imprecatory
-virtue-bench run --bible Romans
-virtue-bench run --bible-set sermon_on_the_mount
-
-# List available scripture options
-virtue-bench psalms
-virtue-bench bible
-
-# Iconoclast activation-space experiment (open-weight local model)
-virtue-bench iconoclast --model Qwen/Qwen2.5-7B-Instruct --stage ratio --quick
+python3.10 -m venv .venv
+source .venv/bin/activate
+pip install -e ".[dev]"
 ```
 
-## Iconoclast Activation-Space Experiment
-
-VirtueBench V2 now includes an **Iconoclast** experiment path for testing whether
-virtue can be imposed *geometrically* through activation steering rather than
-through persona-dependent prompting.
-
-### Current Steering Thesis
-
-The repo's current steering thesis is narrower than the older "virtue geometry"
-framing:
-
-- Primary question: does steering the model toward **scripture activations**,
-  especially **psalm activations**, improve VirtueBench performance?
-- Primary contrast: compare scripture activations against **generic
-  non-scripture activations**, not only against other biblical families.
-- Preferred first test: a **psalms-only** whole-text vector before broader
-  scripture mixes.
-- Secondary diagnostics: `psalms` vs `proverbs` vs `gospels`, blended
-  `christian` vectors, virtue-specific vectors, and thinking vs non-thinking
-  comparisons. These can still be useful, but they should not replace the main
-  scripture-vs-generic question.
-
-Operational notes for future steering runs live in:
-
-- `docs/experiment_playbook.md`
-- `docs/iconoclast_best_practices.md`
-- `results/experiments/`
-
-The broader workflow can still support several steering lanes:
-
-- extract one steering vector per cardinal virtue from a bundled contrastive corpus
-- extract a balanced `christian` steering vector from a bundled corpus built from
-  the popular Psalms, Proverbs `1/2/8`, and pooled Gospel passages
-- derive scripture-family steering vectors for `psalms`, `proverbs`, and `gospels`
-  so we can compare those families directly instead of only averaging them together
-- validate that the vectors separate virtue-aligned and counter-virtue texts
-- project out activation structure shared with the *other* virtues so the vectors
-  are less likely to collapse into a generic “moral/pious” direction
-- compare eight conditions on VirtueBench V2:
-  - `control`
-  - `psalm_baseline`
-  - `virtue_steer`
-  - `christian_steer`
-  - `scripture_steer`
-  - `combined`
-  - `null_control`
-  - `christian_null_control`
-  - `scripture_null_control`
-  - `length_control`
-- stage the benchmark as:
-  - `smoke`: deterministic ratio-only check
-  - `ratio`: multi-run ratio anchor
-  - `full`: full V2 variant grid
-
-For the current phase of the project, treat the `psalms` activation lane as the
-main line of evidence. Use the broader `christian`, `virtue`, and
-within-scripture comparison lanes as supporting or diagnostic runs unless the
-thesis is explicitly widened again.
-
-Example commands:
+Run the focused local test set:
 
 ```bash
-# Ratio anchor with bundled vector extraction
-virtue-bench iconoclast \
-  --model Qwen/Qwen2.5-7B-Instruct \
-  --stage ratio \
-  --quick
+PYTHONPATH=src python -m pytest \
+  tests/test_psalm_screen_analysis.py \
+  tests/test_iconoclast_conditions.py \
+  tests/test_steering_corpora.py \
+  tests/test_steering_selection.py
+```
 
-# Research-style steer-only pilot with a hard divergence preflight
-virtue-bench iconoclast \
-  --model Qwen/Qwen3.5-9B \
-  --stage ratio \
-  --condition-profile steer_only \
-  --preflight-policy error \
-  --output-prefix experiments/iconoclast/qwen35_ratio_steer_only_v1
+The CLI entrypoint is still:
 
-# Direct baseline vs virtue-steer vs christian-steer comparison
-virtue-bench iconoclast \
-  --model Qwen/Qwen3.5-9B \
-  --stage ratio \
-  --condition-profile christian_compare \
-  --preflight-policy error \
-  --output-prefix experiments/iconoclast/qwen35_ratio_christian_compare_v1
+```bash
+virtue-bench --help
+```
 
-# Split biblical-family comparison
-virtue-bench iconoclast \
-  --model Qwen/Qwen3.5-9B \
-  --stage ratio \
-  --condition-profile scripture_compare \
-  --scripture-targets psalms proverbs gospels \
-  --preflight-policy error \
-  --output-prefix experiments/iconoclast/qwen35_ratio_scripture_compare_v1
+## Example Commands
 
-# GospelVec-style scripture-family comparison without the virtue lane
-virtue-bench iconoclast \
-  --model Qwen/Qwen3.5-9B \
-  --stage ratio \
-  --condition-profile scripture_only_compare \
-  --scripture-targets psalms proverbs gospels \
-  --preflight-policy error \
-  --output-prefix experiments/iconoclast/qwen35_ratio_scripture_only_v1
+Run one deterministic Psalm-family screen leg:
 
-# Psalms-only follow-up with a focused psalm steering corpus
-virtue-bench iconoclast \
-  --model Qwen/Qwen3.5-9B \
-  --stage ratio \
-  --condition-profile scripture_only_compare \
-  --scripture-targets psalms \
-  --extraction-method scripture_contrast \
-  --psalm-vector-set popular \
-  --alpha-candidates 0.5,1.0,2.0,4.0,6.0,8.0 \
-  --preflight-policy skip \
-  --output-prefix experiments/iconoclast/qwen35_ratio_psalms_popular_v1
-
-# Thinking-mode comparison on the same psalm vector
-virtue-bench iconoclast \
-  --model Qwen/Qwen3.5-9B \
-  --stage ratio \
-  --condition-profile scripture_only_compare \
-  --scripture-targets psalms \
-  --extraction-method scripture_contrast \
-  --psalm-vector-set popular \
-  --enable-thinking \
-  --alpha-candidates 0.5,1.0,2.0,4.0,6.0,8.0 \
-  --preflight-policy skip \
-  --output-prefix experiments/iconoclast/qwen35_ratio_psalms_popular_thinking_v1
-
-# Reasoning comparison: baseline vs virtue texts vs psalm steering
-virtue-bench iconoclast \
-  --model Qwen/Qwen3.5-9B \
-  --stage ratio \
-  --condition-profile reasoning_compare \
-  --scripture-targets psalms \
-  --pooled-virtue-steer \
-  --extraction-method scripture_contrast \
-  --psalm-vector-set popular \
-  --psalm-vector-set trust \
-  --psalm-vector-set wisdom \
-  --psalm-vector-set penitential \
-  --enable-thinking \
-  --alpha-candidates 0.5,1.0,2.0,4.0,6.0,8.0 \
-  --preflight-policy skip \
-  --output-prefix experiments/iconoclast/qwen35_ratio_reasoning_compare_thinking_v1
-
-# Deterministic Psalm-family screen: one family at a time, no virtue lane
+```bash
 virtue-bench iconoclast \
   --model Qwen/Qwen3.5-9B \
   --stage ratio \
@@ -255,8 +108,11 @@ virtue-bench iconoclast \
   --scripture-alpha-scale 1.5 \
   --preflight-policy off \
   --output-prefix experiments/iconoclast/qwen35_ratio_psalm_family_trust_x150_v1
+```
 
-# Final pair study: two family lanes plus one merged lane
+Run a final two-family plus merged-family comparison:
+
+```bash
 virtue-bench iconoclast \
   --model Qwen/Qwen3.5-9B \
   --stage ratio \
@@ -273,375 +129,112 @@ virtue-bench iconoclast \
   --merged-psalm-family-alpha-scale 1.0 \
   --preflight-policy off \
   --output-prefix experiments/iconoclast/qwen35_ratio_psalm_pair_final_v1
-
-# Fixed-window comparison arm (GospelVec-style center layer)
-virtue-bench iconoclast \
-  --model Qwen/Qwen3.5-9B \
-  --stage ratio \
-  --condition-profile steer_only \
-  --window-center 21 \
-  --window-radius 3 \
-  --output-prefix experiments/iconoclast/qwen35_ratio_fixed_window_v1
-
-# Full grid with cross-virtue steering matrix and discernment prompts
-virtue-bench iconoclast \
-  --model Qwen/Qwen2.5-7B-Instruct \
-  --stage full \
-  --cross-matrix \
-  --discernment
-
-# Re-analyze a saved Iconoclast run
-virtue-bench analyze-iconoclast \
-  results/experiments/iconoclast/iconoclast_20260420_104500_ratio.json \
-  --write-heatmaps
-
-# Watch a remote Windows run over SSH
-export VIRTUE_BENCH_REMOTE_PASSWORD='your-password-here'
-virtue-bench dashboard \
-  --output-prefix homepc_iconoclast_qwen35_ratio_steer_v1 \
-  --remote-host home-pc.tail65a463.ts.net \
-  --remote-user sethcodex
 ```
 
-Implementation notes:
+Summarize a completed family screen:
 
-- The bundled steering corpus lives at `data/steering/corpora.jsonl`.
-- Vector artifacts are saved as `.pt` files alongside experiment results.
-- Each Iconoclast run now also writes
-  `<output-prefix>_vector_diagnostics.json` and
-  `<output-prefix>_vector_diagnostics.md`, which summarize the best Psalm layer,
-  near-best layers, tuned alpha, and the strongest dev/test margins.
-- If no `--output-prefix` is provided, Iconoclast runs default to
-  `results/experiments/iconoclast/iconoclast_<timestamp>_*`.
-- The local `hf-local` runner now supports temporary multi-layer steering hooks.
-- Steering strength can now be scaled at benchmark time with
-  `--virtue-alpha-scale`, `--christian-alpha-scale`, and
-  `--scripture-alpha-scale` so you can reuse one vector artifact and compare how
-  harder or softer pushes perform on VirtueBench.
-- Psalm-family steering lanes are now first-class targets:
-  - add one lane with `--psalm-family-lane trust`
-  - compare several by repeating the flag
-  - add a merged lane with `--include-merged-psalm-family-lane`
-  - override one family without affecting the others with
-    `--psalm-family-alpha-scale trust=2.0`
-  - set a separate merged-lane push with
-    `--merged-psalm-family-alpha-scale 1.0`
-- Psalm injection now falls back to the repo's bundled KJV corpus when no sibling
-  `psalm-alignment` checkout is present.
-- `virtue-bench dashboard` serves a lightweight live monitor for preflight,
-  stage progress, artifacts, and the console tail, and can poll a remote
-  Windows runner over SSH by reading the password from an environment variable.
-- For unattended Windows launches, prefer a detached direct `python.exe`
-  launcher that writes its own status and wrapper log. The repo helper for that
-  is `scripts/windows/run_iconoclast_job.py`, and
-  `run_qwen35_ratio_reasoning_compare_thinking_v5_detached.cmd` is the working
-  example entrypoint.
-- For a quick Psalm strength probe on the Windows box, use
-  `run_qwen35_ratio_psalm_scale_probe_v1.cmd`.
-- For the deterministic five-family screen on the Windows box, use
-  `run_qwen35_ratio_psalm_family_screen_v1.cmd`.
-- To summarize a completed family screen and prepare the reasoning review packs,
-  run `python scripts/analyze_psalm_family_screen.py`.
-
-## Benchmark Results
-
-GPT-4o and GPT-5.4 evaluated across all 4 virtues × 5 temptation variants, 10 runs each at temperature 0.7 with 150 scenarios per cell. Error bars show 95% confidence intervals.
-
-### GPT-4o
-
-![GPT-4o results](figures/fig1_gpt4o_bars.png)
-
-GPT-4o is most vulnerable to **ratio** (utilitarian rationalization), particularly on courage (38.7%). Caro (bodily temptation) is consistently easiest — models don't have bodies.
-
-### GPT-5.4
-
-![GPT-5.4 results](figures/fig2_gpt54_bars.png)
-
-GPT-5.4 shows substantial improvement but a different vulnerability profile: **mundus** (social pressure) is now the hardest variant on 3 of 4 virtues, while ratio performance has improved dramatically. Courage remains the weakest virtue.
-
-### Run Variance
-
-![Run variance](figures/fig3_boxplots.png)
-
-Box plots confirm tight variance across 10 runs, validating the statistical reliability of the multi-run evaluation protocol.
-
-## Architecture
-
+```bash
+python scripts/analyze_psalm_family_screen.py \
+  --results-dir results \
+  --glob "homepc_qwen35_ratio_psalm_family_*_ratio_logs.json" \
+  --output-prefix psalm_family_screen_summary
 ```
-virtue-bench-2/
-├── pyproject.toml
-├── configs/                          # YAML experiment specifications
-│   ├── example_full_baseline.yaml
-│   ├── example_courage_ignatian.yaml
-│   ├── example_psalm_injection.yaml
-│   └── example_v1_compat.yaml
+
+## Windows GPU Automation
+
+The Windows runner helpers are in `scripts/windows/`.
+
+The most important unattended manager is:
+
+```bash
+python scripts/windows/manage_psalm_family_screen.py \
+  --repo C:\Users\sethcodex\work\virtue-bench-2 \
+  --poll-seconds 60 \
+  --stale-minutes 45
+```
+
+That manager watches the five-family by four-scale sweep, starts the next leg
+when the current leg finishes, relaunches stale legs with a fresh version suffix,
+and writes the final Psalm-family summary when the sweep is complete.
+
+The convenience launcher is:
+
+```text
+run_qwen35_ratio_psalm_family_screen_manager_v1.cmd
+```
+
+## Repository Layout
+
+```text
+psalm-vector-steer/
 ├── data/
-│   ├── prudence/scenarios.csv        # 150 base × 5 variants = 750 rows
-│   ├── justice/scenarios.csv
-│   ├── courage/scenarios.csv
-│   └── temperance/scenarios.csv
+│   ├── bible_kjv.json
+│   ├── */scenarios.csv
+│   └── steering/corpora.jsonl
+├── docs/
+│   ├── experiment_playbook.md
+│   └── iconoclast_best_practices.md
+├── scripts/
+│   ├── analyze_psalm_family_screen.py
+│   └── windows/
 ├── src/virtue_bench/
-│   ├── core/                         # Data models, constants, loading
-│   │   ├── schema.py                 # Pydantic: Scenario, RunResult, ExperimentConfig
-│   │   ├── constants.py              # VIRTUES, VARIANTS, DEFAULT_SYSTEM_PROMPT
-│   │   ├── loader.py                 # CSV loading, A/B randomization, parse_answer
-│   │   ├── psalms.py                 # Psalm injection with 11 named subsets
-│   │   └── bible.py                  # Bible book injection (66 books, bundled KJV)
-│   ├── steering/                     # Iconoclast activation-space pipeline
-│   │   ├── corpora.py                # Bundled virtue/counter-virtue corpus + secular controls
-│   │   ├── runtime.py                # Residual collection and multi-layer steering hooks
-│   │   ├── extract.py                # Vector extraction, layer selection, alpha tuning
-│   │   └── experiment.py             # Multi-condition Iconoclast runner
-│   ├── runners/                      # Model backend protocol (6 runners)
-│   │   ├── base.py                   # ModelRunner ABC
-│   │   ├── openai_api.py             # Direct OpenAI SDK
-│   │   ├── anthropic_api.py          # Direct Anthropic SDK
-│   │   ├── claude_cli.py             # claude -p pipe mode (Claude Max)
-│   │   ├── pi_cli.py                 # pi -p pipe mode (ChatGPT Pro)
-│   │   ├── hf_local.py               # Local HuggingFace model (+ LoRA)
-│   │   └── inspect_ai.py             # Inspect AI (UK AISI) batch runner
-│   ├── eval/                         # Evaluation orchestration
-│   │   ├── experiment.py             # Multi-run experiment coordinator
-│   │   └── scorer.py                 # Response parsing + scoring
-│   ├── stats/                        # Statistical analysis
-│   │   ├── bootstrap.py              # Bootstrap CIs, run aggregation
-│   │   ├── tests.py                  # McNemar, chi-squared, Bonferroni
-│   │   └── regression.py             # Model version regression detection
-│   ├── analysis/                     # Reporting and visualization
-│   │   ├── tables.py                 # Comparison tables, variant grids
-│   │   ├── iconoclast.py             # Condition deltas and steering heatmaps
-│   │   ├── visualize.py              # Heatmap plots (matplotlib)
-│   │   └── discernment.py            # Ignatian retroactive discernment eval
-│   ├── artifacts/results.py          # Result I/O (summary + detailed logs)
-│   ├── cli.py                        # Unified CLI: run, analyze, migrate, psalms
-│   ├── generate.py                   # Variant generation (Anthropic API)
-│   ├── generate_new.py               # New base scenario generation
-│   ├── verify.py                     # Source citation verification
-│   ├── fix_and_correct.py            # Re-verify parse errors + correct sources
-│   └── migrate.py                    # V1 → V2 scenario migration
+│   ├── core/
+│   ├── eval/
+│   ├── runners/
+│   ├── steering/
+│   ├── analysis/
+│   └── cli.py
 ├── tests/
 └── results/
+    ├── experiments/README.md
+    └── iconoclast/README.md
 ```
 
-## Data Schema
+## Artifact Policy
 
-Each virtue's `scenarios.csv` contains all variants in a flat format:
+The repository should include the data that actually underpins the Psalm vector
+steering paper. It should not include old scratch runs, failed attempts, or
+large historical logs that are not part of the argument.
 
-```csv
-base_id,variant,scenario_a,scenario_b,virtue,source,deviation_point
-COU-001,ratio,"You hold your position...",  "You fall back with the others...",courage,"Aquinas, ST II-II Q.123 a.5",
-COU-001,caro, "You hold your position...",  "You're exhausted...",courage,"Aquinas, ST II-II Q.123 a.5",
-COU-001,mundus,"You hold your position...","Every other soldier...",courage,"Aquinas, ST II-II Q.123 a.5",
-COU-001,diabolus,"You hold your position...","True martial wisdom...",courage,"Aquinas, ST II-II Q.123 a.5",
-COU-001,ignatian,"You hold your position...","Scripture teaches...",courage,"Aquinas, ST II-II Q.123 a.5","The reasoning turns when..."
-```
+Use this split:
 
-- `scenario_a` (virtuous choice) is identical across all 5 variants of a base scenario
-- `scenario_b` (temptation) differs per variant — only the temptation mechanism changes
-- `deviation_point` is populated only for ignatian variants
-- `source` cites the patristic work grounding the moral scenario
+- `results/paper/`: curated paper-supporting artifacts that are meant to be
+  committed
+- `results/experiments/`: local working outputs from active runs
+- `results/iconoclast/`: local Iconoclast outputs and diagnostics
 
-## Unified Runner Protocol
+Ignored by default:
 
-V1 had three separate runner files with duplicated logic. V2 defines a `ModelRunner` ABC with six interchangeable backends:
+- legacy `results/*.json` and `results/*_logs.json`
+- scratch checkpoint/status files
+- raw vector `.pt` artifacts unless deliberately promoted into `results/paper/`
+- console and wrapper logs
 
-```python
-class ModelRunner(ABC):
-    async def query(self, prompt, system_prompt, temperature, max_tokens) -> dict:
-        """Returns {"response": str, "infra_error": str | None}"""
-    def model_id(self) -> str: ...
-```
+Before adding data to `results/paper/`, make sure it is either a final run, a
+representative reasoning review, or a small derived summary table that we expect
+to cite or reproduce in the paper.
 
-### API Runners (preferred for evals — requires API key)
+## VirtueBench Lineage
 
-| Runner | Flag | SDK | Use Case |
-|--------|------|-----|----------|
-| **OpenAI API** | `--runner openai-api` | `openai` Python SDK | GPT-4o, GPT-5.4, o-series |
-| **Anthropic API** | `--runner anthropic-api` | `anthropic` Python SDK | Claude Sonnet, Opus, Haiku |
+This project inherits the VirtueBench V2 benchmark structure:
 
-### Subscription Runners (no API key — uses desktop subscription)
+- four cardinal virtues: prudence, justice, courage, temperance
+- five temptation variants: ratio, caro, mundus, diabolus, ignatian
+- paired A/B scenarios where the virtuous choice is fixed and the temptation
+  mechanism changes
+- runner support for API models, subscription CLIs, and local HuggingFace models
 
-| Runner | Flag | Subprocess | Use Case |
-|--------|------|------------|----------|
-| **Claude CLI** | `--runner claude-cli` | `claude -p` pipe mode | Claude Max subscription |
-| **Pi CLI** | `--runner pi-cli` | `pi -p` pipe mode | ChatGPT Pro subscription |
+That baseline matters because Psalm Vector Steer uses VirtueBench as the
+behavioral readout: if the Psalm vectors are meaningful, they should change
+choices and reasoning on those virtue-pressure scenarios.
 
-### Local Runner (optional dependency)
+## Key Docs
 
-| Runner | Flag | Backend | Use Case |
-|--------|------|---------|----------|
-| **HF Local** | `--runner hf-local` | `transformers` + `torch` | Local HuggingFace models with optional LoRA adapters |
-
-Install with `pip install virtue-bench[hf]`. Supports any model with a chat template, bfloat16 inference on CUDA, and optional [PEFT](https://github.com/huggingface/peft) LoRA adapter loading.
-
-```bash
-# Local model
-virtue-bench run --model meta-llama/Llama-3.1-8B-Instruct --runner hf-local
-
-# With LoRA adapter
-virtue-bench run --model meta-llama/Llama-3.1-8B-Instruct --runner hf-local \
-    --hf-adapter /path/to/adapter
-```
-
-### Framework Runner (optional dependency)
-
-| Runner | Flag | Framework | Use Case |
-|--------|------|-----------|----------|
-| **Inspect AI** | `--runner inspect` | UK AISI [inspect-ai](https://github.com/UKGovernmentBEIS/inspect_ai) | Standardized eval framework |
-
-The runner auto-detects from the model name if `--runner` is not specified: models containing "claude" or "anthropic" use the Anthropic API; others default to OpenAI API.
-
-```bash
-# Explicit runner selection
-virtue-bench run --model gpt-4o --runner openai-api
-virtue-bench run --model claude-sonnet-4-20250514 --runner anthropic-api
-virtue-bench run --model sonnet --runner claude-cli --effort low
-virtue-bench run --model gpt-5.4 --runner pi-cli
-
-# Auto-detect (uses model name to pick runner)
-virtue-bench run --model openai/gpt-4o           # → openai-api
-virtue-bench run --model anthropic/claude-opus-4-6  # → anthropic-api
-```
-
-## Multi-Run Statistical Evaluation
-
-V1 ran once at temperature=0 with no confidence intervals. V2 supports:
-
-```bash
-# 10 runs at temperature 0.7 (default)
-virtue-bench run --runs 10 --temperature 0.7
-
-# Deterministic single run (V1 behavior)
-virtue-bench run --deterministic
-```
-
-Each run uses a different seed (`seed + run_index`) for A/B position randomization, and temperature > 0 produces genuinely different model behavior across runs.
-
-**Statistical outputs:**
-- Mean accuracy with 95% bootstrap CIs per cell (virtue × variant)
-- McNemar's test for paired model comparisons
-- Chi-squared test for independence across variant categories
-- Bonferroni correction for the 4×5 virtue × variant grid
-- Automated regression detection when comparing model versions
-
-## Scripture Injection
-
-VirtueBench V2 supports injecting Scripture into the system prompt to study how biblical context affects virtue performance. Two systems are available: psalm injection (11 theologically-curated subsets) and Bible book injection (all 66 books of the KJV). Both load from bundled local data with no network calls required.
-
-### Psalm Injection
-
-```bash
-virtue-bench run --psalm-set imprecatory          # Named set (22 psalms)
-virtue-bench run --psalm-set imprecatory --psalm-set trust  # Combine sets
-virtue-bench run --psalm-numbers 23,51,91          # Specific psalms
-virtue-bench run --psalm-random 10                 # Random selection
-virtue-bench psalms                                # List all sets
-```
-
-**Available psalm sets:**
-
-| Set | Count | Description |
-|-----|-------|-------------|
-| `imprecatory` | 22 | Prayers calling for divine justice (ICMI-002) |
-| `penitential` | 7 | Traditional seven penitential psalms (medieval Church canon) |
-| `popular` | 7 | Most frequently encountered in devotional practice (ICMI-A) |
-| `random_baseline` | 10 | Pseudo-random control set (ICMI-A) |
-| `praise` | 16 | Hallel psalms: joy, worship, thanksgiving |
-| `lament` | 25 | Suffering, complaint, and trust amid difficulty |
-| `wisdom` | 11 | Meditation on divine order and righteousness |
-| `royal` | 10 | Kingship, authority, messianic expectation |
-| `trust` | 15 | Affirmations of God's protection and faithfulness |
-| `ascent` | 15 | Songs of Ascent (Psalms 120-134), pilgrimage psalms |
-| `historical` | 7 | Retelling of Israel's history |
-
-### Bible Book Injection
-
-```bash
-virtue-bench run --bible Romans                    # Entire book
-virtue-bench run --bible "Matthew 5-7"             # Chapter range
-virtue-bench run --bible Romans --bible James      # Multiple books
-virtue-bench run --bible-set sermon_on_the_mount   # Named collection
-virtue-bench bible                                 # List all options
-```
-
-**Available book sets:**
-
-| Set | Books | Description |
-|-----|-------|-------------|
-| `gospels` | MAT, MRK, LUK, JHN | The four Gospels |
-| `sermon_on_the_mount` | MAT:5-7 | Sermon on the Mount |
-| `wisdom` | PRO, ECC, JOB | Wisdom literature |
-| `proverbs` | PRO | Book of Proverbs |
-| `romans` | ROM | Paul's Epistle to the Romans |
-| `james` | JAS | Epistle of James (faith and works) |
-| `pastoral` | 1TI, 2TI, TIT | Pastoral epistles |
-| `johannine` | JHN, 1JN, 2JN, 3JN | Johannine writings |
-| `torah` | GEN, EXO, LEV, NUM, DEU | The Torah / Pentateuch |
-| `prophets_major` | ISA, JER, EZK, DAN | Major prophets |
-
-All 66 books of the KJV are bundled locally — no API calls or network access required.
-
-## Retroactive Discernment Evaluation
-
-An optional post-hoc analysis for Ignatian scenario failures. When a model fails an Ignatian scenario, the discernment eval presents the model with:
-
-1. The scenario it faced
-2. Its own response (the wrong answer and rationale)
-3. The annotated `deviation_point`
-
-Then asks the model to explain where the reasoning went wrong.
-
-This measures a distinct capacity from the main eval. The main eval tests **resistance** — can the model reject sophisticated theological temptation in the moment? Retroactive discernment tests **discernment** — can the model recognize how it was deceived after the fact?
-
-This distinction is grounded in Ignatius of Loyola's *Spiritual Exercises* (§§333-334), where he distinguishes between the ability to resist temptation and the ability to *discern the movement of spirits* — understanding the mechanism by which deception operated. Ignatius argues that retroactive examination of where consolation turned to desolation (the *examen*) is essential for developing future resistance: "it is very profitable... to review the whole course of the [temptation], its beginning, middle, and end" (§334). A model that fails the Ignatian scenario but can articulate exactly where the theology went wrong has a different failure mode than one that fails and cannot even see the problem retrospectively.
-
-## YAML Experiment Configs
-
-Define reproducible experiments:
-
-```yaml
-name: "full-baseline"
-model: "anthropic/claude-sonnet-4-20250514"
-virtues: [prudence, justice, courage, temperance]
-variants: [ratio, caro, mundus, diabolus, ignatian]
-runs: 10
-temperature: 0.7
-seed: 42
-concurrency: 5
-detailed: true
-```
-
-## The Four Cardinal Virtues
-
-| Virtue | Aquinas Reference | What It Tests |
-|--------|------------------|---------------|
-| **Prudence** | ST II-II Q.47-56 | Resisting haste when speed is rewarded; careful deliberation |
-| **Justice** | ST II-II Q.57-79 | Resisting bias when bias is profitable; rendering what is due |
-| **Courage** | ST II-II Q.123-140 | Resisting cowardice when retreat is safe; enduring for the good |
-| **Temperance** | ST II-II Q.141-170 | Resisting excess when indulgence is available; self-mastery |
-
-## Source Verification
-
-All patristic source citations have been verified against their scenarios using an automated pipeline (`verify.py`) that checks:
-1. Whether the cited work/section actually exists
-2. Whether it's relevant to the moral scenario described
-3. Whether the attribution is accurate
-
-28 V1 source citations were corrected where the original generation cited works that didn't support the scenario. All Ignatian Scripture citations were verified for existence, accuracy, and that the deviation_point correctly identifies the theological turn.
-
-## Citation
-
-If you use VirtueBench V2 in your research, please cite:
-
-```
-@misc{virtuebench2,
-    title={VirtueBench V2: Multi-Dimensional Virtue Evaluation with Tripartite and Ignatian Temptation Models},
-    author={Tim Hwang and The Institute for Christian Machine Intelligence},
-    year={2026},
-    url={https://github.com/christian-machine-intelligence/virtue-bench-2}
-}
-```
+- `docs/experiment_playbook.md`: operational experiment plan and commands
+- `docs/iconoclast_best_practices.md`: steering-method notes and guardrails
+- `results/experiments/README.md`: where run artifacts should land
+- `results/iconoclast/README.md`: artifact naming and interpretation notes
 
 ## License
 
-See [LICENSE](LICENSE) for details.
+See `LICENSE`.
