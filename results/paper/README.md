@@ -7,6 +7,7 @@ Good candidates:
 
 - final Psalm-family screen summaries
 - final scripture-book screen summaries
+- final Study 2 directionality summaries
 - selected reasoning review packs
 - final two-family and merged-family study outputs
 - small derived tables used in the manuscript
