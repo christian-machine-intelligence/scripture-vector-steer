@@ -1,7 +1,7 @@
-# Scripture Study 2 Artifacts
+# Scripture Vector Steer Artifacts
 
 This directory contains the curated artifacts for the completed Qwen3.5 9B
-scripture directionality study.
+Scripture Vector Steer directionality run.
 
 ## Run Design
 
@@ -20,6 +20,9 @@ scripture directionality study.
 
 ## Key Files
 
+- `scripture_vector_steer_data_appendix.md`: complete paper-facing data
+  appendix with run settings, vector diagnostics, lane results, directionality,
+  per-variant data, and per-virtue data.
 - `scripture_study2_summary.md`: human-readable top-line results.
 - `scripture_study2_summary.json`: machine-readable lane summaries,
   directionality comparisons, and reasoning review packs.
