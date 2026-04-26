@@ -462,6 +462,7 @@ def cmd_iconoclast(args: argparse.Namespace) -> None:
         pooled_virtue_steer=args.pooled_virtue_steer,
         discernment=args.discernment,
         corpus_path=args.corpus_path,
+        external_scripture_corpus_path=args.external_scripture_corpus,
         vector_path=args.vectors,
         extraction_method=args.extraction_method,
         max_length=args.max_length,
@@ -757,9 +758,17 @@ def main():
     iconoclast_parser.add_argument(
         "--scripture-targets",
         nargs="+",
-        choices=SCRIPTURE_TARGETS,
         default=None,
-        help="Scripture-family steering targets to compare when using scripture_steer",
+        help=(
+            "Scripture-family steering targets to compare when using scripture_steer. "
+            f"Built-ins: {', '.join(SCRIPTURE_TARGETS)}. Custom names can be loaded "
+            "with --external-scripture-corpus."
+        ),
+    )
+    iconoclast_parser.add_argument(
+        "--external-scripture-corpus",
+        default=None,
+        help="JSONL file containing external Scripture chunks with corpus/target and text fields",
     )
     iconoclast_parser.add_argument(
         "--psalm-family-lane",

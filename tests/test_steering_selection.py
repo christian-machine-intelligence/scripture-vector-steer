@@ -9,6 +9,7 @@ from virtue_bench.steering.extract import (
     _select_alpha,
     _select_layer,
     _top_candidates_within_tolerance,
+    load_external_scripture_corpora,
 )
 from virtue_bench.steering.corpora import SteeringPair, SteeringText
 
@@ -106,6 +107,35 @@ def test_scripture_family_auto_extraction_prefers_non_specific_methods():
     assert _resolve_extraction_method("auto", pair_count=1, target="romans") == "scripture_contrast"
     assert _resolve_extraction_method("auto", pair_count=1, target="petrine") == "scripture_contrast"
     assert _resolve_extraction_method("auto", pair_count=4, target="psalms[trust]") == "scripture_contrast"
+    assert _resolve_extraction_method("auto", pair_count=4, target="justice_scripture") == "scripture_contrast"
+
+
+def test_external_scripture_corpus_loader_groups_jsonl_rows(tmp_path):
+    path = tmp_path / "external.jsonl"
+    path.write_text(
+        '{"corpus":"justice_scripture","text":"Justice text one."}\n'
+        '{"target":"justice_scripture","text":"Justice text two."}\n'
+        '{"corpus":"prudence_scripture","text":"Prudence text."}\n',
+        encoding="utf-8",
+    )
+
+    grouped = load_external_scripture_corpora(path)
+
+    assert grouped == {
+        "justice_scripture": ["Justice text one.", "Justice text two."],
+        "prudence_scripture": ["Prudence text."],
+    }
+
+
+def test_chunk_scripture_family_texts_can_use_external_corpus_chunks():
+    chunks = _chunk_scripture_family_texts(
+        tokenizer=object(),
+        target="justice_scripture",
+        max_length=256,
+        external_scripture_corpora={"justice_scripture": ["chunk one", "chunk two"]},
+    )
+
+    assert chunks == ["chunk one", "chunk two"]
 
 
 def test_split_scripture_chunks_reserves_dev_and_test_examples():

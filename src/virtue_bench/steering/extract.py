@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from datetime import datetime, timezone
+import json
 from pathlib import Path
 import random
 from typing import Dict, Iterable, List, Optional
@@ -54,7 +55,28 @@ EXTRACTION_METHODS = {
 
 
 def _is_scripture_target_name(target: str) -> bool:
-    return target in SCRIPTURE_TARGETS or is_psalm_family_target(target)
+    return target in SCRIPTURE_TARGETS or is_psalm_family_target(target) or target.endswith("_scripture")
+
+
+def load_external_scripture_corpora(path: Optional[Path]) -> Dict[str, List[str]]:
+    """Load external Scripture chunk corpora from JSONL rows."""
+    if path is None:
+        return {}
+    grouped: Dict[str, List[str]] = {}
+    with open(path, encoding="utf-8") as handle:
+        for line_no, raw_line in enumerate(handle, start=1):
+            line = raw_line.strip()
+            if not line:
+                continue
+            row = json.loads(line)
+            target = row.get("corpus") or row.get("target")
+            text = row.get("text")
+            if not isinstance(target, str) or not target:
+                raise ValueError(f"{path}:{line_no} is missing a corpus/target field")
+            if not isinstance(text, str) or not text.strip():
+                raise ValueError(f"{path}:{line_no} is missing non-empty text")
+            grouped.setdefault(target, []).append(text.strip())
+    return grouped
 
 
 def _require_torch():
@@ -519,7 +541,11 @@ def _chunk_scripture_family_texts(
     target: str,
     max_length: int,
     psalm_vector_sets: Optional[List[str]] = None,
+    external_scripture_corpora: Optional[Dict[str, List[str]]] = None,
 ) -> List[str]:
+    if external_scripture_corpora and target in external_scripture_corpora:
+        return list(external_scripture_corpora[target])
+
     chapters = load_bible_chapters(books=_scripture_books_for_target(target))
     target_psalm_sets = _scripture_target_psalm_sets(
         target,
@@ -782,6 +808,7 @@ def _extract_scripture_family_payloads(
     window_center: Optional[int],
     variance_threshold: float,
     psalm_vector_sets: Optional[List[str]] = None,
+    external_scripture_corpora: Optional[Dict[str, List[str]]] = None,
 ):
     resolved_methods = {
         target: _resolve_extraction_method(
@@ -802,6 +829,7 @@ def _extract_scripture_family_payloads(
                 target=target,
                 max_length=max_length,
                 psalm_vector_sets=psalm_vector_sets,
+                external_scripture_corpora=external_scripture_corpora,
             )
         )
         for target in chunk_targets
@@ -1211,6 +1239,7 @@ def extract_virtue_vectors(
     min_passage_words: int = 40,
     max_texts_per_passage: int = 3,
     psalm_vector_sets: Optional[List[str]] = None,
+    external_scripture_corpus_path: Optional[Path] = None,
 ) -> dict:
     """Extract per-target steering vectors from the bundled contrastive corpus."""
     _require_torch()
@@ -1218,6 +1247,7 @@ def extract_virtue_vectors(
     layers = get_decoder_layers(model)
     layer_indices = list(range(len(layers)))
     records = load_steering_corpus(corpus_path)
+    external_scripture_corpora = load_external_scripture_corpora(external_scripture_corpus_path)
     target_names = list(targets or list_steering_targets(records) or DEFAULT_VIRTUE_TARGETS)
     alpha_grid = alpha_candidates or list(DEFAULT_ALPHA_CANDIDATES)
     pooled_members = pooled_virtue_members(records)
@@ -1252,10 +1282,17 @@ def extract_virtue_vectors(
         "min_passage_words": min_passage_words,
         "max_texts_per_passage": max_texts_per_passage,
         "psalm_vector_sets": psalm_vector_sets,
+        "external_scripture_corpus_path": (
+            str(external_scripture_corpus_path) if external_scripture_corpus_path else None
+        ),
         "virtues": {},
     }
 
-    scripture_targets = [target for target in target_names if _is_scripture_target_name(target)]
+    scripture_targets = [
+        target
+        for target in target_names
+        if _is_scripture_target_name(target) or target in external_scripture_corpora
+    ]
     if scripture_targets:
         payload["virtues"].update(
             _extract_scripture_family_payloads(
@@ -1273,11 +1310,12 @@ def extract_virtue_vectors(
                 window_center=window_center,
                 variance_threshold=variance_threshold,
                 psalm_vector_sets=psalm_vector_sets,
+                external_scripture_corpora=external_scripture_corpora,
             )
         )
 
     for virtue in target_names:
-        if _is_scripture_target_name(virtue):
+        if _is_scripture_target_name(virtue) or virtue in external_scripture_corpora:
             continue
         source_virtues = pooled_members if virtue == POOLED_VIRTUE_TARGET else [virtue]
         pos_train = _passage_windows(

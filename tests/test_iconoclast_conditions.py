@@ -158,6 +158,20 @@ def test_requested_vector_targets_include_explicit_book_lanes_without_corpus_pai
     assert targets == ["psalms", "proverbs", "romans", "petrine"]
 
 
+def test_requested_vector_targets_include_external_scripture_target_names():
+    config = IconoclastConfig(
+        name="test",
+        model="qwen",
+        conditions=["control", "scripture_steer"],
+        scripture_targets=["prudence_scripture", "justice_scripture"],
+        external_scripture_corpus_path="lex-corpora.jsonl",
+    )
+
+    targets = _requested_vector_targets(config, load_steering_corpus())
+
+    assert targets == ["prudence_scripture", "justice_scripture"]
+
+
 def test_requested_vector_targets_include_distinct_psalm_family_lanes():
     config = IconoclastConfig(
         name="test",

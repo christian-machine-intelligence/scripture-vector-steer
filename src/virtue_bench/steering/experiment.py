@@ -84,6 +84,7 @@ class IconoclastConfig:
     cross_matrix: bool = False
     discernment: bool = False
     corpus_path: Optional[str] = None
+    external_scripture_corpus_path: Optional[str] = None
     vector_path: Optional[str] = None
     steering_targets: Optional[List[str]] = None
     scripture_targets: List[str] = field(default_factory=lambda: list(SCRIPTURE_FAMILY_TARGETS))
@@ -226,6 +227,7 @@ def _requested_vector_targets(config: IconoclastConfig, corpus_records) -> List[
         if (
             target in available_targets
             or target in SCRIPTURE_TARGETS
+            or target in config.scripture_targets
             or target == POOLED_VIRTUE_TARGET
             or parse_psalm_family_target(target) is not None
         ) and target not in ordered:
@@ -1022,6 +1024,11 @@ async def run_iconoclast_experiment(config: IconoclastConfig, runner) -> Dict[st
                 window_radius=config.window_radius,
                 window_center=config.window_center,
                 psalm_vector_sets=config.psalm_vector_sets or None,
+                external_scripture_corpus_path=(
+                    Path(config.external_scripture_corpus_path)
+                    if config.external_scripture_corpus_path
+                    else None
+                ),
             )
             save_vector_artifact(artifact, vector_path)
 
