@@ -6,6 +6,7 @@ build/
 .env
 .venv/
 results/logs/
+results/experiments/
 results/*.json
 results/*_logs.json
 results/**/*.json

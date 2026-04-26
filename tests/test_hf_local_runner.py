@@ -1,8 +1,10 @@
 import asyncio
+import importlib.machinery
 import sys
 import types
 
 fake_openai = types.ModuleType("openai")
+fake_openai.__spec__ = importlib.machinery.ModuleSpec("openai", loader=None)
 
 
 class _AsyncOpenAI:
@@ -14,6 +16,7 @@ fake_openai.AsyncOpenAI = _AsyncOpenAI
 sys.modules.setdefault("openai", fake_openai)
 
 fake_anthropic = types.ModuleType("anthropic")
+fake_anthropic.__spec__ = importlib.machinery.ModuleSpec("anthropic", loader=None)
 
 
 class _AsyncAnthropic:

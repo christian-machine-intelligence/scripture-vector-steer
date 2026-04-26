@@ -55,10 +55,15 @@ class HFLocalRunner(ModelRunner):
                 return
 
             source_name = self._model_name
-            load_kwargs = {
-                "torch_dtype": torch.bfloat16,
-                "device_map": {"": "cuda:0"},
-            }
+            if torch.cuda.is_available():
+                load_kwargs = {
+                    "torch_dtype": torch.bfloat16,
+                    "device_map": {"": "cuda:0"},
+                }
+            else:
+                # CPU is slow for real runs, but it keeps tiny local smoke tests
+                # usable on development machines without CUDA.
+                load_kwargs = {"torch_dtype": torch.float32}
             if sys.platform.startswith("win"):
                 # Windows CUDA kernels are proving less stable for long Qwen3 runs.
                 # Eager attention is slower but noticeably safer than the default.
@@ -190,13 +195,20 @@ class HFLocalRunner(ModelRunner):
         inputs = None
         output = None
         try:
-            inputs = self._tokenizer.apply_chat_template(
-                messages,
-                return_tensors="pt",
-                add_generation_prompt=True,
-                return_dict=True,
-                **self._chat_template_kwargs(),
-            ).to(self._model.device)
+            if getattr(self._tokenizer, "chat_template", None):
+                inputs = self._tokenizer.apply_chat_template(
+                    messages,
+                    return_tensors="pt",
+                    add_generation_prompt=True,
+                    return_dict=True,
+                    **self._chat_template_kwargs(),
+                ).to(self._model.device)
+            else:
+                prompt_text = f"{system_prompt}\n\n{prompt}" if system_prompt else prompt
+                inputs = self._tokenizer(
+                    prompt_text,
+                    return_tensors="pt",
+                ).to(self._model.device)
 
             gen_kwargs = self._generation_kwargs(
                 temperature=temperature,
