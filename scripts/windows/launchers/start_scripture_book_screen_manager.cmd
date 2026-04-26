@@ -1,7 +1,7 @@
 @echo off
 setlocal
 
-set REPO=C:\Users\sethcodex\work\virtue-bench-2
+for %%I in ("%~dp0..\..\..") do set REPO=%%~fI
 cd /d "%REPO%"
 
 if not exist results mkdir results

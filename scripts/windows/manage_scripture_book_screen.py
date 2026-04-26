@@ -19,7 +19,7 @@ SCALE_PLAN = [
     ("2.0", "x200"),
     ("3.0", "x300"),
 ]
-DEFAULT_PREFIX_BASE = "homepc_qwen35_ratio_scripture_book"
+DEFAULT_PREFIX_BASE = "qwen35_ratio_scripture_book"
 
 
 @dataclass(frozen=True)

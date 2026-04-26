@@ -1,4 +1,4 @@
-# Scripture Study 2 Deep Analysis
+# Scripture Vector Steer Deep Analysis
 
 ## Leaderboard
 

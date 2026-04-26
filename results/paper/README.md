@@ -1,20 +1,13 @@
 # Paper Artifacts
 
-This directory is reserved for curated data that directly supports the Scripture
-vector steering paper.
+This directory contains curated artifacts that directly support
+*Activation Without Animation*.
 
-Good candidates:
+Current public artifact bundle:
 
-- final Psalm-family screen summaries
-- final scripture-book screen summaries
-- final Study 2 directionality summaries
-- selected reasoning review packs
-- final two-family and merged-family study outputs
-- small derived tables used in the manuscript
+- [Scripture Vector Steer artifacts](scripture_study2/README.md)
+- [Data appendix](scripture_study2/scripture_vector_steer_data_appendix.md)
 
-Avoid committing:
-
-- failed or partial run attempts
-- raw console logs
-- old VirtueBench baseline dumps that are not used in this paper
-- bulky vector artifacts unless they are required for reproducibility
+This repository intentionally excludes old scratch runs, failed attempts,
+console logs, and historical benchmark dumps that are not part of the paper
+argument.

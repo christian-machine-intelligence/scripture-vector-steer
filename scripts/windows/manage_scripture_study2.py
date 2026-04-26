@@ -13,7 +13,7 @@ from typing import Optional
 
 
 DEFAULT_TARGETS = ["psalms", "romans", "petrine"]
-DEFAULT_PREFIX_BASE = "homepc_qwen35_full_scripture_study2"
+DEFAULT_PREFIX_BASE = "qwen35_full_scripture_vector_steer"
 
 
 @dataclass(frozen=True)
@@ -276,8 +276,8 @@ class Manager:
             *iconoclast_args,
         ]
 
-        self.write_status(state="launching", note="launching Study 2", prefix=prefix)
-        self.log(f"Launching Study 2 as {prefix}", always=True)
+        self.write_status(state="launching", note="launching Scripture Vector Steer", prefix=prefix)
+        self.log(f"Launching Scripture Vector Steer as {prefix}", always=True)
         if self.args.dry_run:
             self.log("Dry run enabled; launch skipped.", always=True)
             return
@@ -290,7 +290,7 @@ class Manager:
         completed = subprocess.run(command, cwd=self.repo, env=env, check=False)
         if completed.returncode != 0:
             raise RuntimeError(f"Launch command failed for {prefix} with exit code {completed.returncode}")
-        self.write_status(state="running", note="Study 2 launched", prefix=prefix)
+        self.write_status(state="running", note="Scripture Vector Steer launched", prefix=prefix)
 
     def run_summary(self, prefix: str) -> None:
         command = [
@@ -303,7 +303,7 @@ class Manager:
             "--output-prefix",
             self.args.summary_output_prefix,
         ]
-        self.log(f"Writing Study 2 summary for {prefix}", always=True)
+        self.log(f"Writing Scripture Vector Steer summary for {prefix}", always=True)
         if self.args.dry_run:
             self.log("Dry run enabled; summary skipped.", always=True)
             return
@@ -328,8 +328,8 @@ class Manager:
         completed = _completed_attempt(self.results_dir, self.repo, self.base)
         if completed is not None:
             self.run_summary(completed.prefix)
-            self.write_status(state="completed", note="Study 2 completed and summary written", prefix=completed.prefix)
-            self.log("Study 2 completed.", always=True)
+            self.write_status(state="completed", note="Scripture Vector Steer completed and summary written", prefix=completed.prefix)
+            self.log("Scripture Vector Steer completed.", always=True)
             return True
 
         running = _running_attempt(self.results_dir, self.base)
@@ -338,8 +338,8 @@ class Manager:
                 self.log(f"{running.prefix} is stale; launching a replacement.", always=True)
                 self.launch_attempt()
                 return False
-            self.write_status(state="running", note="waiting for Study 2", prefix=running.prefix)
-            self.log(f"Waiting for active Study 2 attempt {running.prefix}")
+            self.write_status(state="running", note="waiting for Scripture Vector Steer", prefix=running.prefix)
+            self.log(f"Waiting for active Scripture Vector Steer attempt {running.prefix}")
             return False
 
         self.launch_attempt()
@@ -348,7 +348,7 @@ class Manager:
     def run(self) -> None:
         self.acquire_lock()
         try:
-            self.log("Study 2 manager started.", always=True)
+            self.log("Scripture Vector Steer manager started.", always=True)
             while True:
                 done = self.step()
                 if done or self.args.once:
@@ -360,7 +360,7 @@ class Manager:
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        description="Monitor and advance the Qwen3.5 scripture Study 2 run on Windows."
+        description="Monitor and advance the Qwen3.5 Scripture Vector Steer run on Windows."
     )
     parser.add_argument("--repo", type=Path, default=Path.cwd(), help="Repo root on the Windows machine")
     parser.add_argument("--results-dir", type=Path, default=None, help="Result artifact directory")
@@ -385,7 +385,7 @@ def parse_args() -> argparse.Namespace:
 
     unknown_targets = [target for target in args.targets if target not in DEFAULT_TARGETS]
     if unknown_targets:
-        raise SystemExit(f"Unknown Study 2 scripture targets: {', '.join(unknown_targets)}")
+        raise SystemExit(f"Unknown Scripture Vector Steer targets: {', '.join(unknown_targets)}")
 
     args.repo = args.repo.resolve()
     if args.results_dir is None:

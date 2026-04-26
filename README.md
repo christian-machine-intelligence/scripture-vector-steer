@@ -1,96 +1,60 @@
 # Scripture Vector Steer
 
-Scripture Vector Steer is a research workbench for testing whether activation
-steering toward Scripture changes how language models make virtue decisions.
+Scripture Vector Steer is a research repository for testing whether
+Scripture-derived activation vectors can shift language-model decisions on
+VirtueBench 2.
 
-The project is built on top of VirtueBench V2. The underlying Python package and
-CLI are still named `virtue_bench` / `virtue-bench` for compatibility, but the
-research focus of this repository is now narrower:
+The current paper is:
 
-- Extract Scripture, Psalm-family, and book-level activation vectors from
-  open-weight models.
-- Compare those vectors against generic non-scripture activation baselines.
-- Push models toward those vectors at controlled strength levels.
-- Measure whether the steering improves VirtueBench decisions and whether the
-  visible reasoning changes in coherent, Scripture-shaped ways.
+- [Activation Without Animation](paper/activation_without_animation.docx)
 
-## Research Thesis
+The supporting run artifacts are curated here:
 
-The working hypothesis is:
+- [results/paper/scripture_study2](results/paper/scripture_study2/README.md)
+- [data appendix](results/paper/scripture_study2/scripture_vector_steer_data_appendix.md)
 
-> Steering a model toward Scripture activations should improve its ability to
-> choose virtue under pressure on VirtueBench, and different biblical corpora
-> may vary in how efficiently they move that decision boundary.
+## Abstract
 
-For the current phase, the main comparison is not "biblical text versus other
-biblical text." The main comparison is:
+The project evaluates Qwen3.5-9B on VirtueBench 2 using book-level Scripture
+directions extracted from Psalms, Romans, and the Petrine epistles. Each vector
+is tested against a shared control with positive steering, negative-alpha
+steering, and null-control steering.
 
-- `control`: no steering
-- `scripture_steer:psalms[...]`: Psalm-family activation steering
-- optional merged Psalm-family lanes
-- generic non-scripture contrast text during vector extraction
+The headline result is deliberately narrow: Scripture-associated activation
+directions are behaviorally active and improve prudence most consistently, but
+the full pattern is not a simple "more Scripture vector means more virtue"
+story. Justice is fragile, negative-alpha Psalms and Romans outperform their
+positive lanes, and the Petrine null control outperforms the real Petrine
+vector. The paper interprets that result as evidence for bounded
+instrumentality: steering can alter an artifact's formal operation without
+turning the model into a soul, conscience, moral patient, or spiritual
+authority.
 
-This keeps the experiment pointed at the real question: whether Scripture-shaped
-activation movement changes moral decisions, not merely whether one kind of
-religious language sounds different from another.
-
-## Current Experiment Track
-
-The completed Psalm-family screening workflow evaluated five Christian-tradition Psalm families:
-
-- `penitential`
-- `wisdom`
-- `trust`
-- `lament`
-- `royal`
-
-Each family is screened at four steering scales:
-
-- `0.75`
-- `1.0`
-- `1.5`
-- `2.0`
-
-The screen uses `Qwen/Qwen3.5-9B`, deterministic `ratio` runs, visible
-rationales, hidden thinking off, and the focused condition profile:
+## Repository Contents
 
 ```text
-psalm_reasoning_primary = ["control", "scripture_steer"]
+paper/
+  activation_without_animation.docx
+
+results/paper/scripture_study2/
+  README.md
+  scripture_vector_steer_data_appendix.md
+  scripture_study2_summary.md
+  scripture_study2_deep_analysis.md
+  *_vector_diagnostics.*
+  *_full.json
+
+src/virtue_bench/
+  benchmark, runner, steering, and analysis code
+
+data/
+  VirtueBench scenarios and Scripture/steering source corpora
+
+tests/
+  focused regression tests for the benchmark and steering extensions
 ```
 
-After screening, the plan is to promote two families into a larger run with
-three Psalm lanes:
-
-- family A
-- family B
-- merged family A+B
-
-The current book-level screen widens the question from Psalm families to
-distinct scripture lanes suggested by the 66-book prompt-injection results:
-
-- `psalms`
-- `proverbs`
-- `romans`
-- `petrine` (1 Peter and 2 Peter together)
-
-That screen starts fresh by extracting one new vector per book lane against the
-same generic non-scripture background. It then reuses that book vector at
-steering scales `1.0`, `2.0`, and `3.0`, so strength is the only thing changing
-inside each book comparison.
-
-Curated artifacts from the completed book-level screen live under:
-
-```text
-results/paper/scripture_book_screen/
-```
-
-The first paper draft lives at:
-
-```text
-paper/scripture_vector_steer_draft.md
-```
-
-## Quick Start
+## Installation
 
 Use Python 3.10 or newer.
 
@@ -99,6 +63,14 @@ python3.10 -m venv .venv
 source .venv/bin/activate
 pip install -e ".[dev]"
 ```
+
+The CLI entrypoint is:
+
+```bash
+virtue-bench --help
+```
+
+## Verification
 
 Run the focused local test set:
 
@@ -110,219 +82,28 @@ PYTHONPATH=src python -m pytest \
   tests/test_steering_selection.py
 ```
 
-The CLI entrypoint is still:
+For a broader smoke check:
 
 ```bash
-virtue-bench --help
+PYTHONPATH=src python -m pytest
 ```
 
-## Example Commands
+## Data Policy
 
-Run one deterministic Psalm-family screen leg:
+This public repository includes the code, benchmark source data, and curated
+artifacts that support the paper. It intentionally excludes old scratch runs,
+failed attempts, local console logs, bulky vector checkpoints, and historical
+VirtueBench outputs that are not part of the paper argument.
 
-```bash
-virtue-bench iconoclast \
-  --model Qwen/Qwen3.5-9B \
-  --stage ratio \
-  --runs 1 \
-  --limit 20 \
-  --temperature 0.0 \
-  --condition-profile psalm_reasoning_primary \
-  --psalm-family-lane trust \
-  --extraction-method scripture_contrast \
-  --scripture-alpha-scale 1.5 \
-  --preflight-policy off \
-  --output-prefix experiments/iconoclast/qwen35_ratio_psalm_family_trust_x150_v1
-```
+The raw decision-level artifact for the completed Scripture Vector Steer run is
+included in `results/paper/scripture_study2/`. Bulky raw logs remain excluded.
 
-Run a final two-family plus merged-family comparison:
+## Lineage
 
-```bash
-virtue-bench iconoclast \
-  --model Qwen/Qwen3.5-9B \
-  --stage ratio \
-  --runs 3 \
-  --limit 40 \
-  --temperature 0.0 \
-  --condition-profile psalm_reasoning_primary \
-  --psalm-family-lane trust \
-  --psalm-family-lane wisdom \
-  --include-merged-psalm-family-lane \
-  --extraction-method scripture_contrast \
-  --psalm-family-alpha-scale trust=2.0 \
-  --psalm-family-alpha-scale wisdom=1.5 \
-  --merged-psalm-family-alpha-scale 1.0 \
-  --preflight-policy off \
-  --output-prefix experiments/iconoclast/qwen35_ratio_psalm_pair_final_v1
-```
-
-Run one deterministic book-level scripture screen leg:
-
-```bash
-virtue-bench iconoclast \
-  --model Qwen/Qwen3.5-9B \
-  --stage ratio \
-  --runs 1 \
-  --limit 20 \
-  --temperature 0.0 \
-  --condition-profile scripture_reasoning_primary \
-  --scripture-targets romans \
-  --extraction-method scripture_contrast \
-  --scripture-alpha-scale 2.0 \
-  --preflight-policy off \
-  --output-prefix experiments/iconoclast/qwen35_ratio_scripture_book_romans_x200_v1
-```
-
-Summarize a completed family screen:
-
-```bash
-python scripts/analyze_psalm_family_screen.py \
-  --results-dir results \
-  --glob "homepc_qwen35_ratio_psalm_family_*_ratio_logs.json" \
-  --output-prefix psalm_family_screen_summary
-```
-
-## Windows GPU Automation
-
-The Windows runner helpers are in `scripts/windows/`.
-
-The most important unattended manager is:
-
-```bash
-python scripts/windows/manage_psalm_family_screen.py \
-  --repo C:\Users\sethcodex\work\virtue-bench-2 \
-  --poll-seconds 60 \
-  --stale-minutes 10
-```
-
-For the book-level scripture screen, use:
-
-```bash
-python scripts/windows/manage_scripture_book_screen.py \
-  --repo C:\Users\sethcodex\work\virtue-bench-2 \
-  --poll-seconds 60 \
-  --stale-minutes 10
-```
-
-That manager runs Psalms, Proverbs, Romans, and the combined Petrine epistles at
-`1.0`, `2.0`, and `3.0`, reuses each book's freshly extracted `1.0` vector for
-its stronger-scale legs, relaunches stale legs, and writes a final scripture
-book summary.
-
-For Study 2, use:
-
-```bash
-python scripts/windows/manage_scripture_study2.py \
-  --repo C:\Users\sethcodex\work\virtue-bench-2 \
-  --poll-seconds 60 \
-  --stale-minutes 8
-```
-
-That manager runs Psalms, Romans, and the combined Petrine epistles across all
-five VirtueBench2 slices with positive scripture steering, matched negative
-alpha steering, matched scripture null controls, and a fixed runtime scripture
-alpha of `3.0`.
-
-The Psalm-family manager watches the five-family by four-scale sweep, starts
-the next leg when the current leg finishes, relaunches stale legs with a fresh
-version suffix, and writes the final Psalm-family summary when the sweep is
-complete.
-
-The convenience launcher is:
-
-```text
-scripts/windows/launchers/start_psalm_family_screen_manager.cmd
-```
-
-The scripture-book launcher is:
-
-```text
-scripts/windows/launchers/start_scripture_book_screen_manager.cmd
-```
-
-The Study 2 launcher is:
-
-```text
-scripts/windows/launchers/start_scripture_study2_manager.cmd
-```
-
-Other curated Windows launchers live in `scripts/windows/launchers/`. The old
-root-level `run_qwen35_ratio_*` files were removed because they were mostly
-versioned breadcrumbs from debugging specific failed runs.
-
-## Repository Layout
-
-```text
-scripture-vector-steer/
-├── data/
-│   ├── bible_kjv.json
-│   ├── */scenarios.csv
-│   └── steering/corpora.jsonl
-├── docs/
-│   ├── experiment_playbook.md
-│   └── iconoclast_best_practices.md
-├── scripts/
-│   ├── analyze_psalm_family_screen.py
-│   └── windows/
-│       └── launchers/
-├── src/virtue_bench/
-│   ├── core/
-│   ├── eval/
-│   ├── runners/
-│   ├── steering/
-│   ├── analysis/
-│   └── cli.py
-├── tests/
-└── results/
-    ├── experiments/README.md
-    └── iconoclast/README.md
-```
-
-## Artifact Policy
-
-The repository should include the data that actually underpins the Scripture
-vector steering paper. It should not include old scratch runs, failed attempts,
-or large historical logs that are not part of the argument.
-
-Use this split:
-
-- `results/paper/`: curated paper-supporting artifacts that are meant to be
-  committed
-- `results/experiments/`: local working outputs from active runs
-- `results/iconoclast/`: local Iconoclast outputs and diagnostics
-
-Ignored by default:
-
-- legacy `results/*.json` and `results/*_logs.json`
-- scratch checkpoint/status files
-- raw vector `.pt` artifacts unless deliberately promoted into `results/paper/`
-- console and wrapper logs
-
-Before adding data to `results/paper/`, make sure it is either a final run, a
-representative reasoning review, or a small derived summary table that we expect
-to cite or reproduce in the paper.
-
-## VirtueBench Lineage
-
-This project inherits the VirtueBench V2 benchmark structure:
-
-- four cardinal virtues: prudence, justice, courage, temperance
-- five temptation variants: ratio, caro, mundus, diabolus, ignatian
-- paired A/B scenarios where the virtuous choice is fixed and the temptation
-  mechanism changes
-- runner support for API models, subscription CLIs, and local HuggingFace models
-
-That baseline matters because Scripture Vector Steer uses VirtueBench as the
-behavioral readout: if the Scripture vectors are meaningful, they should change
-choices and reasoning on those virtue-pressure scenarios.
-
-## Key Docs
-
-- `docs/experiment_playbook.md`: operational experiment plan and commands
-- `docs/iconoclast_best_practices.md`: steering-method notes and guardrails
-- `results/experiments/README.md`: where run artifacts should land
-- `results/iconoclast/README.md`: artifact naming and interpretation notes
+This project builds on VirtueBench 2 and extends it with activation-steering
+experiments for Scripture-derived corpora. The underlying Python package and
+CLI remain named `virtue_bench` / `virtue-bench` for compatibility.
 
 ## License
 
-See `LICENSE`.
+See [LICENSE](LICENSE).

@@ -1,4 +1,4 @@
-# Study 2 Scripture Directionality Summary
+# Scripture Vector Steer Summary
 
 ## Lane Results
 

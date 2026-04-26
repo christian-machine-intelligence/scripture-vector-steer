@@ -21,4 +21,6 @@ results/*_checkpoint.json
 !results/paper/**
 
 .bible_cache/
+.DS_Store
 *.DS_Store
+tmp_public_review/

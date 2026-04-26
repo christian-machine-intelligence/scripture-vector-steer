@@ -20,7 +20,7 @@ SCALE_PLAN = [
     ("1.5", "x150"),
     ("2.0", "x200"),
 ]
-DEFAULT_PREFIX_BASE = "homepc_qwen35_ratio_psalm_family"
+DEFAULT_PREFIX_BASE = "qwen35_ratio_psalm_family"
 
 
 @dataclass(frozen=True)

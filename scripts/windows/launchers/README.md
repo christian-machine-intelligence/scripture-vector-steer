@@ -1,8 +1,8 @@
 # Windows Launchers
 
-These are the current hand-run Windows GPU entrypoints. Older root-level
-`run_qwen35_ratio_*` scripts were debugging breadcrumbs from failed or superseded
-runs and were removed from the working tree.
+These are reusable Windows GPU entrypoints for long-running local-model
+experiments. Older one-off launch scripts were debugging breadcrumbs from failed
+or superseded runs and were removed from the public repository.
 
 Run these from Windows by double-clicking or from `cmd.exe`.
 
@@ -14,14 +14,9 @@ Run these from Windows by double-clicking or from `cmd.exe`.
 - `start_scripture_book_screen_manager.cmd`: preferred launcher for the
   book-level scripture screen across Psalms, Proverbs, Romans, and combined
   Petrine lanes at `1.0`, `2.0`, and `3.0`.
-- `start_scripture_study2_manager.cmd`: preferred launcher for Study 2 across
-  all five VirtueBench2 slices with Psalms, Romans, and combined Petrine lanes.
-- `run_psalm_scale_probe.cmd`: older but still useful Psalm push-strength probe.
-  It sweeps a pooled Psalm vector across several alpha scales.
-- `run_scripture_family_compare.cmd`: GospelVec-style scripture-family
-  comparison across Psalms, Proverbs, and Gospels.
-- `run_visible_reasoning_compare.cmd`: historical visible-rationale comparison
-  using the reasoning-compare lane and an existing vector artifact.
+- `start_scripture_study2_manager.cmd`: preferred launcher for the full
+  Scripture Vector Steer comparison across all five VirtueBench 2 slices with
+  Psalms, Romans, and combined Petrine lanes.
 
 Each launcher derives the repo root from its own location, so the Windows
 checkout can be named either `virtue-bench-2` or `psalm-vector-steer`.

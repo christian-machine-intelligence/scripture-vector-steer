@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Summarize the Study 2 scripture directionality run."""
+"""Summarize the Scripture Vector Steer directionality run."""
 
 from __future__ import annotations
 
@@ -301,7 +301,7 @@ def _build_markdown(report: dict, *, title: str) -> str:
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Summarize Study 2 scripture steering runs.")
+    parser = argparse.ArgumentParser(description="Summarize Scripture Vector Steer runs.")
     parser.add_argument("--results-dir", type=Path, default=_default_results_dir())
     parser.add_argument(
         "--glob",
@@ -309,7 +309,7 @@ def main() -> None:
         help="Glob pattern for detailed full-stage logs",
     )
     parser.add_argument("--output-prefix", default="scripture_study2_summary")
-    parser.add_argument("--title", default="Study 2 Scripture Directionality Summary")
+    parser.add_argument("--title", default="Scripture Vector Steer Summary")
     parser.add_argument("--include-incomplete", action="store_true")
     args = parser.parse_args()
 

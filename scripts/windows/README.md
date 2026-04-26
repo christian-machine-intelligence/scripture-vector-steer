@@ -10,7 +10,7 @@ experiments.
 - `manage_scripture_book_screen.py`: keeps the book-level scripture screen
   moving automatically across Psalms, Proverbs, Romans, and combined Petrine
   lanes.
-- `manage_scripture_study2.py`: runs the full-slice Study 2 comparison with
+- `manage_scripture_study2.py`: runs the full Scripture Vector Steer comparison with
   Psalms, Romans, and combined Petrine lanes, including positive, negative-alpha,
   and null scripture controls.
 - `run_iconoclast_job.py`: launches one Iconoclast job in a detached Windows
