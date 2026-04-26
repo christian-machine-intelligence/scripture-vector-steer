@@ -144,3 +144,21 @@ separate files.
 Current family-specific runbooks:
 
 - `docs/iconoclast_best_practices.md`
+- `docs/future_eval_lessons.md`
+
+## Scripture Vector Steer Defaults
+
+For future Scripture steering work, start from the current paper-facing design
+unless the new study has a specific reason to differ:
+
+- Model comparison should change one model variable at a time, not corpus,
+  prompt, scorer, and vector policy all at once.
+- Full-stage runs are the final evidence; ratio-stage runs are screens.
+- Use the same frozen vector artifact across scale levels.
+- Use negative alpha by flipping the sign of the same vector, not by extracting
+  a new anti-corpus vector.
+- Keep `control` as the headline comparison and null lanes as mechanism checks.
+- Report reasoning examples when effects are surprising or small.
+
+See `docs/future_eval_lessons.md` for the current project-specific lessons from
+Psalms, Romans, Petrine, null controls, and negative-alpha behavior.

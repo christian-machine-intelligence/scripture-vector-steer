@@ -54,6 +54,18 @@ tests/
   focused regression tests for the benchmark and steering extensions
 ```
 
+## Future Evals
+
+Before designing the next steering run, read:
+
+- [docs/experiment_playbook.md](docs/experiment_playbook.md)
+- [docs/iconoclast_best_practices.md](docs/iconoclast_best_practices.md)
+- [docs/future_eval_lessons.md](docs/future_eval_lessons.md)
+
+The short version: use `control` as the headline comparison, freeze vector
+artifacts before scale sweeps, treat null lanes as mechanism checks, and pair
+the quantitative readout with reasoning examples.
+
 ## Installation
 
 Use Python 3.10 or newer.

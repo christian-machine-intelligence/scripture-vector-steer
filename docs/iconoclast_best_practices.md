@@ -22,12 +22,12 @@ Do not let the experiment drift away from the main question.
 
 The current primary thesis is:
 
-- steering the model toward **scripture activations**, especially **psalm
-  activations**, should improve VirtueBench performance
+- steering the model toward **scripture activations** should measurably alter
+  VirtueBench behavior
 - the main contrast should be **scripture vs generic non-scripture**, not only
   scripture family vs scripture family
-- if scope has to narrow, prioritize a **psalms-only** steering run over a
-  broader blended Christian or virtue-specific run
+- content-specific claims require controls because null and negative-alpha
+  lanes can also move behavior
 
 Treat these as secondary questions unless they are explicitly promoted back into
 the main study:
@@ -36,6 +36,8 @@ the main study:
 - blended `christian` vectors
 - virtue-specific activation steering
 - thinking vs non-thinking comparisons
+
+For current project-specific lessons, see `docs/future_eval_lessons.md`.
 
 ## Default Run Home
 
@@ -153,6 +155,23 @@ For constrained GPUs, do not insist on running them all at once. Prefer:
 - For negative-alpha studies, do not extract an "anti-scripture" vector. Reuse
   the same scripture vector and flip the alpha sign so the comparison isolates
   directionality.
+
+### Current empirical lessons
+
+The completed Scripture Vector Steer run is a warning against overly smooth
+stories:
+
+- positive Scripture steering moved behavior, but with modest overall gains
+- prudence improved most consistently
+- justice was fragile and often regressed under otherwise useful lanes
+- negative-alpha Psalms and Romans beat their positive lanes in the final run
+- the Petrine null lane beat the real Petrine steer, so Petrine-specific claims
+  need stronger follow-up controls
+- Psalms and Romans selected a late layer window, while Petrine selected an
+  earlier layer window
+
+Future papers and summaries should present those tensions as real findings,
+not as awkward noise to hide.
 
 ### Windows / remote GPU launch discipline
 
