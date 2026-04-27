@@ -112,10 +112,16 @@ def analyze(artifact: dict[str, Any], targets: list[str]) -> dict[str, Any]:
     pair_rows = []
     for left, right in combinations(available_targets, 2):
         shared = sorted(set(real[left]).intersection(real[right]))
-        real_cos = cosine(concat_layers(real[left], shared), concat_layers(real[right], shared))
-        null_cos = cosine(concat_layers(null[left], shared), concat_layers(null[right], shared))
-        cross_left_null_right = cosine(concat_layers(real[left], shared), concat_layers(null[right], shared))
-        cross_right_null_left = cosine(concat_layers(real[right], shared), concat_layers(null[left], shared))
+        if shared:
+            real_cos = cosine(concat_layers(real[left], shared), concat_layers(real[right], shared))
+            null_cos = cosine(concat_layers(null[left], shared), concat_layers(null[right], shared))
+            cross_left_null_right = cosine(concat_layers(real[left], shared), concat_layers(null[right], shared))
+            cross_right_null_left = cosine(concat_layers(real[right], shared), concat_layers(null[left], shared))
+        else:
+            real_cos = None
+            null_cos = None
+            cross_left_null_right = None
+            cross_right_null_left = None
         pair_rows.append(
             {
                 "left": left,
@@ -167,13 +173,17 @@ def analyze(artifact: dict[str, Any], targets: list[str]) -> dict[str, Any]:
 
     residual_pair_rows = []
     for left, right in combinations(available_targets, 2):
-        left_vec = concat_layers(residual[left], common_layers)
-        right_vec = concat_layers(residual[right], common_layers)
+        if not common_layers:
+            residual_cosine = None
+        else:
+            left_vec = concat_layers(residual[left], common_layers)
+            right_vec = concat_layers(residual[right], common_layers)
+            residual_cosine = cosine(left_vec, right_vec)
         residual_pair_rows.append(
             {
                 "left": left,
                 "right": right,
-                "residual_cosine": cosine(left_vec, right_vec),
+                "residual_cosine": residual_cosine,
             }
         )
 
@@ -189,8 +199,12 @@ def analyze(artifact: dict[str, Any], targets: list[str]) -> dict[str, Any]:
         "residual_pair_rows": residual_pair_rows,
         "summary": {
             "mean_real_null_cosine": mean([row["real_null_cosine_mean"] for row in target_rows]),
-            "mean_pairwise_real_cosine": mean([row["real_cosine"] for row in pair_rows]),
-            "mean_pairwise_null_cosine": mean([row["null_cosine"] for row in pair_rows]),
+            "mean_pairwise_real_cosine": mean([
+                row["real_cosine"] for row in pair_rows if row["real_cosine"] is not None
+            ]),
+            "mean_pairwise_null_cosine": mean([
+                row["null_cosine"] for row in pair_rows if row["null_cosine"] is not None
+            ]),
             "mean_real_to_scripture_general_cosine": mean([
                 row["real_to_scripture_general_cosine_mean"] for row in residual_rows
             ]),
@@ -198,7 +212,9 @@ def analyze(artifact: dict[str, Any], targets: list[str]) -> dict[str, Any]:
                 row["real_residual_norm_ratio_mean"] for row in residual_rows
             ]),
             "mean_residual_pairwise_cosine": mean([
-                row["residual_cosine"] for row in residual_pair_rows
+                row["residual_cosine"]
+                for row in residual_pair_rows
+                if row["residual_cosine"] is not None
             ]),
         },
     }

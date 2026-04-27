@@ -32,7 +32,7 @@ exit /b 0
 
 :build_and_analyze
 set METHOD=%~1
-set PREFIX=cardinal_v1_direct_%METHOD%_extract_v1
+set PREFIX=cardinal_v1_direct_%METHOD%_fixed_l31_extract_v1
 set VECTOR=%REPO%\results\%PREFIX%_vectors.pt
 set STATUS=%REPO%\results\%PREFIX%.status
 set LOG=%REPO%\results\%PREFIX%_wrapper_console.log
@@ -51,6 +51,7 @@ echo STARTED > "%STATUS%"
   --scripture-targets prudence_scripture justice_scripture fortitude_scripture temperance_scripture ^
   --external-scripture-corpus "%EXTERNAL_CORPUS%" ^
   --extraction-method %METHOD% ^
+  --window-center 31 ^
   --scripture-runtime-alpha 3.0 ^
   --preflight-policy warn ^
   --output-prefix %PREFIX% ^
