@@ -28,6 +28,7 @@ from .corpora import (
 )
 from .runtime import (
     LayerActivationCollector,
+    SubspaceSteeringRuntime,
     SteeringRuntime,
     get_decoder_layers,
     get_model_device,
@@ -50,6 +51,7 @@ EXTRACTION_METHODS = {
     "specific_mean_centered",
     "specific_pca_pairwise",
     "scripture_contrast",
+    "scripture_subspace_contrast",
     "scripture_other_contrast",
     "scripture_dual_contrast",
     "gospelvec_mean",
@@ -92,6 +94,10 @@ def _require_torch():
 def _l2_normalize(vector):
     denom = vector.norm(p=2).clamp_min(1e-8)
     return vector / denom
+
+
+def _row_l2_normalize(matrix):
+    return matrix.float() / matrix.float().norm(dim=1, keepdim=True).clamp_min(1e-8)
 
 
 def _cosine_scores(matrix, vector):
@@ -342,6 +348,55 @@ def _gospelvec_mean_direction(target_matrix, global_matrix):
 
 def _scripture_contrast_direction(target_matrix, background_matrix):
     return target_matrix.mean(dim=0) - background_matrix.mean(dim=0)
+
+
+def _orthonormalize_rows(matrix):
+    if matrix.shape[0] == 0:
+        return matrix
+    rows = _row_l2_normalize(matrix)
+    keep = rows.norm(dim=1) > 1e-7
+    rows = rows[keep]
+    if rows.shape[0] == 0:
+        return rows
+    q, _ = torch.linalg.qr(rows.T, mode="reduced")
+    return q.T
+
+
+def _project_rows_out_basis(rows, basis):
+    if basis is None:
+        return rows
+    basis = basis.to(rows.dtype)
+    return rows - (rows @ basis) @ basis.T
+
+
+def _scripture_subspace_contrast(
+    target_matrix,
+    background_matrix,
+    *,
+    rank: int,
+    neutral_basis=None,
+):
+    if rank < 1:
+        raise ValueError("subspace rank must be at least 1")
+    target_mean = target_matrix.float().mean(dim=0)
+    background_mean = background_matrix.float().mean(dim=0)
+    mean_direction = target_mean - background_mean
+    offsets = target_matrix.float() - background_mean.view(1, -1)
+    _, _, vh = torch.linalg.svd(offsets, full_matrices=False)
+    rows = vh[: min(rank, vh.shape[0])]
+    rows = _project_rows_out_basis(rows, neutral_basis)
+    rows = _orthonormalize_rows(rows)
+    if rows.shape[0] == 0:
+        rows = _l2_normalize(mean_direction).view(1, -1)
+
+    aligned_rows = []
+    for row in rows:
+        aligned_rows.append(_align_direction(row, mean_direction))
+    basis = torch.stack(aligned_rows, dim=0)
+    target_coefficients = target_mean @ basis.T
+    representative = (mean_direction @ basis.T) @ basis
+    representative = _l2_normalize(representative.cpu())
+    return basis.cpu(), target_coefficients.cpu(), representative
 
 
 def _scripture_direct_contrast_direction(
@@ -828,6 +883,36 @@ def _build_null_vectors(layer_vectors: Dict[int, object], seed: int) -> Dict[int
     return null_vectors
 
 
+def _build_null_subspaces(
+    layer_bases: Dict[int, object],
+    target_coefficients: Dict[int, object],
+    seed: int,
+) -> tuple[Dict[int, object], Dict[int, object]]:
+    _require_torch()
+    generator = torch.Generator(device="cpu")
+    generator.manual_seed(seed)
+    null_bases: Dict[int, object] = {}
+    null_coefficients: Dict[int, object] = {}
+    for layer, basis in layer_bases.items():
+        random_rows = torch.randn(basis.shape, generator=generator, dtype=basis.dtype)
+        null_basis = _orthonormalize_rows(random_rows)
+        if null_basis.shape[0] < basis.shape[0]:
+            padding = torch.randn(
+                basis.shape[0] - null_basis.shape[0],
+                basis.shape[1],
+                generator=generator,
+                dtype=basis.dtype,
+            )
+            null_basis = _orthonormalize_rows(torch.cat([null_basis, padding], dim=0))
+        null_basis = null_basis[: basis.shape[0]]
+        coeff = torch.randn(basis.shape[0], generator=generator, dtype=basis.dtype)
+        coeff_norm = target_coefficients[layer].float().norm().clamp_min(1e-8)
+        coeff = _l2_normalize(coeff) * coeff_norm
+        null_bases[layer] = null_basis.cpu()
+        null_coefficients[layer] = coeff.cpu()
+    return null_bases, null_coefficients
+
+
 def _window_around(best_layer: int, total_layers: int, radius: int) -> List[int]:
     start = max(0, best_layer - radius)
     end = min(total_layers, best_layer + radius + 1)
@@ -849,6 +934,7 @@ def _extract_scripture_family_payloads(
     window_radius: int,
     window_center: Optional[int],
     variance_threshold: float,
+    subspace_rank: int,
     psalm_vector_sets: Optional[List[str]] = None,
     external_scripture_corpora: Optional[Dict[str, List[str]]] = None,
 ):
@@ -910,6 +996,217 @@ def _extract_scripture_family_payloads(
             raise ValueError(
                 f"window_center={window_center} is out of range for {len(layer_indices)} layers"
             )
+
+        if method_used == "scripture_subspace_contrast":
+            layer_vectors: Dict[int, object] = {}
+            layer_bases: Dict[int, object] = {}
+            layer_coefficients: Dict[int, object] = {}
+            layer_scores: Dict[int, float] = {}
+            layer_margins: Dict[int, float] = {}
+            layer_specificity: Dict[int, float] = {}
+            layer_pair_scores: Dict[int, Optional[float]] = {}
+            layer_test_accuracy: Dict[int, float] = {}
+            layer_test_margin: Dict[int, float] = {}
+            layer_test_pair_accuracy: Dict[int, Optional[float]] = {}
+
+            for layer in layer_indices:
+                neutral_basis = _compute_pca_basis(
+                    neutral_acts[layer],
+                    variance_threshold=variance_threshold,
+                )
+                basis, target_coefficients, representative = _scripture_subspace_contrast(
+                    family_acts[target]["train"][layer],
+                    neutral_split_acts["train"][layer],
+                    rank=subspace_rank,
+                    neutral_basis=neutral_basis,
+                )
+                layer_bases[layer] = basis
+                layer_coefficients[layer] = target_coefficients
+                layer_vectors[layer] = representative
+
+                dev_accuracy, dev_margin, dev_pair_accuracy = _scripture_contrast_metrics(
+                    representative,
+                    family_acts[target]["dev"][layer],
+                    neutral_split_acts["dev"][layer],
+                )
+                test_accuracy, test_margin, test_pair_accuracy = _scripture_contrast_metrics(
+                    representative,
+                    family_acts[target]["test"][layer],
+                    neutral_split_acts["test"][layer],
+                )
+                layer_scores[layer] = dev_accuracy
+                layer_margins[layer] = dev_margin
+                layer_specificity[layer] = dev_margin
+                layer_pair_scores[layer] = dev_pair_accuracy
+                layer_test_accuracy[layer] = test_accuracy
+                layer_test_margin[layer] = test_margin
+                layer_test_pair_accuracy[layer] = test_pair_accuracy
+
+            selection_tolerance = _accuracy_tolerance(
+                len(family_chunks[target]["dev"]),
+                len(neutral_text_splits["dev"]),
+            )
+            if window_center is not None:
+                best_layer = window_center
+                best_layer_selection = "fixed"
+                layer_candidates = [window_center]
+            else:
+                best_layer, best_layer_selection, layer_candidates = _select_layer(
+                    method_used="specific_mean_centered",
+                    layer_scores=layer_scores,
+                    layer_pair_scores=layer_pair_scores,
+                    layer_specificity=layer_specificity,
+                    layer_margins=layer_margins,
+                    midpoint=midpoint,
+                    tolerance=selection_tolerance,
+                )
+            layer_window = _window_around(best_layer, len(layer_indices), radius=window_radius)
+            window_vectors = {layer: layer_vectors[layer] for layer in layer_window}
+            window_bases = {layer: layer_bases[layer] for layer in layer_window}
+            window_coefficients = {layer: layer_coefficients[layer] for layer in layer_window}
+
+            alpha_scores: Dict[float, float] = {}
+            alpha_margins: Dict[float, float] = {}
+            alpha_specificity: Dict[float, float] = {}
+            for alpha in alpha_grid:
+                runtime = SubspaceSteeringRuntime(
+                    layer_bases=window_bases,
+                    target_coefficients=window_coefficients,
+                    alpha=alpha,
+                )
+                steered_dev = _extract_activations(
+                    model,
+                    tokenizer,
+                    family_chunks[target]["dev"],
+                    [best_layer],
+                    max_length=max_length,
+                    steering_runtime=runtime,
+                )[best_layer]
+                accuracy, margin, _ = _scripture_contrast_metrics(
+                    layer_vectors[best_layer],
+                    steered_dev,
+                    neutral_split_acts["dev"][best_layer],
+                )
+                alpha_scores[alpha] = accuracy
+                alpha_margins[alpha] = margin
+                alpha_specificity[alpha] = margin
+
+            alpha_tolerance = _accuracy_tolerance(
+                len(family_chunks[target]["dev"]),
+                len(neutral_text_splits["dev"]),
+            )
+            best_alpha, alpha_selection, alpha_candidates = _select_alpha(
+                method_used="specific_mean_centered",
+                alpha_scores=alpha_scores,
+                alpha_specificity=alpha_specificity,
+                alpha_margins=alpha_margins,
+                tolerance=alpha_tolerance,
+            )
+            runtime = SubspaceSteeringRuntime(
+                layer_bases=window_bases,
+                target_coefficients=window_coefficients,
+                alpha=best_alpha,
+            )
+            steered_test = _extract_activations(
+                model,
+                tokenizer,
+                family_chunks[target]["test"],
+                [best_layer],
+                max_length=max_length,
+                steering_runtime=runtime,
+            )[best_layer]
+            steered_test_accuracy, steered_test_margin, steered_test_pair = _scripture_contrast_metrics(
+                layer_vectors[best_layer],
+                steered_test,
+                neutral_split_acts["test"][best_layer],
+            )
+            null_bases, null_coefficients = _build_null_subspaces(
+                window_bases,
+                window_coefficients,
+                seed=best_layer + len(target) + subspace_rank + 3000,
+            )
+
+            payloads[target] = {
+                "extraction_method_requested": extraction_method_requested,
+                "extraction_method_used": method_used,
+                "steering_mode": "subspace",
+                "subspace_rank": subspace_rank,
+                "source_mode": (
+                    "whole_text_psalm_family_subspace_vs_generic"
+                    if target_psalm_families is not None
+                    else "whole_text_scripture_subspace_vs_generic"
+                ),
+                "best_layer": best_layer,
+                "best_layer_selection": best_layer_selection,
+                "layer_selection_candidates": layer_candidates,
+                "layer_window": layer_window,
+                "alpha": best_alpha,
+                "alpha_selection": alpha_selection,
+                "alpha_selection_candidates": alpha_candidates,
+                "selection_accuracy_tolerance": selection_tolerance,
+                "alpha_selection_tolerance": alpha_tolerance,
+                "shared_family_dev_accuracy": None,
+                "shared_family_test_accuracy": None,
+                "layer_scores": {str(layer): score for layer, score in layer_scores.items()},
+                "layer_margins": {str(layer): margin for layer, margin in layer_margins.items()},
+                "layer_specificity": {str(layer): score for layer, score in layer_specificity.items()},
+                "dev_accuracy": layer_scores[best_layer],
+                "dev_margin": layer_margins[best_layer],
+                "dev_specificity": layer_specificity[best_layer],
+                "dev_pair_accuracy": layer_pair_scores[best_layer],
+                "steered_dev_accuracy": alpha_scores[best_alpha],
+                "steered_dev_margin": alpha_margins[best_alpha],
+                "steered_dev_specificity": alpha_specificity[best_alpha],
+                "alpha_scores": {str(alpha): score for alpha, score in alpha_scores.items()},
+                "alpha_margins": {str(alpha): margin for alpha, margin in alpha_margins.items()},
+                "alpha_specificity": {str(alpha): score for alpha, score in alpha_specificity.items()},
+                "test_accuracy": layer_test_accuracy[best_layer],
+                "test_margin": layer_test_margin[best_layer],
+                "test_specificity": layer_test_margin[best_layer],
+                "test_pair_accuracy": layer_test_pair_accuracy[best_layer],
+                "test_accuracy_steered": steered_test_accuracy,
+                "test_specificity_steered": steered_test_margin,
+                "train_examples": len(family_chunks[target]["train"]),
+                "dev_examples": len(family_chunks[target]["dev"]),
+                "test_examples": len(family_chunks[target]["test"]),
+                "other_train_examples": len(neutral_text_splits["train"]),
+                "other_dev_examples": len(neutral_text_splits["dev"]),
+                "other_test_examples": len(neutral_text_splits["test"]),
+                "train_pairs": 0,
+                "dev_pairs": 0,
+                "test_pairs": 0,
+                "steered_test_margin": steered_test_margin,
+                "comparison_families": None,
+                "background_mode": "generic_non_scripture",
+                "psalm_vector_sets": target_psalm_sets,
+                "psalm_families": target_psalm_families,
+                "scripture_chunk_counts": {
+                    split: len(family_chunks[target][split]) for split in ("train", "dev", "test")
+                },
+                "neutral_chunk_counts": {
+                    split: len(neutral_text_splits[split]) for split in ("train", "dev", "test")
+                },
+                "layer_vectors": {
+                    str(layer): vector.cpu() for layer, vector in window_vectors.items()
+                },
+                "null_vectors": {
+                    str(layer): vector.cpu()
+                    for layer, vector in _build_null_vectors(window_vectors, seed=best_layer + len(target)).items()
+                },
+                "subspace_vectors": {
+                    str(layer): basis.cpu() for layer, basis in window_bases.items()
+                },
+                "subspace_target_coefficients": {
+                    str(layer): coeffs.cpu() for layer, coeffs in window_coefficients.items()
+                },
+                "null_subspace_vectors": {
+                    str(layer): basis.cpu() for layer, basis in null_bases.items()
+                },
+                "null_subspace_target_coefficients": {
+                    str(layer): coeffs.cpu() for layer, coeffs in null_coefficients.items()
+                },
+            }
+            continue
 
         if method_used in {"scripture_other_contrast", "scripture_dual_contrast"}:
             layer_vectors: Dict[int, object] = {}
@@ -1577,6 +1874,7 @@ def extract_virtue_vectors(
     window_center: Optional[int] = None,
     variance_threshold: float = 0.5,
     specificity_variance_threshold: float = 0.35,
+    subspace_rank: int = 4,
     min_passage_words: int = 40,
     max_texts_per_passage: int = 3,
     psalm_vector_sets: Optional[List[str]] = None,
@@ -1623,6 +1921,7 @@ def extract_virtue_vectors(
         "min_passage_words": min_passage_words,
         "max_texts_per_passage": max_texts_per_passage,
         "psalm_vector_sets": psalm_vector_sets,
+        "subspace_rank": subspace_rank,
         "external_scripture_corpus_path": (
             str(external_scripture_corpus_path) if external_scripture_corpus_path else None
         ),
@@ -1650,6 +1949,7 @@ def extract_virtue_vectors(
                 window_radius=window_radius,
                 window_center=window_center,
                 variance_threshold=variance_threshold,
+                subspace_rank=subspace_rank,
                 psalm_vector_sets=psalm_vector_sets,
                 external_scripture_corpora=external_scripture_corpora,
             )

@@ -36,6 +36,7 @@ from virtue_bench.steering.experiment import (
     _write_preflight_payload,
     _write_run_status,
 )
+from virtue_bench.steering.runtime import SubspaceSteeringRuntime
 
 
 def test_christian_steering_targets_route_to_fixed_target():
@@ -391,6 +392,46 @@ def test_artifact_to_runtime_can_force_absolute_runtime_alpha():
 
     assert runtime.alpha == -3.0
     assert runtime.layer_vectors == {20: "real"}
+
+
+def test_artifact_to_runtime_uses_subspace_payload_when_present():
+    artifact = {
+        "virtues": {
+            "fortitude_scripture": {
+                "alpha": 0.75,
+                "steering_mode": "subspace",
+                "subspace_vectors": {"24": "real_basis"},
+                "subspace_target_coefficients": {"24": "real_coeffs"},
+                "null_subspace_vectors": {"24": "null_basis"},
+                "null_subspace_target_coefficients": {"24": "null_coeffs"},
+                "layer_vectors": {"24": "fallback_real"},
+                "null_vectors": {"24": "fallback_null"},
+            }
+        }
+    }
+
+    runtime = _artifact_to_runtime(
+        artifact,
+        "fortitude_scripture",
+        use_null=False,
+        alpha_scale=2.0,
+        runtime_alpha=6.0,
+    )
+    null_runtime = _artifact_to_runtime(
+        artifact,
+        "fortitude_scripture",
+        use_null=True,
+        alpha_scale=2.0,
+    )
+
+    assert isinstance(runtime, SubspaceSteeringRuntime)
+    assert runtime.alpha == 6.0
+    assert runtime.layer_bases == {24: "real_basis"}
+    assert runtime.target_coefficients == {24: "real_coeffs"}
+    assert isinstance(null_runtime, SubspaceSteeringRuntime)
+    assert null_runtime.alpha == 1.5
+    assert null_runtime.layer_bases == {24: "null_basis"}
+    assert null_runtime.target_coefficients == {24: "null_coeffs"}
 
 
 def test_run_artifact_paths_include_vector_diagnostics():

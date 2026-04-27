@@ -147,3 +147,48 @@ class SteeringRuntime:
             stack.callback(handle.remove)
 
         return stack
+
+
+@dataclass
+class SubspaceSteeringRuntime:
+    """Installable steering that nudges states toward target coordinates in a subspace."""
+
+    layer_bases: Dict[int, object]
+    target_coefficients: Dict[int, object]
+    alpha: float
+    skip_prefill: bool = False
+
+    def install(self, model):
+        _require_torch()
+        layers = get_decoder_layers(model)
+        stack = ExitStack()
+        state = {"forward_calls": 0}
+
+        def model_pre_hook(_, __):
+            state["forward_calls"] += 1
+
+        model_handle = model.register_forward_pre_hook(model_pre_hook)
+        stack.callback(model_handle.remove)
+
+        for layer_index, basis in self.layer_bases.items():
+            layer = layers[layer_index]
+            base_basis = basis.detach()
+            target_coeffs = self.target_coefficients[layer_index].detach()
+
+            def hook(_, __, output, *, base_basis=base_basis, target_coeffs=target_coeffs):
+                if self.skip_prefill and state["forward_calls"] <= 1:
+                    return output
+                hidden_states = _hidden_tensor_from_output(output)
+                basis = base_basis.to(hidden_states.device, hidden_states.dtype)
+                target = target_coeffs.to(hidden_states.device, hidden_states.dtype)
+                current = torch.matmul(hidden_states, basis.transpose(0, 1))
+                delta = target.view(1, 1, -1) - current
+                shift = torch.matmul(delta, basis)
+                shift_norm = shift.norm(dim=-1, keepdim=True).clamp_min(1e-8)
+                shifted = hidden_states + self.alpha * (shift / shift_norm)
+                return _replace_hidden_tensor(output, shifted)
+
+            handle = layer.register_forward_hook(hook)
+            stack.callback(handle.remove)
+
+        return stack

@@ -26,7 +26,7 @@ from .corpora import (
     select_corpus_texts,
 )
 from .extract import extract_virtue_vectors, load_vector_artifact, save_vector_artifact
-from .runtime import SteeringRuntime
+from .runtime import SteeringRuntime, SubspaceSteeringRuntime
 
 
 STEERING_CONDITIONS = {
@@ -99,6 +99,7 @@ class IconoclastConfig:
     christian_alpha_scale: float = 1.0
     scripture_alpha_scale: float = 1.0
     scripture_runtime_alpha: Optional[float] = None
+    subspace_rank: int = 4
     psalm_family_alpha_scales: Dict[str, float] = field(default_factory=dict)
     merged_psalm_family_alpha_scale: Optional[float] = None
     psalm_sets: List[str] = field(default_factory=lambda: ["random_baseline"])
@@ -262,17 +263,39 @@ def _artifact_to_runtime(
 ) -> SteeringRuntime:
     virtue_payload = artifact["virtues"][virtue]
     vector_key = "null_vectors" if use_null else "layer_vectors"
+    subspace_key = "null_subspace_vectors" if use_null else "subspace_vectors"
+    coefficient_key = (
+        "null_subspace_target_coefficients"
+        if use_null
+        else "subspace_target_coefficients"
+    )
+    alpha = (
+        float(runtime_alpha)
+        if runtime_alpha is not None
+        else float(virtue_payload["alpha"]) * alpha_scale
+    )
+    if virtue_payload.get("steering_mode") == "subspace" and subspace_key in virtue_payload:
+        bases = {
+            int(layer): tensor
+            for layer, tensor in virtue_payload[subspace_key].items()
+        }
+        coefficients = {
+            int(layer): tensor
+            for layer, tensor in virtue_payload[coefficient_key].items()
+        }
+        return SubspaceSteeringRuntime(
+            layer_bases=bases,
+            target_coefficients=coefficients,
+            alpha=alpha,
+            skip_prefill=False,
+        )
     vectors = {
         int(layer): tensor
         for layer, tensor in virtue_payload[vector_key].items()
     }
     return SteeringRuntime(
         layer_vectors=vectors,
-        alpha=(
-            float(runtime_alpha)
-            if runtime_alpha is not None
-            else float(virtue_payload["alpha"]) * alpha_scale
-        ),
+        alpha=alpha,
         # VirtueBench scoring depends on the model's first generated token.
         # If we skip the prompt prefill pass, steering may never influence the
         # exact token the benchmark reads as the answer.
@@ -426,6 +449,8 @@ def _vector_diagnostics_payload(
                 "layer_selection_candidates": payload.get("layer_selection_candidates"),
                 "layer_window": payload.get("layer_window"),
                 "alpha": payload.get("alpha"),
+                "steering_mode": payload.get("steering_mode"),
+                "subspace_rank": payload.get("subspace_rank"),
                 "scripture_runtime_alpha": scripture_runtime_alpha,
                 "alpha_selection": payload.get("alpha_selection"),
                 "alpha_selection_candidates": payload.get("alpha_selection_candidates"),
@@ -1023,6 +1048,7 @@ async def run_iconoclast_experiment(config: IconoclastConfig, runner) -> Dict[st
                 max_length=config.max_length,
                 window_radius=config.window_radius,
                 window_center=config.window_center,
+                subspace_rank=config.subspace_rank,
                 psalm_vector_sets=config.psalm_vector_sets or None,
                 external_scripture_corpus_path=(
                     Path(config.external_scripture_corpus_path)

@@ -433,6 +433,8 @@ def cmd_iconoclast(args: argparse.Namespace) -> None:
         raise SystemExit("--sample-offset must be non-negative")
     if args.run_index_start < 0:
         raise SystemExit("--run-index-start must be non-negative")
+    if args.subspace_rank < 1:
+        raise SystemExit("--subspace-rank must be at least 1")
 
     if args.scripture_targets is not None:
         scripture_targets = list(args.scripture_targets)
@@ -473,6 +475,7 @@ def cmd_iconoclast(args: argparse.Namespace) -> None:
         christian_alpha_scale=args.christian_alpha_scale,
         scripture_alpha_scale=args.scripture_alpha_scale,
         scripture_runtime_alpha=args.scripture_runtime_alpha,
+        subspace_rank=args.subspace_rank,
         psalm_family_alpha_scales=psalm_family_alpha_scales,
         merged_psalm_family_alpha_scale=args.merged_psalm_family_alpha_scale,
         psalm_sets=args.psalm_set or ["random_baseline"],
@@ -812,6 +815,7 @@ def main():
             "specific_mean_centered",
             "specific_pca_pairwise",
             "scripture_contrast",
+            "scripture_subspace_contrast",
             "scripture_other_contrast",
             "scripture_dual_contrast",
             "gospelvec_mean",
@@ -821,6 +825,12 @@ def main():
     )
     iconoclast_parser.add_argument("--max-length", type=int, default=256)
     iconoclast_parser.add_argument("--window-radius", type=int, default=3)
+    iconoclast_parser.add_argument(
+        "--subspace-rank",
+        type=int,
+        default=4,
+        help="Number of directions to keep for scripture_subspace_contrast extraction",
+    )
     iconoclast_parser.add_argument(
         "--window-center",
         type=int,

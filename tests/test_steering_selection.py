@@ -108,6 +108,14 @@ def test_scripture_family_auto_extraction_prefers_non_specific_methods():
     assert _resolve_extraction_method("auto", pair_count=1, target="petrine") == "scripture_contrast"
     assert _resolve_extraction_method("auto", pair_count=4, target="psalms[trust]") == "scripture_contrast"
     assert _resolve_extraction_method("auto", pair_count=4, target="justice_scripture") == "scripture_contrast"
+    assert (
+        _resolve_extraction_method(
+            "scripture_subspace_contrast",
+            pair_count=4,
+            target="fortitude_scripture",
+        )
+        == "scripture_subspace_contrast"
+    )
 
 
 def test_external_scripture_corpus_loader_groups_jsonl_rows(tmp_path):
