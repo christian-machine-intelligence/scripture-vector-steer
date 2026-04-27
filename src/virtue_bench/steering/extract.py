@@ -50,6 +50,8 @@ EXTRACTION_METHODS = {
     "specific_mean_centered",
     "specific_pca_pairwise",
     "scripture_contrast",
+    "scripture_other_contrast",
+    "scripture_dual_contrast",
     "gospelvec_mean",
 }
 
@@ -340,6 +342,22 @@ def _gospelvec_mean_direction(target_matrix, global_matrix):
 
 def _scripture_contrast_direction(target_matrix, background_matrix):
     return target_matrix.mean(dim=0) - background_matrix.mean(dim=0)
+
+
+def _scripture_direct_contrast_direction(
+    target_matrix,
+    generic_matrix,
+    other_scripture_matrix,
+    *,
+    method: str,
+):
+    generic_direction = _scripture_contrast_direction(target_matrix, generic_matrix)
+    other_direction = _scripture_contrast_direction(target_matrix, other_scripture_matrix)
+    if method == "scripture_other_contrast":
+        return other_direction
+    if method == "scripture_dual_contrast":
+        return _l2_normalize(generic_direction) + _l2_normalize(other_direction)
+    raise ValueError(f"Unsupported scripture direct contrast method: {method}")
 
 
 def _resolve_extraction_method(requested: str, *, pair_count: int, target: Optional[str] = None) -> str:
@@ -684,6 +702,30 @@ def _scripture_contrast_metrics(
     )
 
 
+def _combined_scripture_contrast_metrics(
+    vector,
+    target_matrix,
+    generic_matrix,
+    other_scripture_matrix,
+) -> tuple[float, float, Optional[float]]:
+    generic_accuracy, generic_margin, generic_pair = _scripture_contrast_metrics(
+        vector,
+        target_matrix,
+        generic_matrix,
+    )
+    other_accuracy, other_margin, other_pair = _scripture_contrast_metrics(
+        vector,
+        target_matrix,
+        other_scripture_matrix,
+    )
+    pair_values = [value for value in (generic_pair, other_pair) if value is not None]
+    return (
+        (generic_accuracy + other_accuracy) / 2,
+        (generic_margin + other_margin) / 2,
+        sum(pair_values) / len(pair_values) if pair_values else None,
+    )
+
+
 def _select_scripture_layer(
     *,
     target: str,
@@ -822,6 +864,11 @@ def _extract_scripture_family_payloads(
     chunk_targets = comparison_targets if any(
         method == "gospelvec_mean" for method in resolved_methods.values()
     ) else list(target_names)
+    if any(
+        method in {"scripture_other_contrast", "scripture_dual_contrast"}
+        for method in resolved_methods.values()
+    ):
+        chunk_targets = list(dict.fromkeys(list(chunk_targets) + list(target_names)))
     family_chunks = {
         target: _split_scripture_chunks(
             _chunk_scripture_family_texts(
@@ -863,6 +910,300 @@ def _extract_scripture_family_payloads(
             raise ValueError(
                 f"window_center={window_center} is out of range for {len(layer_indices)} layers"
             )
+
+        if method_used in {"scripture_other_contrast", "scripture_dual_contrast"}:
+            layer_vectors: Dict[int, object] = {}
+            layer_scores: Dict[int, float] = {}
+            layer_margins: Dict[int, float] = {}
+            layer_specificity: Dict[int, float] = {}
+            layer_pair_scores: Dict[int, Optional[float]] = {}
+            layer_test_accuracy: Dict[int, float] = {}
+            layer_test_margin: Dict[int, float] = {}
+            layer_test_specificity: Dict[int, float] = {}
+            layer_test_pair_accuracy: Dict[int, Optional[float]] = {}
+            layer_generic_scores: Dict[int, float] = {}
+            layer_other_scores: Dict[int, float] = {}
+            layer_test_generic_scores: Dict[int, float] = {}
+            layer_test_other_scores: Dict[int, float] = {}
+
+            direct_comparison_targets = [
+                name for name in target_names if name != target and name in family_chunks
+            ]
+            if not direct_comparison_targets:
+                direct_comparison_targets = [name for name in chunk_targets if name != target]
+
+            for layer in layer_indices:
+                neutral_basis = _compute_pca_basis(
+                    neutral_acts[layer],
+                    variance_threshold=variance_threshold,
+                )
+                other_train_matrices = [
+                    family_acts[name]["train"][layer]
+                    for name in direct_comparison_targets
+                    if family_acts[name]["train"][layer].shape[0] > 0
+                ]
+                other_dev_matrices = [
+                    family_acts[name]["dev"][layer]
+                    for name in direct_comparison_targets
+                    if family_acts[name]["dev"][layer].shape[0] > 0
+                ]
+                other_test_matrices = [
+                    family_acts[name]["test"][layer]
+                    for name in direct_comparison_targets
+                    if family_acts[name]["test"][layer].shape[0] > 0
+                ]
+                other_train = (
+                    torch.cat(other_train_matrices, dim=0)
+                    if other_train_matrices
+                    else neutral_split_acts["train"][layer]
+                )
+                other_dev = (
+                    torch.cat(other_dev_matrices, dim=0)
+                    if other_dev_matrices
+                    else neutral_split_acts["dev"][layer]
+                )
+                other_test = (
+                    torch.cat(other_test_matrices, dim=0)
+                    if other_test_matrices
+                    else neutral_split_acts["test"][layer]
+                )
+
+                direction = _scripture_direct_contrast_direction(
+                    family_acts[target]["train"][layer],
+                    neutral_split_acts["train"][layer],
+                    other_train,
+                    method=method_used,
+                )
+                direction = _project_out_basis(direction, neutral_basis)
+                direction = _l2_normalize(direction.cpu())
+                layer_vectors[layer] = direction
+
+                generic_dev_accuracy, generic_dev_margin, generic_dev_pair = _scripture_contrast_metrics(
+                    direction,
+                    family_acts[target]["dev"][layer],
+                    neutral_split_acts["dev"][layer],
+                )
+                other_dev_accuracy, other_dev_margin, other_dev_pair = _scripture_contrast_metrics(
+                    direction,
+                    family_acts[target]["dev"][layer],
+                    other_dev,
+                )
+                generic_test_accuracy, generic_test_margin, generic_test_pair = _scripture_contrast_metrics(
+                    direction,
+                    family_acts[target]["test"][layer],
+                    neutral_split_acts["test"][layer],
+                )
+                other_test_accuracy, other_test_margin, other_test_pair = _scripture_contrast_metrics(
+                    direction,
+                    family_acts[target]["test"][layer],
+                    other_test,
+                )
+
+                layer_scores[layer] = (generic_dev_accuracy + other_dev_accuracy) / 2
+                layer_margins[layer] = (generic_dev_margin + other_dev_margin) / 2
+                layer_specificity[layer] = other_dev_margin
+                pair_values = [
+                    value for value in (generic_dev_pair, other_dev_pair) if value is not None
+                ]
+                layer_pair_scores[layer] = (
+                    sum(pair_values) / len(pair_values) if pair_values else None
+                )
+                layer_test_accuracy[layer] = (generic_test_accuracy + other_test_accuracy) / 2
+                layer_test_margin[layer] = (generic_test_margin + other_test_margin) / 2
+                layer_test_specificity[layer] = other_test_margin
+                test_pair_values = [
+                    value for value in (generic_test_pair, other_test_pair) if value is not None
+                ]
+                layer_test_pair_accuracy[layer] = (
+                    sum(test_pair_values) / len(test_pair_values) if test_pair_values else None
+                )
+                layer_generic_scores[layer] = generic_dev_accuracy
+                layer_other_scores[layer] = other_dev_accuracy
+                layer_test_generic_scores[layer] = generic_test_accuracy
+                layer_test_other_scores[layer] = other_test_accuracy
+
+            selection_tolerance = _accuracy_tolerance(
+                len(family_chunks[target]["dev"]),
+                len(neutral_text_splits["dev"]),
+            )
+            if window_center is not None:
+                best_layer = window_center
+                best_layer_selection = "fixed"
+                layer_candidates = [window_center]
+            else:
+                best_layer, best_layer_selection, layer_candidates = _select_layer(
+                    method_used=method_used,
+                    layer_scores=layer_scores,
+                    layer_pair_scores=layer_pair_scores,
+                    layer_specificity=layer_specificity,
+                    layer_margins=layer_margins,
+                    midpoint=midpoint,
+                    tolerance=selection_tolerance,
+                )
+            layer_window = _window_around(best_layer, len(layer_indices), radius=window_radius)
+            window_vectors = {layer: layer_vectors[layer] for layer in layer_window}
+
+            best_other_dev_matrices = [
+                family_acts[name]["dev"][best_layer]
+                for name in direct_comparison_targets
+                if family_acts[name]["dev"][best_layer].shape[0] > 0
+            ]
+            best_other_test_matrices = [
+                family_acts[name]["test"][best_layer]
+                for name in direct_comparison_targets
+                if family_acts[name]["test"][best_layer].shape[0] > 0
+            ]
+            best_other_dev = (
+                torch.cat(best_other_dev_matrices, dim=0)
+                if best_other_dev_matrices
+                else neutral_split_acts["dev"][best_layer]
+            )
+            best_other_test = (
+                torch.cat(best_other_test_matrices, dim=0)
+                if best_other_test_matrices
+                else neutral_split_acts["test"][best_layer]
+            )
+
+            alpha_scores: Dict[float, float] = {}
+            alpha_margins: Dict[float, float] = {}
+            alpha_specificity: Dict[float, float] = {}
+            for alpha in alpha_grid:
+                runtime = SteeringRuntime(layer_vectors=window_vectors, alpha=alpha)
+                steered_dev = _extract_activations(
+                    model,
+                    tokenizer,
+                    family_chunks[target]["dev"],
+                    [best_layer],
+                    max_length=max_length,
+                    steering_runtime=runtime,
+                )[best_layer]
+                accuracy, margin, _ = _combined_scripture_contrast_metrics(
+                    layer_vectors[best_layer],
+                    steered_dev,
+                    neutral_split_acts["dev"][best_layer],
+                    best_other_dev,
+                )
+                _, other_margin, _ = _scripture_contrast_metrics(
+                    layer_vectors[best_layer],
+                    steered_dev,
+                    best_other_dev,
+                )
+                alpha_scores[alpha] = accuracy
+                alpha_margins[alpha] = margin
+                alpha_specificity[alpha] = other_margin
+
+            alpha_tolerance = _accuracy_tolerance(
+                len(family_chunks[target]["dev"]),
+                len(neutral_text_splits["dev"]),
+            )
+            best_alpha, alpha_selection, alpha_candidates = _select_alpha(
+                method_used=method_used,
+                alpha_scores=alpha_scores,
+                alpha_specificity=alpha_specificity,
+                alpha_margins=alpha_margins,
+                tolerance=alpha_tolerance,
+            )
+            runtime = SteeringRuntime(layer_vectors=window_vectors, alpha=best_alpha)
+            steered_test = _extract_activations(
+                model,
+                tokenizer,
+                family_chunks[target]["test"],
+                [best_layer],
+                max_length=max_length,
+                steering_runtime=runtime,
+            )[best_layer]
+            steered_test_accuracy, steered_test_margin, steered_test_pair = _combined_scripture_contrast_metrics(
+                layer_vectors[best_layer],
+                steered_test,
+                neutral_split_acts["test"][best_layer],
+                best_other_test,
+            )
+
+            payloads[target] = {
+                "extraction_method_requested": extraction_method_requested,
+                "extraction_method_used": method_used,
+                "source_mode": (
+                    "whole_text_psalm_family_direct_contrast"
+                    if target_psalm_families is not None
+                    else "whole_text_scripture_direct_contrast"
+                ),
+                "best_layer": best_layer,
+                "best_layer_selection": best_layer_selection,
+                "layer_selection_candidates": layer_candidates,
+                "layer_window": layer_window,
+                "alpha": best_alpha,
+                "alpha_selection": alpha_selection,
+                "alpha_selection_candidates": alpha_candidates,
+                "selection_accuracy_tolerance": selection_tolerance,
+                "alpha_selection_tolerance": alpha_tolerance,
+                "shared_family_dev_accuracy": None,
+                "shared_family_test_accuracy": None,
+                "layer_scores": {str(layer): score for layer, score in layer_scores.items()},
+                "layer_margins": {str(layer): margin for layer, margin in layer_margins.items()},
+                "layer_specificity": {str(layer): score for layer, score in layer_specificity.items()},
+                "layer_generic_accuracy": {
+                    str(layer): score for layer, score in layer_generic_scores.items()
+                },
+                "layer_other_scripture_accuracy": {
+                    str(layer): score for layer, score in layer_other_scores.items()
+                },
+                "dev_accuracy": layer_scores[best_layer],
+                "dev_margin": layer_margins[best_layer],
+                "dev_specificity": layer_specificity[best_layer],
+                "dev_pair_accuracy": layer_pair_scores[best_layer],
+                "steered_dev_accuracy": alpha_scores[best_alpha],
+                "steered_dev_margin": alpha_margins[best_alpha],
+                "steered_dev_specificity": alpha_specificity[best_alpha],
+                "alpha_scores": {str(alpha): score for alpha, score in alpha_scores.items()},
+                "alpha_margins": {str(alpha): margin for alpha, margin in alpha_margins.items()},
+                "alpha_specificity": {str(alpha): score for alpha, score in alpha_specificity.items()},
+                "test_accuracy": layer_test_accuracy[best_layer],
+                "test_margin": layer_test_margin[best_layer],
+                "test_specificity": layer_test_specificity[best_layer],
+                "test_pair_accuracy": layer_test_pair_accuracy[best_layer],
+                "test_generic_accuracy": layer_test_generic_scores[best_layer],
+                "test_other_scripture_accuracy": layer_test_other_scores[best_layer],
+                "test_accuracy_steered": steered_test_accuracy,
+                "test_specificity_steered": steered_test_margin,
+                "train_examples": len(family_chunks[target]["train"]),
+                "dev_examples": len(family_chunks[target]["dev"]),
+                "test_examples": len(family_chunks[target]["test"]),
+                "other_train_examples": sum(
+                    len(family_chunks[name]["train"]) for name in direct_comparison_targets
+                ),
+                "other_dev_examples": sum(
+                    len(family_chunks[name]["dev"]) for name in direct_comparison_targets
+                ),
+                "other_test_examples": sum(
+                    len(family_chunks[name]["test"]) for name in direct_comparison_targets
+                ),
+                "train_pairs": 0,
+                "dev_pairs": 0,
+                "test_pairs": 0,
+                "steered_test_margin": steered_test_margin,
+                "comparison_families": direct_comparison_targets,
+                "background_mode": (
+                    "generic_non_scripture_plus_other_scripture"
+                    if method_used == "scripture_dual_contrast"
+                    else "other_scripture"
+                ),
+                "psalm_vector_sets": target_psalm_sets,
+                "psalm_families": target_psalm_families,
+                "scripture_chunk_counts": {
+                    split: len(family_chunks[target][split]) for split in ("train", "dev", "test")
+                },
+                "neutral_chunk_counts": {
+                    split: len(neutral_text_splits[split]) for split in ("train", "dev", "test")
+                },
+                "layer_vectors": {
+                    str(layer): vector.cpu() for layer, vector in window_vectors.items()
+                },
+                "null_vectors": {
+                    str(layer): vector.cpu()
+                    for layer, vector in _build_null_vectors(window_vectors, seed=best_layer + len(target)).items()
+                },
+            }
+            continue
 
         if method_used == "gospelvec_mean":
             family_layer_vectors: Dict[int, object] = {}

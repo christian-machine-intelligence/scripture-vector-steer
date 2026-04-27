@@ -812,6 +812,8 @@ def main():
             "specific_mean_centered",
             "specific_pca_pairwise",
             "scripture_contrast",
+            "scripture_other_contrast",
+            "scripture_dual_contrast",
             "gospelvec_mean",
         ],
         default="auto",
