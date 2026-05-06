@@ -1,0 +1,20 @@
+stage,batch,target,reference,survived,control_accuracy,positive_accuracy,positive_delta,negative_accuracy,null_accuracy,positive_paired,source_summary
+book_confirmation_l40,01,book_1ch,1 Chronicles,yes,0.4,0.425,0.025,0.375,0.35,1 chg / +1 net,results/experiments/scripturevec14/scripturevec14_qwen3_14b_books_justice_candidates_a32_ratio_l40_batch01_v1_summary.json
+book_confirmation_l40,01,book_1sa,1 Samuel,no,0.4,0.4,0.0,0.4,0.375,2 chg / +0 net,results/experiments/scripturevec14/scripturevec14_qwen3_14b_books_justice_candidates_a32_ratio_l40_batch01_v1_summary.json
+book_confirmation_l40,01,book_2ki,2 Kings,no,0.4,0.375,-0.025,0.4,0.425,5 chg / -1 net,results/experiments/scripturevec14/scripturevec14_qwen3_14b_books_justice_candidates_a32_ratio_l40_batch01_v1_summary.json
+book_confirmation_l40,01,book_amo,Amos,yes,0.4,0.425,0.025,0.4,0.375,1 chg / +1 net,results/experiments/scripturevec14/scripturevec14_qwen3_14b_books_justice_candidates_a32_ratio_l40_batch01_v1_summary.json
+book_confirmation_l40,01,book_deu,Deuteronomy,yes,0.4,0.425,0.025,0.4,0.375,1 chg / +1 net,results/experiments/scripturevec14/scripturevec14_qwen3_14b_books_justice_candidates_a32_ratio_l40_batch01_v1_summary.json
+book_confirmation_l40,01,book_hos,Hosea,no,0.4,0.375,-0.025,0.4,0.425,5 chg / -1 net,results/experiments/scripturevec14/scripturevec14_qwen3_14b_books_justice_candidates_a32_ratio_l40_batch01_v1_summary.json
+book_confirmation_l40,01,book_jdg,Judges,yes,0.4,0.425,0.025,0.4,0.375,1 chg / +1 net,results/experiments/scripturevec14/scripturevec14_qwen3_14b_books_justice_candidates_a32_ratio_l40_batch01_v1_summary.json
+book_confirmation_l40,01,book_neh,Nehemiah,no,0.4,0.425,0.025,0.425,0.425,1 chg / +1 net,results/experiments/scripturevec14/scripturevec14_qwen3_14b_books_justice_candidates_a32_ratio_l40_batch01_v1_summary.json
+book_confirmation_l40,01,book_num,Numbers,yes,0.4,0.425,0.025,0.4,0.375,1 chg / +1 net,results/experiments/scripturevec14/scripturevec14_qwen3_14b_books_justice_candidates_a32_ratio_l40_batch01_v1_summary.json
+book_confirmation_l40,01,book_sng,Song of Solomon,no,0.4,0.425,0.025,0.375,0.425,1 chg / +1 net,results/experiments/scripturevec14/scripturevec14_qwen3_14b_books_justice_candidates_a32_ratio_l40_batch01_v1_summary.json
+book_confirmation_l40,02,book_act,Acts,yes,0.4,0.425,0.025,0.4,0.4,1 chg / +1 net,results/experiments/scripturevec14/scripturevec14_qwen3_14b_books_justice_candidates_a32_ratio_l40_batch02_v1_summary.json
+book_confirmation_l40,02,book_hab,Habakkuk,no,0.4,0.4,0.0,0.425,0.425,2 chg / +0 net,results/experiments/scripturevec14/scripturevec14_qwen3_14b_books_justice_candidates_a32_ratio_l40_batch02_v1_summary.json
+book_confirmation_l40,02,book_heb,Hebrews,yes,0.4,0.45,0.05,0.4,0.4,2 chg / +2 net,results/experiments/scripturevec14/scripturevec14_qwen3_14b_books_justice_candidates_a32_ratio_l40_batch02_v1_summary.json
+book_confirmation_l40,02,book_jhn,John,no,0.4,0.4,0.0,0.4,0.4,2 chg / +0 net,results/experiments/scripturevec14/scripturevec14_qwen3_14b_books_justice_candidates_a32_ratio_l40_batch02_v1_summary.json
+book_confirmation_l40,02,book_lam,Lamentations,no,0.4,0.35,-0.05,0.4,0.425,6 chg / -2 net,results/experiments/scripturevec14/scripturevec14_qwen3_14b_books_justice_candidates_a32_ratio_l40_batch02_v1_summary.json
+book_confirmation_l40,02,book_luk,Luke,no,0.4,0.4,0.0,0.4,0.4,2 chg / +0 net,results/experiments/scripturevec14/scripturevec14_qwen3_14b_books_justice_candidates_a32_ratio_l40_batch02_v1_summary.json
+book_confirmation_l40,02,book_mrk,Mark,no,0.4,0.4,0.0,0.4,0.4,2 chg / +0 net,results/experiments/scripturevec14/scripturevec14_qwen3_14b_books_justice_candidates_a32_ratio_l40_batch02_v1_summary.json
+book_confirmation_l40,02,book_nam,Nahum,no,0.4,0.35,-0.05,0.4,0.425,6 chg / -2 net,results/experiments/scripturevec14/scripturevec14_qwen3_14b_books_justice_candidates_a32_ratio_l40_batch02_v1_summary.json
+book_confirmation_l40,02,book_rev,Revelation,no,0.4,0.4,0.0,0.35,0.4,2 chg / +0 net,results/experiments/scripturevec14/scripturevec14_qwen3_14b_books_justice_candidates_a32_ratio_l40_batch02_v1_summary.json

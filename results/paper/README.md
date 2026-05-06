@@ -1,13 +1,12 @@
 # Paper Artifacts
 
-This directory contains curated artifacts that directly support
-*Activation Without Animation*.
+This directory contains curated artifacts that directly support the current
+ScriptureVec Justice paper.
 
 Current public artifact bundle:
 
-- [Scripture Vector Steer artifacts](scripture_study2/README.md)
-- [Data appendix](scripture_study2/scripture_vector_steer_data_appendix.md)
+- [ScriptureVec Justice artifacts](scripturevec_justice/README.md)
 
 This repository intentionally excludes old scratch runs, failed attempts,
-console logs, and historical benchmark dumps that are not part of the paper
-argument.
+console logs, bulky vector checkpoints, and historical benchmark dumps that are
+not part of the current paper argument.

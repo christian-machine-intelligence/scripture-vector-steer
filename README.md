@@ -1,90 +1,87 @@
-# Scripture Vector Steer
+# ScriptureVec Justice
 
-Scripture Vector Steer is a research repository for testing whether
-Scripture-derived activation vectors can shift language-model decisions on
-VirtueBench 2.
+This repository contains the code, paper, and curated artifacts for the
+ScriptureVec Justice study:
 
-The current paper is:
+- ["Search Out a Matter": A Canon-Wide Discovery of Chapter-Level Biblical Justice Vectors in Qwen3-14B](paper/search_out_a_matter_scripturevec_justice.md)
 
-- [Activation Without Animation](paper/activation_without_animation.docx)
+## Current Paper
 
-The supporting run artifacts are curated here:
+The manuscript is available in three forms:
 
-- [results/paper/scripture_study2](results/paper/scripture_study2/README.md)
-- [data appendix](results/paper/scripture_study2/scripture_vector_steer_data_appendix.md)
+- [Markdown](paper/search_out_a_matter_scripturevec_justice.md)
+- [Word document](paper/search_out_a_matter_scripturevec_justice.docx)
+- [Rendered PDF](paper/search_out_a_matter_scripturevec_justice.pdf)
 
-## Abstract
+## Headline Result
 
-The project evaluates Qwen3.5-9B on VirtueBench 2 using book-level Scripture
-directions extracted from Psalms, Romans, and the Petrine epistles. Each vector
-is tested against a shared control with positive steering, negative-alpha
-steering, and null-control steering.
+The study searches Scripture as a source of activation-steering directions for
+Justice behavior on the ratio-stage Justice subset of VirtueBench2. The main
+finding is that specific biblical chapters, not Scripture in a flat or generic
+sense, yield Justice-relevant vectors whose effects can be mapped across model
+layers and steering strengths.
 
-The headline result is deliberately narrow: Scripture-associated activation
-directions are behaviorally active and improve prudence most consistently, but
-the full pattern is not a simple "more Scripture vector means more virtue"
-story. Justice is fragile, negative-alpha Psalms and Romans outperform their
-positive lanes, and the Petrine null control outperforms the real Petrine
-vector. The paper interprets that result as evidence for bounded
-instrumentality: steering can alter an artifact's formal operation without
-turning the model into a soul, conscience, moral patient, or spiritual
-authority.
+The canon-wide pipeline narrowed:
+
+- 66 biblical books to 19 preliminary book candidates
+- 19 book candidates to 7 confirmed book sources
+- 170 chapters from those books to 38 preliminary chapter hits
+- 38 chapter hits to 16 confirmed chapter movers
+- 16 confirmed chapter vectors across a completed 43-cell layer/alpha
+  localization grid
+
+The expanded localization grid found three regime-defining cells:
+
+- `L30 / alpha 96`: broadest rescue, 13 of 16 chapter vectors
+- `L28 / alpha 16`: efficient low-strength uptake, 11 of 16 chapter vectors
+- `L24 / alpha 32`: strongest mean positive movement, 9 of 16 chapter vectors
+
+The paper's central claim is that Scripture can be treated not merely as
+alignment text, but as a structured source of discoverable moral steering
+vectors whose behavioral force can be mapped across a model's internal
+geometry.
+
+## Curated Artifacts
+
+The paper-facing result bundle is:
+
+- [results/paper/scripturevec_justice](results/paper/scripturevec_justice/README.md)
+
+That folder contains:
+
+- compact CSV and JSON data used by the paper
+- the current manuscript exports
+- publication figures
+- the writing packet and ICMI style guide used to draft the paper
 
 ## Repository Contents
 
 ```text
 paper/
-  activation_without_animation.docx
+  search_out_a_matter_scripturevec_justice.md
+  search_out_a_matter_scripturevec_justice.docx
+  search_out_a_matter_scripturevec_justice.pdf
 
-results/paper/scripture_study2/
+results/paper/scripturevec_justice/
   README.md
-  scripture_vector_steer_data_appendix.md
-  scripture_study2_summary.md
-  scripture_study2_deep_analysis.md
-  *_vector_diagnostics.*
-  *_full.json
+  key_data/
+  figures/
+  paper_doc/
+  writing_packet/
 
 src/virtue_bench/
   benchmark, runner, steering, and analysis code
 
+scripts/
+  local analysis, summarization, paper-building, and remote-run helpers
+
 data/
-  VirtueBench scenarios and Scripture/steering source corpora
-
-tests/
-  focused regression tests for the benchmark and steering extensions
-```
-
-## Future Evals
-
-Before designing the next steering run, read:
-
-- [docs/experiment_playbook.md](docs/experiment_playbook.md)
-- [docs/iconoclast_best_practices.md](docs/iconoclast_best_practices.md)
-- [docs/future_eval_lessons.md](docs/future_eval_lessons.md)
-
-The short version: use `control` as the headline comparison, freeze vector
-artifacts before scale sweeps, treat null lanes as mechanism checks, and pair
-the quantitative readout with reasoning examples.
-
-## Installation
-
-Use Python 3.10 or newer.
-
-```bash
-python3.10 -m venv .venv
-source .venv/bin/activate
-pip install -e ".[dev]"
-```
-
-The CLI entrypoint is:
-
-```bash
-virtue-bench --help
+  VirtueBench scenarios and bundled KJV scripture data
 ```
 
 ## Verification
 
-Run the focused local test set:
+For the code path most relevant to ScriptureVec steering work:
 
 ```bash
 PYTHONPATH=src python -m pytest \
@@ -94,27 +91,16 @@ PYTHONPATH=src python -m pytest \
   tests/test_steering_selection.py
 ```
 
-For a broader smoke check:
-
-```bash
-PYTHONPATH=src python -m pytest
-```
+The paper artifacts themselves can be checked by reading
+`results/paper/scripturevec_justice/key_data/README.md` and comparing the
+figures in `results/paper/scripturevec_justice/figures/` against the manuscript.
 
 ## Data Policy
 
-This public repository includes the code, benchmark source data, and curated
-artifacts that support the paper. It intentionally excludes old scratch runs,
-failed attempts, local console logs, bulky vector checkpoints, and historical
-VirtueBench outputs that are not part of the paper argument.
-
-The raw decision-level artifact for the completed Scripture Vector Steer run is
-included in `results/paper/scripture_study2/`. Bulky raw logs remain excluded.
-
-## Lineage
-
-This project builds on VirtueBench 2 and extends it with activation-steering
-experiments for Scripture-derived corpora. The underlying Python package and
-CLI remain named `virtue_bench` / `virtue-bench` for compatibility.
+This repository includes the curated data and figures needed for the current
+paper argument. Bulky scratch runs, local console logs, vector checkpoints, and
+historical benchmark dumps remain outside the paper-facing artifact bundle
+unless they directly support the ScriptureVec Justice paper.
 
 ## License
 

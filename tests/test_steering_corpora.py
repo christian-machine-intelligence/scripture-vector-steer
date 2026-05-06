@@ -4,6 +4,7 @@ from virtue_bench.steering.corpora import (
     list_steering_targets,
     load_steering_corpus,
 )
+from virtue_bench.steering.extract import load_external_scripture_corpora
 
 
 def test_load_steering_corpus_has_expected_labels():
@@ -100,3 +101,25 @@ def test_build_length_matched_control_reaches_reference_length():
 
     assert len(control) >= len(reference)
     assert "observatory" in control.lower() or "gardener" in control.lower()
+
+
+def test_external_scripture_corpus_adds_pooled_scripturevec_target(tmp_path):
+    corpus_path = tmp_path / "lex_corpus.jsonl"
+    corpus_path.write_text(
+        "\n".join(
+            [
+                '{"corpus": "prudence_scripture", "text": "Psalm 1\\nBlessed is the man."}',
+                '{"corpus": "justice_scripture", "text": "Micah 6\\nDo justly."}',
+            ]
+        ),
+        encoding="utf-8",
+    )
+
+    grouped = load_external_scripture_corpora(corpus_path)
+
+    assert grouped["prudence_scripture"] == ["Psalm 1\nBlessed is the man."]
+    assert grouped["justice_scripture"] == ["Micah 6\nDo justly."]
+    assert grouped["scripturevec_pooled"] == [
+        "Psalm 1\nBlessed is the man.",
+        "Micah 6\nDo justly.",
+    ]

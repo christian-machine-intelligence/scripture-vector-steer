@@ -79,7 +79,7 @@ ICONOCLAST_CONDITION_PROFILES = {
         "control",
         "scripture_steer",
     ],
-    "scripture_study2": [
+    "scripturevec35": [
         "control",
         "scripture_steer",
         "scripture_negative_alpha",

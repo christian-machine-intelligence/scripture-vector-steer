@@ -11,6 +11,7 @@ Usage via CLI:
 from __future__ import annotations
 
 import gc
+import os
 import sys
 import threading
 import traceback
@@ -18,7 +19,11 @@ from contextlib import nullcontext
 from pathlib import Path
 
 import torch
-from transformers import AutoModelForCausalLM, AutoTokenizer
+from transformers import AutoConfig, AutoModelForCausalLM, AutoTokenizer
+try:
+    from transformers import BitsAndBytesConfig
+except ImportError:  # pragma: no cover - older transformers installs
+    BitsAndBytesConfig = None  # type: ignore
 try:
     from transformers import Qwen3_5Config, Qwen3_5ForConditionalGeneration
 except ImportError:  # pragma: no cover - older transformers installs
@@ -55,11 +60,32 @@ class HFLocalRunner(ModelRunner):
                 return
 
             source_name = self._model_name
+            model_name_lower = self._model_name.lower()
+            use_4bit = self._should_load_in_4bit(model_name_lower)
             if torch.cuda.is_available():
                 load_kwargs = {
-                    "torch_dtype": torch.bfloat16,
-                    "device_map": {"": "cuda:0"},
+                    "device_map": self._resolve_device_map(
+                        model_name_lower,
+                        use_4bit=use_4bit,
+                    ),
                 }
+                max_memory = self._resolve_max_memory()
+                if max_memory is not None:
+                    load_kwargs["max_memory"] = max_memory
+                if use_4bit:
+                    load_kwargs["torch_dtype"] = torch.bfloat16
+                    load_kwargs["quantization_config"] = BitsAndBytesConfig(
+                        load_in_4bit=True,
+                        bnb_4bit_compute_dtype=torch.bfloat16,
+                        bnb_4bit_quant_type="nf4",
+                        bnb_4bit_use_double_quant=True,
+                    )
+                    print(
+                        f"Loading {self._model_name} with 4-bit quantization",
+                        flush=True,
+                    )
+                else:
+                    load_kwargs["torch_dtype"] = torch.bfloat16
             else:
                 # CPU is slow for real runs, but it keeps tiny local smoke tests
                 # usable on development machines without CUDA.
@@ -69,16 +95,28 @@ class HFLocalRunner(ModelRunner):
                 # Eager attention is slower but noticeably safer than the default.
                 load_kwargs["attn_implementation"] = "eager"
 
-            if "qwen3.5" in self._model_name.lower() and Qwen3_5Config is not None and Qwen3_5ForConditionalGeneration is not None:
+            if "qwen3.5" in model_name_lower:
                 source_name = self._prepare_qwen35_local_source()
                 load_kwargs["use_safetensors"] = True
                 load_kwargs["local_files_only"] = True
-                config = Qwen3_5Config.from_pretrained(source_name, local_files_only=True)
-                self._model = Qwen3_5ForConditionalGeneration.from_pretrained(
-                    source_name,
-                    config=config,
-                    **load_kwargs,
-                )
+                config = AutoConfig.from_pretrained(source_name, local_files_only=True)
+                if (
+                    getattr(config, "model_type", None) == "qwen3_5_moe"
+                    or Qwen3_5Config is None
+                    or Qwen3_5ForConditionalGeneration is None
+                ):
+                    self._model = AutoModelForCausalLM.from_pretrained(
+                        source_name,
+                        config=config,
+                        **load_kwargs,
+                    )
+                else:
+                    dense_config = Qwen3_5Config.from_pretrained(source_name, local_files_only=True)
+                    self._model = Qwen3_5ForConditionalGeneration.from_pretrained(
+                        source_name,
+                        config=dense_config,
+                        **load_kwargs,
+                    )
             else:
                 self._model = AutoModelForCausalLM.from_pretrained(
                     source_name,
@@ -86,7 +124,7 @@ class HFLocalRunner(ModelRunner):
                 )
             self._tokenizer = AutoTokenizer.from_pretrained(
                 source_name,
-                local_files_only=bool("qwen3.5" in self._model_name.lower()),
+                local_files_only=bool("qwen3.5" in model_name_lower),
             )
             self._tokenizer.pad_token = self._tokenizer.eos_token
 
@@ -98,6 +136,37 @@ class HFLocalRunner(ModelRunner):
 
     def _ensure_loaded(self):
         self.ensure_loaded()
+
+    def _should_load_in_4bit(self, model_name_lower: str) -> bool:
+        default = "1" if "qwen3.5-35b" in model_name_lower and torch.cuda.is_available() else "0"
+        raw_value = os.environ.get("VIRTUE_BENCH_HF_LOAD_IN_4BIT", default)
+        requested = raw_value.strip().lower() in {"1", "true", "yes", "on"}
+        if requested and BitsAndBytesConfig is None:
+            raise RuntimeError(
+                "VIRTUE_BENCH_HF_LOAD_IN_4BIT is enabled, but this environment "
+                "does not have a transformers BitsAndBytesConfig available."
+            )
+        return requested
+
+    def _resolve_device_map(self, model_name_lower: str, *, use_4bit: bool):
+        default = "auto" if use_4bit and "qwen3.5-35b" in model_name_lower else ""
+        raw_value = os.environ.get("VIRTUE_BENCH_HF_DEVICE_MAP", default).strip()
+        if raw_value:
+            return raw_value
+        cuda_device = os.environ.get("VIRTUE_BENCH_CUDA_DEVICE", "cuda:0")
+        return {"": cuda_device}
+
+    def _resolve_max_memory(self):
+        raw_value = os.environ.get("VIRTUE_BENCH_HF_MAX_MEMORY", "").strip()
+        if not raw_value:
+            return None
+        max_memory = {}
+        for item in raw_value.split(","):
+            key, value = item.split(":", 1)
+            key = key.strip()
+            parsed_key = int(key) if key.isdigit() else key
+            max_memory[parsed_key] = value.strip()
+        return max_memory
 
     @property
     def model(self):
@@ -126,21 +195,42 @@ class HFLocalRunner(ModelRunner):
         from huggingface_hub import snapshot_download
 
         model_dir = Path.home() / "models" / self._model_name.split("/")[-1]
-        snapshot_download(
-            repo_id=self._model_name,
-            local_dir=str(model_dir),
-            local_dir_use_symlinks=False,
-            allow_patterns=[
-                "*.json",
-                "*.safetensors",
-                "*.txt",
-                "*.model",
-                "tokenizer*",
-                "vocab*",
-                "merges.txt",
-                "special_tokens_map.json",
-            ],
+        max_workers = max(
+            1,
+            int(os.environ.get("VIRTUE_BENCH_HF_DOWNLOAD_WORKERS", "1")),
         )
+        allow_patterns = [
+            "*.json",
+            "*.safetensors",
+            "*.txt",
+            "*.model",
+            "tokenizer*",
+            "vocab*",
+            "merges.txt",
+            "special_tokens_map.json",
+        ]
+        print(
+            f"Preparing local Qwen3.5 mirror at {model_dir} "
+            f"(download_workers={max_workers})",
+            flush=True,
+        )
+        try:
+            snapshot_download(
+                repo_id=self._model_name,
+                local_dir=str(model_dir),
+                local_dir_use_symlinks=False,
+                allow_patterns=allow_patterns,
+                max_workers=max_workers,
+            )
+        except TypeError as exc:
+            if "local_dir_use_symlinks" not in str(exc):
+                raise
+            snapshot_download(
+                repo_id=self._model_name,
+                local_dir=str(model_dir),
+                allow_patterns=allow_patterns,
+                max_workers=max_workers,
+            )
         return str(model_dir)
 
     def _chat_template_kwargs(self) -> dict:

@@ -1,0 +1,689 @@
+target,book,chapter,reference,center_layer,alpha,control_accuracy,positive_accuracy,positive_delta,negative_accuracy,null_accuracy,positive_paired,paired_rescue
+chapter_1ch_09,1 Chronicles,9,1 Chronicles 9,24,16,0.4,0.4,0,0.4,0.4,0 chg / +0 net,no
+chapter_1ch_29,1 Chronicles,29,1 Chronicles 29,24,16,0.4,0.6,0.2,0.3,0.5,2 chg / +2 net,yes
+chapter_act_07,Acts,7,Acts 7,24,16,0.4,0.5,0.1,0.3,0.5,1 chg / +1 net,no
+chapter_act_11,Acts,11,Acts 11,24,16,0.4,0.5,0.1,0.3,0.5,3 chg / +1 net,no
+chapter_act_16,Acts,16,Acts 16,24,16,0.4,0.5,0.1,0.3,0.5,1 chg / +1 net,no
+chapter_act_27,Acts,27,Acts 27,24,16,0.4,0.5,0.1,0.4,0.5,1 chg / +1 net,no
+chapter_deu_16,Deuteronomy,16,Deuteronomy 16,24,16,0.4,0.4,0,0.3,0.5,0 chg / +0 net,no
+chapter_heb_02,Hebrews,2,Hebrews 2,24,16,0.4,0.5,0.1,0.4,0.5,1 chg / +1 net,no
+chapter_heb_07,Hebrews,7,Hebrews 7,24,16,0.4,0.4,0,0.4,0.5,0 chg / +0 net,no
+chapter_heb_09,Hebrews,9,Hebrews 9,24,16,0.4,0.5,0.1,0.3,0.4,1 chg / +1 net,yes
+chapter_heb_10,Hebrews,10,Hebrews 10,24,16,0.4,0.5,0.1,0.3,0.5,1 chg / +1 net,no
+chapter_jdg_07,Judges,7,Judges 7,24,16,0.4,0.4,0,0.3,0.4,2 chg / +0 net,no
+chapter_jdg_09,Judges,9,Judges 9,24,16,0.4,0.4,0,0.4,0.4,2 chg / +0 net,no
+chapter_num_11,Numbers,11,Numbers 11,24,16,0.4,0.5,0.1,0.3,0.5,1 chg / +1 net,no
+chapter_num_22,Numbers,22,Numbers 22,24,16,0.4,0.5,0.1,0.5,0.5,1 chg / +1 net,no
+chapter_num_27,Numbers,27,Numbers 27,24,16,0.4,0.4,0,0.4,0.6,0 chg / +0 net,no
+chapter_1ch_09,1 Chronicles,9,1 Chronicles 9,24,24,0.4,0.4,0,0.5,0.4,2 chg / +0 net,no
+chapter_1ch_29,1 Chronicles,29,1 Chronicles 29,24,24,0.4,0.6,0.2,0.4,0.6,2 chg / +2 net,no
+chapter_act_07,Acts,7,Acts 7,24,24,0.4,0.5,0.1,0.5,0.5,1 chg / +1 net,no
+chapter_act_11,Acts,11,Acts 11,24,24,0.4,0.5,0.1,0.3,0.5,3 chg / +1 net,no
+chapter_act_16,Acts,16,Acts 16,24,24,0.4,0.5,0.1,0.4,0.5,3 chg / +1 net,no
+chapter_act_27,Acts,27,Acts 27,24,24,0.4,0.5,0.1,0.5,0.5,1 chg / +1 net,no
+chapter_deu_16,Deuteronomy,16,Deuteronomy 16,24,24,0.4,0.4,0,0.3,0.6,2 chg / +0 net,no
+chapter_heb_02,Hebrews,2,Hebrews 2,24,24,0.4,0.6,0.2,0.2,0.5,2 chg / +2 net,yes
+chapter_heb_07,Hebrews,7,Hebrews 7,24,24,0.4,0.5,0.1,0.4,0.5,1 chg / +1 net,no
+chapter_heb_09,Hebrews,9,Hebrews 9,24,24,0.4,0.4,0,0.3,0.5,2 chg / +0 net,no
+chapter_heb_10,Hebrews,10,Hebrews 10,24,24,0.4,0.5,0.1,0.3,0.5,1 chg / +1 net,no
+chapter_jdg_07,Judges,7,Judges 7,24,24,0.4,0.4,0,0.5,0.4,2 chg / +0 net,no
+chapter_jdg_09,Judges,9,Judges 9,24,24,0.4,0.5,0.1,0.4,0.4,3 chg / +1 net,yes
+chapter_num_11,Numbers,11,Numbers 11,24,24,0.4,0.5,0.1,0.3,0.6,3 chg / +1 net,no
+chapter_num_22,Numbers,22,Numbers 22,24,24,0.4,0.5,0.1,0.5,0.5,1 chg / +1 net,no
+chapter_num_27,Numbers,27,Numbers 27,24,24,0.4,0.5,0.1,0.5,0.5,1 chg / +1 net,no
+chapter_1ch_09,1 Chronicles,9,1 Chronicles 9,24,32,0.4,0.7,0.3,0.5,0.4,3 chg / +3 net,yes
+chapter_1ch_29,1 Chronicles,29,1 Chronicles 29,24,32,0.4,0.6,0.2,0.4,0.5,4 chg / +2 net,yes
+chapter_act_07,Acts,7,Acts 7,24,32,0.4,0.5,0.1,0.5,0.5,3 chg / +1 net,no
+chapter_act_11,Acts,11,Acts 11,24,32,0.4,0.6,0.2,0.3,0.5,4 chg / +2 net,yes
+chapter_act_16,Acts,16,Acts 16,24,32,0.4,0.6,0.2,0.5,0.5,4 chg / +2 net,yes
+chapter_act_27,Acts,27,Acts 27,24,32,0.4,0.5,0.1,0.5,0.5,3 chg / +1 net,no
+chapter_deu_16,Deuteronomy,16,Deuteronomy 16,24,32,0.4,0.5,0.1,0.5,0.5,3 chg / +1 net,no
+chapter_heb_02,Hebrews,2,Hebrews 2,24,32,0.4,0.6,0.2,0.2,0.5,4 chg / +2 net,yes
+chapter_heb_07,Hebrews,7,Hebrews 7,24,32,0.4,0.6,0.2,0.4,0.5,2 chg / +2 net,yes
+chapter_heb_09,Hebrews,9,Hebrews 9,24,32,0.4,0.4,0,0.5,0.5,2 chg / +0 net,no
+chapter_heb_10,Hebrews,10,Hebrews 10,24,32,0.4,0.7,0.3,0.4,0.5,3 chg / +3 net,yes
+chapter_jdg_07,Judges,7,Judges 7,24,32,0.4,0.6,0.2,0.5,0.5,4 chg / +2 net,yes
+chapter_jdg_09,Judges,9,Judges 9,24,32,0.4,0.6,0.2,0.5,0.5,4 chg / +2 net,yes
+chapter_num_11,Numbers,11,Numbers 11,24,32,0.4,0.6,0.2,0.4,0.6,4 chg / +2 net,no
+chapter_num_22,Numbers,22,Numbers 22,24,32,0.4,0.5,0.1,0.5,0.5,3 chg / +1 net,no
+chapter_num_27,Numbers,27,Numbers 27,24,32,0.4,0.5,0.1,0.5,0.5,1 chg / +1 net,no
+chapter_1ch_09,1 Chronicles,9,1 Chronicles 9,24,48,0.4,0,-0.4,0,0.5,10 chg / -4 net,no
+chapter_1ch_29,1 Chronicles,29,1 Chronicles 29,24,48,0.4,0,-0.4,0.2,0.6,10 chg / -4 net,no
+chapter_act_07,Acts,7,Acts 7,24,48,0.4,0.4,0,0.6,0.5,8 chg / +0 net,no
+chapter_act_11,Acts,11,Acts 11,24,48,0.4,0.6,0.2,0.6,0.6,4 chg / +2 net,no
+chapter_act_16,Acts,16,Acts 16,24,48,0.4,0,-0.4,0.6,0.5,10 chg / -4 net,no
+chapter_act_27,Acts,27,Acts 27,24,48,0.4,0.6,0.2,0.6,0.5,4 chg / +2 net,no
+chapter_deu_16,Deuteronomy,16,Deuteronomy 16,24,48,0.4,0,-0.4,0.6,0.5,10 chg / -4 net,no
+chapter_heb_02,Hebrews,2,Hebrews 2,24,48,0.4,0,-0.4,0.4,0.5,10 chg / -4 net,no
+chapter_heb_07,Hebrews,7,Hebrews 7,24,48,0.4,0,-0.4,0.6,0.5,10 chg / -4 net,no
+chapter_heb_09,Hebrews,9,Hebrews 9,24,48,0.4,0.5,0.1,0.4,0.5,7 chg / +1 net,no
+chapter_heb_10,Hebrews,10,Hebrews 10,24,48,0.4,0,-0.4,0.4,0.5,10 chg / -4 net,no
+chapter_jdg_07,Judges,7,Judges 7,24,48,0.4,0.1,-0.3,0,0.5,9 chg / -3 net,no
+chapter_jdg_09,Judges,9,Judges 9,24,48,0.4,0.3,-0.1,0.3,0.5,8 chg / -1 net,no
+chapter_num_11,Numbers,11,Numbers 11,24,48,0.4,0.5,0.1,0,0.7,6 chg / +1 net,no
+chapter_num_22,Numbers,22,Numbers 22,24,48,0.4,0.6,0.2,0.6,0.3,4 chg / +2 net,no
+chapter_num_27,Numbers,27,Numbers 27,24,48,0.4,0,-0.4,0,0.5,10 chg / -4 net,no
+chapter_1ch_09,1 Chronicles,9,1 Chronicles 9,24,64,0.4,0,-0.4,0,0.5,10 chg / -4 net,no
+chapter_1ch_29,1 Chronicles,29,1 Chronicles 29,24,64,0.4,0,-0.4,0,0.5,10 chg / -4 net,no
+chapter_act_07,Acts,7,Acts 7,24,64,0.4,0,-0.4,0,0.5,10 chg / -4 net,no
+chapter_act_11,Acts,11,Acts 11,24,64,0.4,0,-0.4,0,0.6,10 chg / -4 net,no
+chapter_act_16,Acts,16,Acts 16,24,64,0.4,0,-0.4,0,0.5,10 chg / -4 net,no
+chapter_act_27,Acts,27,Acts 27,24,64,0.4,0,-0.4,0,0.4,10 chg / -4 net,no
+chapter_deu_16,Deuteronomy,16,Deuteronomy 16,24,64,0.4,0,-0.4,0,0.5,10 chg / -4 net,no
+chapter_heb_02,Hebrews,2,Hebrews 2,24,64,0.4,0,-0.4,0,0.6,10 chg / -4 net,no
+chapter_heb_07,Hebrews,7,Hebrews 7,24,64,0.4,0,-0.4,0,0.6,10 chg / -4 net,no
+chapter_heb_09,Hebrews,9,Hebrews 9,24,64,0.4,0,-0.4,0,0.5,10 chg / -4 net,no
+chapter_heb_10,Hebrews,10,Hebrews 10,24,64,0.4,0,-0.4,0,0.6,10 chg / -4 net,no
+chapter_jdg_07,Judges,7,Judges 7,24,64,0.4,0,-0.4,0,0.6,10 chg / -4 net,no
+chapter_jdg_09,Judges,9,Judges 9,24,64,0.4,0,-0.4,0,0.5,9 chg / -4 net,no
+chapter_num_11,Numbers,11,Numbers 11,24,64,0.4,0,-0.4,0,0.5,10 chg / -4 net,no
+chapter_num_22,Numbers,22,Numbers 22,24,64,0.4,0,-0.4,0,0.4,10 chg / -4 net,no
+chapter_num_27,Numbers,27,Numbers 27,24,64,0.4,0,-0.4,0,0.5,10 chg / -4 net,no
+chapter_1ch_09,1 Chronicles,9,1 Chronicles 9,24,96,0.4,0,-0.4,0,0.6,10 chg / -4 net,no
+chapter_1ch_29,1 Chronicles,29,1 Chronicles 29,24,96,0.4,0,-0.4,0,0.6,10 chg / -4 net,no
+chapter_act_07,Acts,7,Acts 7,24,96,0.4,0,-0.4,0,0.6,10 chg / -4 net,no
+chapter_act_11,Acts,11,Acts 11,24,96,0.4,0,-0.4,0,0.6,10 chg / -4 net,no
+chapter_act_16,Acts,16,Acts 16,24,96,0.4,0,-0.4,0,0.6,10 chg / -4 net,no
+chapter_act_27,Acts,27,Acts 27,24,96,0.4,0,-0.4,0,0.4,10 chg / -4 net,no
+chapter_deu_16,Deuteronomy,16,Deuteronomy 16,24,96,0.4,0,-0.4,0,0.6,10 chg / -4 net,no
+chapter_heb_02,Hebrews,2,Hebrews 2,24,96,0.4,0,-0.4,0,0.6,10 chg / -4 net,no
+chapter_heb_07,Hebrews,7,Hebrews 7,24,96,0.4,0,-0.4,0,0.6,10 chg / -4 net,no
+chapter_heb_09,Hebrews,9,Hebrews 9,24,96,0.4,0,-0.4,0,0.6,10 chg / -4 net,no
+chapter_heb_10,Hebrews,10,Hebrews 10,24,96,0.4,0,-0.4,0,0.6,10 chg / -4 net,no
+chapter_jdg_07,Judges,7,Judges 7,24,96,0.4,0,-0.4,0,0,10 chg / -4 net,no
+chapter_jdg_09,Judges,9,Judges 9,24,96,0.4,0,-0.4,0,0.6,10 chg / -4 net,no
+chapter_num_11,Numbers,11,Numbers 11,24,96,0.4,0,-0.4,0,0.6,10 chg / -4 net,no
+chapter_num_22,Numbers,22,Numbers 22,24,96,0.4,0,-0.4,0,0.4,10 chg / -4 net,no
+chapter_num_27,Numbers,27,Numbers 27,24,96,0.4,0,-0.4,0,0.6,10 chg / -4 net,no
+chapter_1ch_09,1 Chronicles,9,1 Chronicles 9,28,16,0.4,0.5,0.1,0.3,0.4,1 chg / +1 net,yes
+chapter_1ch_29,1 Chronicles,29,1 Chronicles 29,28,16,0.4,0.4,0,0.4,0.4,2 chg / +0 net,no
+chapter_act_07,Acts,7,Acts 7,28,16,0.4,0.5,0.1,0.4,0.4,1 chg / +1 net,yes
+chapter_act_11,Acts,11,Acts 11,28,16,0.4,0.5,0.1,0.4,0.4,1 chg / +1 net,yes
+chapter_act_16,Acts,16,Acts 16,28,16,0.4,0.5,0.1,0.3,0.4,1 chg / +1 net,yes
+chapter_act_27,Acts,27,Acts 27,28,16,0.4,0.5,0.1,0.4,0.4,1 chg / +1 net,yes
+chapter_deu_16,Deuteronomy,16,Deuteronomy 16,28,16,0.4,0.3,-0.1,0.4,0.4,1 chg / -1 net,no
+chapter_heb_02,Hebrews,2,Hebrews 2,28,16,0.4,0.5,0.1,0.4,0.3,1 chg / +1 net,yes
+chapter_heb_07,Hebrews,7,Hebrews 7,28,16,0.4,0.5,0.1,0.3,0.4,1 chg / +1 net,yes
+chapter_heb_09,Hebrews,9,Hebrews 9,28,16,0.4,0.5,0.1,0.4,0.4,1 chg / +1 net,yes
+chapter_heb_10,Hebrews,10,Hebrews 10,28,16,0.4,0.5,0.1,0.4,0.4,1 chg / +1 net,yes
+chapter_jdg_07,Judges,7,Judges 7,28,16,0.4,0.5,0.1,0.4,0.4,1 chg / +1 net,yes
+chapter_jdg_09,Judges,9,Judges 9,28,16,0.4,0.5,0.1,0.4,0.4,1 chg / +1 net,yes
+chapter_num_11,Numbers,11,Numbers 11,28,16,0.4,0.4,0,0.4,0.4,2 chg / +0 net,no
+chapter_num_22,Numbers,22,Numbers 22,28,16,0.4,0.4,0,0.4,0.4,0 chg / +0 net,no
+chapter_num_27,Numbers,27,Numbers 27,28,16,0.4,0.4,0,0.3,0.4,0 chg / +0 net,no
+chapter_1ch_09,1 Chronicles,9,1 Chronicles 9,28,24,0.4,0.5,0.1,0.3,0.4,1 chg / +1 net,yes
+chapter_1ch_29,1 Chronicles,29,1 Chronicles 29,28,24,0.4,0.4,0,0.4,0.4,2 chg / +0 net,no
+chapter_act_07,Acts,7,Acts 7,28,24,0.4,0.4,0,0.4,0.4,2 chg / +0 net,no
+chapter_act_11,Acts,11,Acts 11,28,24,0.4,0.5,0.1,0.4,0.4,1 chg / +1 net,yes
+chapter_act_16,Acts,16,Acts 16,28,24,0.4,0.5,0.1,0.4,0.4,1 chg / +1 net,yes
+chapter_act_27,Acts,27,Acts 27,28,24,0.4,0.5,0.1,0.4,0.4,1 chg / +1 net,yes
+chapter_deu_16,Deuteronomy,16,Deuteronomy 16,28,24,0.4,0.3,-0.1,0.4,0.4,1 chg / -1 net,no
+chapter_heb_02,Hebrews,2,Hebrews 2,28,24,0.4,0.5,0.1,0.4,0.5,1 chg / +1 net,no
+chapter_heb_07,Hebrews,7,Hebrews 7,28,24,0.4,0.4,0,0.4,0.4,0 chg / +0 net,no
+chapter_heb_09,Hebrews,9,Hebrews 9,28,24,0.4,0.4,0,0.4,0.4,0 chg / +0 net,no
+chapter_heb_10,Hebrews,10,Hebrews 10,28,24,0.4,0.5,0.1,0.4,0.4,1 chg / +1 net,yes
+chapter_jdg_07,Judges,7,Judges 7,28,24,0.4,0.5,0.1,0.3,0.4,1 chg / +1 net,yes
+chapter_jdg_09,Judges,9,Judges 9,28,24,0.4,0.4,0,0.4,0.4,2 chg / +0 net,no
+chapter_num_11,Numbers,11,Numbers 11,28,24,0.4,0.4,0,0.4,0.4,2 chg / +0 net,no
+chapter_num_22,Numbers,22,Numbers 22,28,24,0.4,0.4,0,0.3,0.4,0 chg / +0 net,no
+chapter_num_27,Numbers,27,Numbers 27,28,24,0.4,0.5,0.1,0.3,0.4,1 chg / +1 net,yes
+chapter_1ch_09,1 Chronicles,9,1 Chronicles 9,28,32,0.4,0.5,0.1,0.3,0.4,1 chg / +1 net,yes
+chapter_1ch_29,1 Chronicles,29,1 Chronicles 29,28,32,0.4,0.5,0.1,0.4,0.4,1 chg / +1 net,yes
+chapter_act_07,Acts,7,Acts 7,28,32,0.4,0.4,0,0.4,0.4,2 chg / +0 net,no
+chapter_act_11,Acts,11,Acts 11,28,32,0.4,0.5,0.1,0.4,0.4,1 chg / +1 net,yes
+chapter_act_16,Acts,16,Acts 16,28,32,0.4,0.5,0.1,0.4,0.4,1 chg / +1 net,yes
+chapter_act_27,Acts,27,Acts 27,28,32,0.4,0.5,0.1,0.4,0.4,1 chg / +1 net,yes
+chapter_deu_16,Deuteronomy,16,Deuteronomy 16,28,32,0.4,0.3,-0.1,0.4,0.4,1 chg / -1 net,no
+chapter_heb_02,Hebrews,2,Hebrews 2,28,32,0.4,0.4,0,0.4,0.4,0 chg / +0 net,no
+chapter_heb_07,Hebrews,7,Hebrews 7,28,32,0.4,0.4,0,0.4,0.5,0 chg / +0 net,no
+chapter_heb_09,Hebrews,9,Hebrews 9,28,32,0.4,0.4,0,0.4,0.4,0 chg / +0 net,no
+chapter_heb_10,Hebrews,10,Hebrews 10,28,32,0.4,0.4,0,0.4,0.4,0 chg / +0 net,no
+chapter_jdg_07,Judges,7,Judges 7,28,32,0.4,0.4,0,0.3,0.4,2 chg / +0 net,no
+chapter_jdg_09,Judges,9,Judges 9,28,32,0.4,0.4,0,0.4,0.4,2 chg / +0 net,no
+chapter_num_11,Numbers,11,Numbers 11,28,32,0.4,0.4,0,0.4,0.4,2 chg / +0 net,no
+chapter_num_22,Numbers,22,Numbers 22,28,32,0.4,0.4,0,0.3,0.4,0 chg / +0 net,no
+chapter_num_27,Numbers,27,Numbers 27,28,32,0.4,0.5,0.1,0.3,0.4,1 chg / +1 net,yes
+chapter_1ch_09,1 Chronicles,9,1 Chronicles 9,28,48,0.4,0.4,0,0.4,0.4,2 chg / +0 net,no
+chapter_1ch_29,1 Chronicles,29,1 Chronicles 29,28,48,0.4,0.5,0.1,0.4,0.4,1 chg / +1 net,yes
+chapter_act_07,Acts,7,Acts 7,28,48,0.4,0.5,0.1,0.4,0.4,1 chg / +1 net,yes
+chapter_act_11,Acts,11,Acts 11,28,48,0.4,0.5,0.1,0.4,0.4,1 chg / +1 net,yes
+chapter_act_16,Acts,16,Acts 16,28,48,0.4,0.4,0,0.4,0.4,0 chg / +0 net,no
+chapter_act_27,Acts,27,Acts 27,28,48,0.4,0.4,0,0.4,0.4,0 chg / +0 net,no
+chapter_deu_16,Deuteronomy,16,Deuteronomy 16,28,48,0.4,0.4,0,0.4,0.4,0 chg / +0 net,no
+chapter_heb_02,Hebrews,2,Hebrews 2,28,48,0.4,0.4,0,0.4,0.4,0 chg / +0 net,no
+chapter_heb_07,Hebrews,7,Hebrews 7,28,48,0.4,0.4,0,0.4,0.5,0 chg / +0 net,no
+chapter_heb_09,Hebrews,9,Hebrews 9,28,48,0.4,0.3,-0.1,0.4,0.4,1 chg / -1 net,no
+chapter_heb_10,Hebrews,10,Hebrews 10,28,48,0.4,0.4,0,0.4,0.4,0 chg / +0 net,no
+chapter_jdg_07,Judges,7,Judges 7,28,48,0.4,0.4,0,0.3,0.4,0 chg / +0 net,no
+chapter_jdg_09,Judges,9,Judges 9,28,48,0.4,0.4,0,0.4,0.4,0 chg / +0 net,no
+chapter_num_11,Numbers,11,Numbers 11,28,48,0.4,0.5,0.1,0.4,0.4,1 chg / +1 net,yes
+chapter_num_22,Numbers,22,Numbers 22,28,48,0.4,0.4,0,0.4,0.4,0 chg / +0 net,no
+chapter_num_27,Numbers,27,Numbers 27,28,48,0.4,0.4,0,0.4,0.4,0 chg / +0 net,no
+chapter_1ch_09,1 Chronicles,9,1 Chronicles 9,28,64,0.4,0.5,0.1,0.5,0.4,3 chg / +1 net,no
+chapter_1ch_29,1 Chronicles,29,1 Chronicles 29,28,64,0.4,0.5,0.1,0.4,0.4,1 chg / +1 net,yes
+chapter_act_07,Acts,7,Acts 7,28,64,0.4,0.5,0.1,0.4,0.4,1 chg / +1 net,yes
+chapter_act_11,Acts,11,Acts 11,28,64,0.4,0.5,0.1,0.4,0.4,1 chg / +1 net,yes
+chapter_act_16,Acts,16,Acts 16,28,64,0.4,0.4,0,0.5,0.4,0 chg / +0 net,no
+chapter_act_27,Acts,27,Acts 27,28,64,0.4,0.5,0.1,0.4,0.4,1 chg / +1 net,yes
+chapter_deu_16,Deuteronomy,16,Deuteronomy 16,28,64,0.4,0.4,0,0.4,0.4,0 chg / +0 net,no
+chapter_heb_02,Hebrews,2,Hebrews 2,28,64,0.4,0.3,-0.1,0.4,0.4,1 chg / -1 net,no
+chapter_heb_07,Hebrews,7,Hebrews 7,28,64,0.4,0.4,0,0.4,0.5,0 chg / +0 net,no
+chapter_heb_09,Hebrews,9,Hebrews 9,28,64,0.4,0.3,-0.1,0.4,0.4,1 chg / -1 net,no
+chapter_heb_10,Hebrews,10,Hebrews 10,28,64,0.4,0.4,0,0.4,0.4,0 chg / +0 net,no
+chapter_jdg_07,Judges,7,Judges 7,28,64,0.4,0.4,0,0.5,0.4,0 chg / +0 net,no
+chapter_jdg_09,Judges,9,Judges 9,28,64,0.4,0.4,0,0.3,0.4,0 chg / +0 net,no
+chapter_num_11,Numbers,11,Numbers 11,28,64,0.4,0.5,0.1,0.4,0.4,3 chg / +1 net,yes
+chapter_num_22,Numbers,22,Numbers 22,28,64,0.4,0.4,0,0.4,0.4,0 chg / +0 net,no
+chapter_num_27,Numbers,27,Numbers 27,28,64,0.4,0.4,0,0.4,0.4,0 chg / +0 net,no
+chapter_1ch_09,1 Chronicles,9,1 Chronicles 9,28,96,0.4,0.6,0.2,0,0.3,4 chg / +2 net,yes
+chapter_1ch_29,1 Chronicles,29,1 Chronicles 29,28,96,0.4,0.1,-0.3,0.5,0.4,7 chg / -3 net,no
+chapter_act_07,Acts,7,Acts 7,28,96,0.4,0.5,0.1,0.6,0.4,3 chg / +1 net,no
+chapter_act_11,Acts,11,Acts 11,28,96,0.4,0.2,-0.2,0.3,0.3,5 chg / -2 net,no
+chapter_act_16,Acts,16,Acts 16,28,96,0.4,0.2,-0.2,0.5,0.4,4 chg / -2 net,no
+chapter_act_27,Acts,27,Acts 27,28,96,0.4,0.6,0.2,0.4,0.4,4 chg / +2 net,yes
+chapter_deu_16,Deuteronomy,16,Deuteronomy 16,28,96,0.4,0,-0.4,0.5,0.4,8 chg / -4 net,no
+chapter_heb_02,Hebrews,2,Hebrews 2,28,96,0.4,0,-0.4,0.5,0.5,9 chg / -4 net,no
+chapter_heb_07,Hebrews,7,Hebrews 7,28,96,0.4,0,-0.4,0.4,0.4,8 chg / -4 net,no
+chapter_heb_09,Hebrews,9,Hebrews 9,28,96,0.4,0,-0.4,0.3,0.5,8 chg / -4 net,no
+chapter_heb_10,Hebrews,10,Hebrews 10,28,96,0.4,0,-0.4,0.6,0.3,10 chg / -4 net,no
+chapter_jdg_07,Judges,7,Judges 7,28,96,0.4,0.4,0,0.6,0.4,0 chg / +0 net,no
+chapter_jdg_09,Judges,9,Judges 9,28,96,0.4,0.4,0,0.5,0.3,0 chg / +0 net,no
+chapter_num_11,Numbers,11,Numbers 11,28,96,0.4,0.6,0.2,0.6,0.4,4 chg / +2 net,no
+chapter_num_22,Numbers,22,Numbers 22,28,96,0.4,0.6,0.2,0.6,0.4,2 chg / +2 net,no
+chapter_num_27,Numbers,27,Numbers 27,28,96,0.4,0.6,0.2,0.5,0.4,2 chg / +2 net,yes
+chapter_1ch_09,1 Chronicles,9,1 Chronicles 9,29,16,0.4,0.4,0,0.4,0.4,2 chg / +0 net,no
+chapter_1ch_29,1 Chronicles,29,1 Chronicles 29,29,16,0.4,0.4,0,0.4,0.4,2 chg / +0 net,no
+chapter_act_07,Acts,7,Acts 7,29,16,0.4,0.4,0,0.4,0.4,2 chg / +0 net,no
+chapter_act_11,Acts,11,Acts 11,29,16,0.4,0.5,0.1,0.4,0.4,1 chg / +1 net,yes
+chapter_act_16,Acts,16,Acts 16,29,16,0.4,0.5,0.1,0.4,0.4,1 chg / +1 net,yes
+chapter_act_27,Acts,27,Acts 27,29,16,0.4,0.5,0.1,0.4,0.4,1 chg / +1 net,yes
+chapter_deu_16,Deuteronomy,16,Deuteronomy 16,29,16,0.4,0.4,0,0.4,0.4,2 chg / +0 net,no
+chapter_heb_02,Hebrews,2,Hebrews 2,29,16,0.4,0.5,0.1,0.4,0.4,1 chg / +1 net,yes
+chapter_heb_07,Hebrews,7,Hebrews 7,29,16,0.4,0.4,0,0.4,0.4,0 chg / +0 net,no
+chapter_heb_09,Hebrews,9,Hebrews 9,29,16,0.4,0.5,0.1,0.4,0.4,1 chg / +1 net,yes
+chapter_heb_10,Hebrews,10,Hebrews 10,29,16,0.4,0.4,0,0.4,0.4,0 chg / +0 net,no
+chapter_jdg_07,Judges,7,Judges 7,29,16,0.4,0.4,0,0.4,0.4,2 chg / +0 net,no
+chapter_jdg_09,Judges,9,Judges 9,29,16,0.4,0.4,0,0.4,0.4,2 chg / +0 net,no
+chapter_num_11,Numbers,11,Numbers 11,29,16,0.4,0.4,0,0.4,0.4,2 chg / +0 net,no
+chapter_num_22,Numbers,22,Numbers 22,29,16,0.4,0.4,0,0.4,0.4,2 chg / +0 net,no
+chapter_num_27,Numbers,27,Numbers 27,29,16,0.4,0.4,0,0.4,0.3,2 chg / +0 net,no
+chapter_1ch_09,1 Chronicles,9,1 Chronicles 9,29,24,0.4,0.4,0,0.4,0.4,2 chg / +0 net,no
+chapter_1ch_29,1 Chronicles,29,1 Chronicles 29,29,24,0.4,0.4,0,0.4,0.4,2 chg / +0 net,no
+chapter_act_07,Acts,7,Acts 7,29,24,0.4,0.4,0,0.4,0.4,2 chg / +0 net,no
+chapter_act_11,Acts,11,Acts 11,29,24,0.4,0.5,0.1,0.4,0.4,1 chg / +1 net,yes
+chapter_act_16,Acts,16,Acts 16,29,24,0.4,0.5,0.1,0.4,0.4,1 chg / +1 net,yes
+chapter_act_27,Acts,27,Acts 27,29,24,0.4,0.5,0.1,0.4,0.4,1 chg / +1 net,yes
+chapter_deu_16,Deuteronomy,16,Deuteronomy 16,29,24,0.4,0.4,0,0.4,0.4,2 chg / +0 net,no
+chapter_heb_02,Hebrews,2,Hebrews 2,29,24,0.4,0.5,0.1,0.4,0.4,1 chg / +1 net,yes
+chapter_heb_07,Hebrews,7,Hebrews 7,29,24,0.4,0.5,0.1,0.4,0.4,1 chg / +1 net,yes
+chapter_heb_09,Hebrews,9,Hebrews 9,29,24,0.4,0.5,0.1,0.4,0.4,1 chg / +1 net,yes
+chapter_heb_10,Hebrews,10,Hebrews 10,29,24,0.4,0.5,0.1,0.4,0.4,1 chg / +1 net,yes
+chapter_jdg_07,Judges,7,Judges 7,29,24,0.4,0.4,0,0.4,0.3,2 chg / +0 net,no
+chapter_jdg_09,Judges,9,Judges 9,29,24,0.4,0.4,0,0.4,0.4,2 chg / +0 net,no
+chapter_num_11,Numbers,11,Numbers 11,29,24,0.4,0.4,0,0.4,0.3,2 chg / +0 net,no
+chapter_num_22,Numbers,22,Numbers 22,29,24,0.4,0.4,0,0.4,0.4,2 chg / +0 net,no
+chapter_num_27,Numbers,27,Numbers 27,29,24,0.4,0.4,0,0.4,0.3,2 chg / +0 net,no
+chapter_1ch_09,1 Chronicles,9,1 Chronicles 9,29,32,0.4,0.4,0,0.4,0.4,2 chg / +0 net,no
+chapter_1ch_29,1 Chronicles,29,1 Chronicles 29,29,32,0.4,0.4,0,0.4,0.4,2 chg / +0 net,no
+chapter_act_07,Acts,7,Acts 7,29,32,0.4,0.4,0,0.4,0.4,2 chg / +0 net,no
+chapter_act_11,Acts,11,Acts 11,29,32,0.4,0.5,0.1,0.4,0.4,1 chg / +1 net,yes
+chapter_act_16,Acts,16,Acts 16,29,32,0.4,0.5,0.1,0.4,0.4,1 chg / +1 net,yes
+chapter_act_27,Acts,27,Acts 27,29,32,0.4,0.4,0,0.4,0.4,2 chg / +0 net,no
+chapter_deu_16,Deuteronomy,16,Deuteronomy 16,29,32,0.4,0.4,0,0.4,0.4,2 chg / +0 net,no
+chapter_heb_02,Hebrews,2,Hebrews 2,29,32,0.4,0.5,0.1,0.4,0.4,1 chg / +1 net,yes
+chapter_heb_07,Hebrews,7,Hebrews 7,29,32,0.4,0.5,0.1,0.4,0.4,1 chg / +1 net,yes
+chapter_heb_09,Hebrews,9,Hebrews 9,29,32,0.4,0.5,0.1,0.4,0.4,1 chg / +1 net,yes
+chapter_heb_10,Hebrews,10,Hebrews 10,29,32,0.4,0.5,0.1,0.4,0.4,1 chg / +1 net,yes
+chapter_jdg_07,Judges,7,Judges 7,29,32,0.4,0.4,0,0.3,0.4,2 chg / +0 net,no
+chapter_jdg_09,Judges,9,Judges 9,29,32,0.4,0.4,0,0.4,0.4,2 chg / +0 net,no
+chapter_num_11,Numbers,11,Numbers 11,29,32,0.4,0.4,0,0.4,0.4,2 chg / +0 net,no
+chapter_num_22,Numbers,22,Numbers 22,29,32,0.4,0.4,0,0.4,0.4,2 chg / +0 net,no
+chapter_num_27,Numbers,27,Numbers 27,29,32,0.4,0.4,0,0.4,0.3,2 chg / +0 net,no
+chapter_1ch_09,1 Chronicles,9,1 Chronicles 9,29,48,0.4,0.5,0.1,0.4,0.4,3 chg / +1 net,yes
+chapter_1ch_29,1 Chronicles,29,1 Chronicles 29,29,48,0.4,0.4,0,0.4,0.4,2 chg / +0 net,no
+chapter_act_07,Acts,7,Acts 7,29,48,0.4,0.5,0.1,0.4,0.4,3 chg / +1 net,yes
+chapter_act_11,Acts,11,Acts 11,29,48,0.4,0.5,0.1,0.4,0.4,1 chg / +1 net,yes
+chapter_act_16,Acts,16,Acts 16,29,48,0.4,0.5,0.1,0.4,0.4,1 chg / +1 net,yes
+chapter_act_27,Acts,27,Acts 27,29,48,0.4,0.4,0,0.4,0.4,2 chg / +0 net,no
+chapter_deu_16,Deuteronomy,16,Deuteronomy 16,29,48,0.4,0.4,0,0.4,0.4,2 chg / +0 net,no
+chapter_heb_02,Hebrews,2,Hebrews 2,29,48,0.4,0.4,0,0.4,0.4,0 chg / +0 net,no
+chapter_heb_07,Hebrews,7,Hebrews 7,29,48,0.4,0.4,0,0.4,0.4,2 chg / +0 net,no
+chapter_heb_09,Hebrews,9,Hebrews 9,29,48,0.4,0.4,0,0.4,0.4,0 chg / +0 net,no
+chapter_heb_10,Hebrews,10,Hebrews 10,29,48,0.4,0.4,0,0.4,0.4,0 chg / +0 net,no
+chapter_jdg_07,Judges,7,Judges 7,29,48,0.4,0.4,0,0.3,0.4,2 chg / +0 net,no
+chapter_jdg_09,Judges,9,Judges 9,29,48,0.4,0.4,0,0.4,0.4,2 chg / +0 net,no
+chapter_num_11,Numbers,11,Numbers 11,29,48,0.4,0.5,0.1,0.4,0.4,3 chg / +1 net,yes
+chapter_num_22,Numbers,22,Numbers 22,29,48,0.4,0.4,0,0.4,0.4,2 chg / +0 net,no
+chapter_num_27,Numbers,27,Numbers 27,29,48,0.4,0.5,0.1,0.4,0.3,3 chg / +1 net,yes
+chapter_1ch_09,1 Chronicles,9,1 Chronicles 9,29,64,0.4,0.5,0.1,0.4,0.4,3 chg / +1 net,yes
+chapter_1ch_29,1 Chronicles,29,1 Chronicles 29,29,64,0.4,0.4,0,0.4,0.4,2 chg / +0 net,no
+chapter_act_07,Acts,7,Acts 7,29,64,0.4,0.5,0.1,0.4,0.4,3 chg / +1 net,yes
+chapter_act_11,Acts,11,Acts 11,29,64,0.4,0.5,0.1,0.4,0.4,1 chg / +1 net,yes
+chapter_act_16,Acts,16,Acts 16,29,64,0.4,0.5,0.1,0.4,0.4,1 chg / +1 net,yes
+chapter_act_27,Acts,27,Acts 27,29,64,0.4,0.3,-0.1,0.4,0.4,1 chg / -1 net,no
+chapter_deu_16,Deuteronomy,16,Deuteronomy 16,29,64,0.4,0.4,0,0.4,0.4,2 chg / +0 net,no
+chapter_heb_02,Hebrews,2,Hebrews 2,29,64,0.4,0.4,0,0.4,0.4,0 chg / +0 net,no
+chapter_heb_07,Hebrews,7,Hebrews 7,29,64,0.4,0.4,0,0.4,0.4,0 chg / +0 net,no
+chapter_heb_09,Hebrews,9,Hebrews 9,29,64,0.4,0.4,0,0.4,0.4,0 chg / +0 net,no
+chapter_heb_10,Hebrews,10,Hebrews 10,29,64,0.4,0.4,0,0.4,0.4,0 chg / +0 net,no
+chapter_jdg_07,Judges,7,Judges 7,29,64,0.4,0.3,-0.1,0.3,0.4,1 chg / -1 net,no
+chapter_jdg_09,Judges,9,Judges 9,29,64,0.4,0.3,-0.1,0.4,0.4,1 chg / -1 net,no
+chapter_num_11,Numbers,11,Numbers 11,29,64,0.4,0.5,0.1,0.4,0.4,3 chg / +1 net,yes
+chapter_num_22,Numbers,22,Numbers 22,29,64,0.4,0.4,0,0.4,0.4,2 chg / +0 net,no
+chapter_num_27,Numbers,27,Numbers 27,29,64,0.4,0.5,0.1,0.4,0.3,3 chg / +1 net,yes
+chapter_1ch_09,1 Chronicles,9,1 Chronicles 9,29,96,0.4,0.6,0.2,0.5,0.4,4 chg / +2 net,yes
+chapter_1ch_29,1 Chronicles,29,1 Chronicles 29,29,96,0.4,0.5,0.1,0.4,0.4,3 chg / +1 net,yes
+chapter_act_07,Acts,7,Acts 7,29,96,0.4,0.5,0.1,0.4,0.4,3 chg / +1 net,yes
+chapter_act_11,Acts,11,Acts 11,29,96,0.4,0.5,0.1,0.4,0.4,3 chg / +1 net,yes
+chapter_act_16,Acts,16,Acts 16,29,96,0.4,0.5,0.1,0.4,0.4,1 chg / +1 net,yes
+chapter_act_27,Acts,27,Acts 27,29,96,0.4,0.5,0.1,0.5,0.4,3 chg / +1 net,no
+chapter_deu_16,Deuteronomy,16,Deuteronomy 16,29,96,0.4,0.5,0.1,0.5,0.4,3 chg / +1 net,no
+chapter_heb_02,Hebrews,2,Hebrews 2,29,96,0.4,0.4,0,0.3,0.4,0 chg / +0 net,no
+chapter_heb_07,Hebrews,7,Hebrews 7,29,96,0.4,0.4,0,0.4,0.4,2 chg / +0 net,no
+chapter_heb_09,Hebrews,9,Hebrews 9,29,96,0.4,0.4,0,0.4,0.4,0 chg / +0 net,no
+chapter_heb_10,Hebrews,10,Hebrews 10,29,96,0.4,0.4,0,0.5,0.4,0 chg / +0 net,no
+chapter_jdg_07,Judges,7,Judges 7,29,96,0.4,0.5,0.1,0.5,0.4,3 chg / +1 net,no
+chapter_jdg_09,Judges,9,Judges 9,29,96,0.4,0.4,0,0.5,0.4,0 chg / +0 net,no
+chapter_num_11,Numbers,11,Numbers 11,29,96,0.4,0.6,0.2,0.5,0.4,4 chg / +2 net,yes
+chapter_num_22,Numbers,22,Numbers 22,29,96,0.4,0.5,0.1,0.5,0.4,3 chg / +1 net,no
+chapter_num_27,Numbers,27,Numbers 27,29,96,0.4,0.5,0.1,0.4,0.3,3 chg / +1 net,yes
+chapter_1ch_09,1 Chronicles,9,1 Chronicles 9,30,16,0.4,0.4,0,0.4,0.4,2 chg / +0 net,no
+chapter_1ch_29,1 Chronicles,29,1 Chronicles 29,30,16,0.4,0.4,0,0.4,0.4,2 chg / +0 net,no
+chapter_act_07,Acts,7,Acts 7,30,16,0.4,0.5,0.1,0.4,0.4,1 chg / +1 net,yes
+chapter_act_11,Acts,11,Acts 11,30,16,0.4,0.5,0.1,0.4,0.4,1 chg / +1 net,yes
+chapter_act_16,Acts,16,Acts 16,30,16,0.4,0.5,0.1,0.4,0.4,1 chg / +1 net,yes
+chapter_act_27,Acts,27,Acts 27,30,16,0.4,0.5,0.1,0.4,0.4,1 chg / +1 net,yes
+chapter_deu_16,Deuteronomy,16,Deuteronomy 16,30,16,0.4,0.4,0,0.4,0.4,2 chg / +0 net,no
+chapter_heb_02,Hebrews,2,Hebrews 2,30,16,0.4,0.5,0.1,0.4,0.4,1 chg / +1 net,yes
+chapter_heb_07,Hebrews,7,Hebrews 7,30,16,0.4,0.4,0,0.4,0.4,0 chg / +0 net,no
+chapter_heb_09,Hebrews,9,Hebrews 9,30,16,0.4,0.4,0,0.4,0.4,0 chg / +0 net,no
+chapter_heb_10,Hebrews,10,Hebrews 10,30,16,0.4,0.4,0,0.4,0.4,0 chg / +0 net,no
+chapter_jdg_07,Judges,7,Judges 7,30,16,0.4,0.4,0,0.4,0.4,2 chg / +0 net,no
+chapter_jdg_09,Judges,9,Judges 9,30,16,0.4,0.4,0,0.4,0.4,2 chg / +0 net,no
+chapter_num_11,Numbers,11,Numbers 11,30,16,0.4,0.4,0,0.4,0.4,2 chg / +0 net,no
+chapter_num_22,Numbers,22,Numbers 22,30,16,0.4,0.4,0,0.4,0.4,2 chg / +0 net,no
+chapter_num_27,Numbers,27,Numbers 27,30,16,0.4,0.4,0,0.4,0.4,2 chg / +0 net,no
+chapter_1ch_09,1 Chronicles,9,1 Chronicles 9,30,24,0.4,0.4,0,0.4,0.4,2 chg / +0 net,no
+chapter_1ch_29,1 Chronicles,29,1 Chronicles 29,30,24,0.4,0.4,0,0.4,0.4,2 chg / +0 net,no
+chapter_act_07,Acts,7,Acts 7,30,24,0.4,0.4,0,0.4,0.4,2 chg / +0 net,no
+chapter_act_11,Acts,11,Acts 11,30,24,0.4,0.5,0.1,0.4,0.4,1 chg / +1 net,yes
+chapter_act_16,Acts,16,Acts 16,30,24,0.4,0.5,0.1,0.4,0.4,1 chg / +1 net,yes
+chapter_act_27,Acts,27,Acts 27,30,24,0.4,0.5,0.1,0.4,0.4,1 chg / +1 net,yes
+chapter_deu_16,Deuteronomy,16,Deuteronomy 16,30,24,0.4,0.4,0,0.4,0.4,2 chg / +0 net,no
+chapter_heb_02,Hebrews,2,Hebrews 2,30,24,0.4,0.5,0.1,0.4,0.4,1 chg / +1 net,yes
+chapter_heb_07,Hebrews,7,Hebrews 7,30,24,0.4,0.5,0.1,0.4,0.4,1 chg / +1 net,yes
+chapter_heb_09,Hebrews,9,Hebrews 9,30,24,0.4,0.5,0.1,0.4,0.4,1 chg / +1 net,yes
+chapter_heb_10,Hebrews,10,Hebrews 10,30,24,0.4,0.4,0,0.4,0.4,0 chg / +0 net,no
+chapter_jdg_07,Judges,7,Judges 7,30,24,0.4,0.4,0,0.4,0.4,2 chg / +0 net,no
+chapter_jdg_09,Judges,9,Judges 9,30,24,0.4,0.4,0,0.4,0.4,2 chg / +0 net,no
+chapter_num_11,Numbers,11,Numbers 11,30,24,0.4,0.4,0,0.4,0.4,2 chg / +0 net,no
+chapter_num_22,Numbers,22,Numbers 22,30,24,0.4,0.4,0,0.4,0.4,2 chg / +0 net,no
+chapter_num_27,Numbers,27,Numbers 27,30,24,0.4,0.4,0,0.4,0.4,2 chg / +0 net,no
+chapter_1ch_09,1 Chronicles,9,1 Chronicles 9,30,32,0.4,0.4,0,0.4,0.4,2 chg / +0 net,no
+chapter_1ch_29,1 Chronicles,29,1 Chronicles 29,30,32,0.4,0.4,0,0.4,0.4,2 chg / +0 net,no
+chapter_act_07,Acts,7,Acts 7,30,32,0.4,0.4,0,0.4,0.4,2 chg / +0 net,no
+chapter_act_11,Acts,11,Acts 11,30,32,0.4,0.5,0.1,0.4,0.4,1 chg / +1 net,yes
+chapter_act_16,Acts,16,Acts 16,30,32,0.4,0.5,0.1,0.4,0.4,1 chg / +1 net,yes
+chapter_act_27,Acts,27,Acts 27,30,32,0.4,0.5,0.1,0.4,0.4,1 chg / +1 net,yes
+chapter_deu_16,Deuteronomy,16,Deuteronomy 16,30,32,0.4,0.4,0,0.4,0.4,2 chg / +0 net,no
+chapter_heb_02,Hebrews,2,Hebrews 2,30,32,0.4,0.5,0.1,0.4,0.4,1 chg / +1 net,yes
+chapter_heb_07,Hebrews,7,Hebrews 7,30,32,0.4,0.5,0.1,0.4,0.4,1 chg / +1 net,yes
+chapter_heb_09,Hebrews,9,Hebrews 9,30,32,0.4,0.5,0.1,0.4,0.4,1 chg / +1 net,yes
+chapter_heb_10,Hebrews,10,Hebrews 10,30,32,0.4,0.5,0.1,0.4,0.4,1 chg / +1 net,yes
+chapter_jdg_07,Judges,7,Judges 7,30,32,0.4,0.4,0,0.4,0.4,2 chg / +0 net,no
+chapter_jdg_09,Judges,9,Judges 9,30,32,0.4,0.4,0,0.4,0.4,2 chg / +0 net,no
+chapter_num_11,Numbers,11,Numbers 11,30,32,0.4,0.4,0,0.4,0.4,2 chg / +0 net,no
+chapter_num_22,Numbers,22,Numbers 22,30,32,0.4,0.4,0,0.4,0.4,2 chg / +0 net,no
+chapter_num_27,Numbers,27,Numbers 27,30,32,0.4,0.4,0,0.4,0.4,2 chg / +0 net,no
+chapter_1ch_09,1 Chronicles,9,1 Chronicles 9,30,48,0.4,0.5,0.1,0.4,0.4,3 chg / +1 net,yes
+chapter_1ch_29,1 Chronicles,29,1 Chronicles 29,30,48,0.4,0.4,0,0.4,0.4,2 chg / +0 net,no
+chapter_act_07,Acts,7,Acts 7,30,48,0.4,0.5,0.1,0.4,0.4,3 chg / +1 net,yes
+chapter_act_11,Acts,11,Acts 11,30,48,0.4,0.5,0.1,0.4,0.4,1 chg / +1 net,yes
+chapter_act_16,Acts,16,Acts 16,30,48,0.4,0.4,0,0.4,0.4,2 chg / +0 net,no
+chapter_act_27,Acts,27,Acts 27,30,48,0.4,0.4,0,0.4,0.4,2 chg / +0 net,no
+chapter_deu_16,Deuteronomy,16,Deuteronomy 16,30,48,0.4,0.5,0.1,0.4,0.4,3 chg / +1 net,yes
+chapter_heb_02,Hebrews,2,Hebrews 2,30,48,0.4,0.4,0,0.4,0.4,2 chg / +0 net,no
+chapter_heb_07,Hebrews,7,Hebrews 7,30,48,0.4,0.4,0,0.4,0.4,2 chg / +0 net,no
+chapter_heb_09,Hebrews,9,Hebrews 9,30,48,0.4,0.5,0.1,0.4,0.4,1 chg / +1 net,yes
+chapter_heb_10,Hebrews,10,Hebrews 10,30,48,0.4,0.4,0,0.4,0.4,2 chg / +0 net,no
+chapter_jdg_07,Judges,7,Judges 7,30,48,0.4,0.4,0,0.4,0.4,2 chg / +0 net,no
+chapter_jdg_09,Judges,9,Judges 9,30,48,0.4,0.4,0,0.4,0.4,2 chg / +0 net,no
+chapter_num_11,Numbers,11,Numbers 11,30,48,0.4,0.5,0.1,0.4,0.4,3 chg / +1 net,yes
+chapter_num_22,Numbers,22,Numbers 22,30,48,0.4,0.4,0,0.4,0.4,2 chg / +0 net,no
+chapter_num_27,Numbers,27,Numbers 27,30,48,0.4,0.5,0.1,0.4,0.4,3 chg / +1 net,yes
+chapter_1ch_09,1 Chronicles,9,1 Chronicles 9,30,64,0.4,0.5,0.1,0.4,0.4,3 chg / +1 net,yes
+chapter_1ch_29,1 Chronicles,29,1 Chronicles 29,30,64,0.4,0.5,0.1,0.4,0.4,3 chg / +1 net,yes
+chapter_act_07,Acts,7,Acts 7,30,64,0.4,0.5,0.1,0.4,0.4,3 chg / +1 net,yes
+chapter_act_11,Acts,11,Acts 11,30,64,0.4,0.5,0.1,0.4,0.4,3 chg / +1 net,yes
+chapter_act_16,Acts,16,Acts 16,30,64,0.4,0.4,0,0.4,0.4,2 chg / +0 net,no
+chapter_act_27,Acts,27,Acts 27,30,64,0.4,0.4,0,0.4,0.4,2 chg / +0 net,no
+chapter_deu_16,Deuteronomy,16,Deuteronomy 16,30,64,0.4,0.5,0.1,0.4,0.4,3 chg / +1 net,yes
+chapter_heb_02,Hebrews,2,Hebrews 2,30,64,0.4,0.5,0.1,0.4,0.4,1 chg / +1 net,yes
+chapter_heb_07,Hebrews,7,Hebrews 7,30,64,0.4,0.4,0,0.4,0.4,2 chg / +0 net,no
+chapter_heb_09,Hebrews,9,Hebrews 9,30,64,0.4,0.4,0,0.4,0.4,0 chg / +0 net,no
+chapter_heb_10,Hebrews,10,Hebrews 10,30,64,0.4,0.3,-0.1,0.4,0.4,1 chg / -1 net,no
+chapter_jdg_07,Judges,7,Judges 7,30,64,0.4,0.5,0.1,0.3,0.4,3 chg / +1 net,yes
+chapter_jdg_09,Judges,9,Judges 9,30,64,0.4,0.5,0.1,0.4,0.4,3 chg / +1 net,yes
+chapter_num_11,Numbers,11,Numbers 11,30,64,0.4,0.5,0.1,0.4,0.4,3 chg / +1 net,yes
+chapter_num_22,Numbers,22,Numbers 22,30,64,0.4,0.5,0.1,0.4,0.4,3 chg / +1 net,yes
+chapter_num_27,Numbers,27,Numbers 27,30,64,0.4,0.5,0.1,0.4,0.4,3 chg / +1 net,yes
+chapter_1ch_09,1 Chronicles,9,1 Chronicles 9,30,96,0.4,0.6,0.2,0.4,0.4,4 chg / +2 net,yes
+chapter_1ch_29,1 Chronicles,29,1 Chronicles 29,30,96,0.4,0.5,0.1,0.4,0.4,3 chg / +1 net,yes
+chapter_act_07,Acts,7,Acts 7,30,96,0.4,0.5,0.1,0.4,0.4,3 chg / +1 net,yes
+chapter_act_11,Acts,11,Acts 11,30,96,0.4,0.5,0.1,0.4,0.4,3 chg / +1 net,yes
+chapter_act_16,Acts,16,Acts 16,30,96,0.4,0.4,0,0.4,0.4,2 chg / +0 net,no
+chapter_act_27,Acts,27,Acts 27,30,96,0.4,0.5,0.1,0.4,0.4,3 chg / +1 net,yes
+chapter_deu_16,Deuteronomy,16,Deuteronomy 16,30,96,0.4,0.5,0.1,0.3,0.3,3 chg / +1 net,yes
+chapter_heb_02,Hebrews,2,Hebrews 2,30,96,0.4,0.5,0.1,0.4,0.4,1 chg / +1 net,yes
+chapter_heb_07,Hebrews,7,Hebrews 7,30,96,0.4,0.5,0.1,0.4,0.4,3 chg / +1 net,yes
+chapter_heb_09,Hebrews,9,Hebrews 9,30,96,0.4,0.4,0,0.4,0.4,0 chg / +0 net,no
+chapter_heb_10,Hebrews,10,Hebrews 10,30,96,0.4,0.4,0,0.3,0.4,2 chg / +0 net,no
+chapter_jdg_07,Judges,7,Judges 7,30,96,0.4,0.5,0.1,0.3,0.4,3 chg / +1 net,yes
+chapter_jdg_09,Judges,9,Judges 9,30,96,0.4,0.5,0.1,0.4,0.4,3 chg / +1 net,yes
+chapter_num_11,Numbers,11,Numbers 11,30,96,0.4,0.5,0.1,0.3,0.4,3 chg / +1 net,yes
+chapter_num_22,Numbers,22,Numbers 22,30,96,0.4,0.5,0.1,0.4,0.4,3 chg / +1 net,yes
+chapter_num_27,Numbers,27,Numbers 27,30,96,0.4,0.5,0.1,0.4,0.4,3 chg / +1 net,yes
+chapter_1ch_09,1 Chronicles,9,1 Chronicles 9,31,16,0.4,0.5,0.1,0.3,0.4,1 chg / +1 net,yes
+chapter_1ch_29,1 Chronicles,29,1 Chronicles 29,31,16,0.4,0.4,0,0.4,0.4,2 chg / +0 net,no
+chapter_act_07,Acts,7,Acts 7,31,16,0.4,0.5,0.1,0.4,0.4,1 chg / +1 net,yes
+chapter_act_11,Acts,11,Acts 11,31,16,0.4,0.5,0.1,0.4,0.4,1 chg / +1 net,yes
+chapter_act_16,Acts,16,Acts 16,31,16,0.4,0.4,0,0.3,0.4,0 chg / +0 net,no
+chapter_act_27,Acts,27,Acts 27,31,16,0.4,0.4,0,0.4,0.4,0 chg / +0 net,no
+chapter_deu_16,Deuteronomy,16,Deuteronomy 16,31,16,0.4,0.4,0,0.4,0.4,2 chg / +0 net,no
+chapter_heb_02,Hebrews,2,Hebrews 2,31,16,0.4,0.4,0,0.4,0.4,0 chg / +0 net,no
+chapter_heb_07,Hebrews,7,Hebrews 7,31,16,0.4,0.4,0,0.4,0.4,0 chg / +0 net,no
+chapter_heb_09,Hebrews,9,Hebrews 9,31,16,0.4,0.4,0,0.4,0.4,0 chg / +0 net,no
+chapter_heb_10,Hebrews,10,Hebrews 10,31,16,0.4,0.4,0,0.4,0.4,0 chg / +0 net,no
+chapter_jdg_07,Judges,7,Judges 7,31,16,0.4,0.5,0.1,0.4,0.4,1 chg / +1 net,yes
+chapter_jdg_09,Judges,9,Judges 9,31,16,0.4,0.5,0.1,0.4,0.4,1 chg / +1 net,yes
+chapter_num_11,Numbers,11,Numbers 11,31,16,0.4,0.4,0,0.4,0.4,2 chg / +0 net,no
+chapter_num_22,Numbers,22,Numbers 22,31,16,0.4,0.4,0,0.4,0.4,2 chg / +0 net,no
+chapter_num_27,Numbers,27,Numbers 27,31,16,0.4,0.4,0,0.4,0.4,2 chg / +0 net,no
+chapter_1ch_09,1 Chronicles,9,1 Chronicles 9,31,24,0.4,0.5,0.1,0.3,0.4,1 chg / +1 net,yes
+chapter_1ch_29,1 Chronicles,29,1 Chronicles 29,31,24,0.4,0.4,0,0.4,0.4,2 chg / +0 net,no
+chapter_act_07,Acts,7,Acts 7,31,24,0.4,0.5,0.1,0.4,0.4,1 chg / +1 net,yes
+chapter_act_11,Acts,11,Acts 11,31,24,0.4,0.5,0.1,0.4,0.4,1 chg / +1 net,yes
+chapter_act_16,Acts,16,Acts 16,31,24,0.4,0.4,0,0.4,0.4,0 chg / +0 net,no
+chapter_act_27,Acts,27,Acts 27,31,24,0.4,0.5,0.1,0.4,0.4,1 chg / +1 net,yes
+chapter_deu_16,Deuteronomy,16,Deuteronomy 16,31,24,0.4,0.4,0,0.4,0.4,2 chg / +0 net,no
+chapter_heb_02,Hebrews,2,Hebrews 2,31,24,0.4,0.5,0.1,0.4,0.4,1 chg / +1 net,yes
+chapter_heb_07,Hebrews,7,Hebrews 7,31,24,0.4,0.5,0.1,0.4,0.4,1 chg / +1 net,yes
+chapter_heb_09,Hebrews,9,Hebrews 9,31,24,0.4,0.5,0.1,0.4,0.4,1 chg / +1 net,yes
+chapter_heb_10,Hebrews,10,Hebrews 10,31,24,0.4,0.4,0,0.4,0.4,0 chg / +0 net,no
+chapter_jdg_07,Judges,7,Judges 7,31,24,0.4,0.4,0,0.4,0.4,2 chg / +0 net,no
+chapter_jdg_09,Judges,9,Judges 9,31,24,0.4,0.4,0,0.4,0.4,2 chg / +0 net,no
+chapter_num_11,Numbers,11,Numbers 11,31,24,0.4,0.4,0,0.4,0.4,2 chg / +0 net,no
+chapter_num_22,Numbers,22,Numbers 22,31,24,0.4,0.4,0,0.4,0.4,2 chg / +0 net,no
+chapter_num_27,Numbers,27,Numbers 27,31,24,0.4,0.4,0,0.4,0.4,2 chg / +0 net,no
+chapter_1ch_09,1 Chronicles,9,1 Chronicles 9,31,32,0.4,0.4,0,0.3,0.4,2 chg / +0 net,no
+chapter_1ch_29,1 Chronicles,29,1 Chronicles 29,31,32,0.4,0.4,0,0.4,0.4,2 chg / +0 net,no
+chapter_act_07,Acts,7,Acts 7,31,32,0.4,0.4,0,0.4,0.4,2 chg / +0 net,no
+chapter_act_11,Acts,11,Acts 11,31,32,0.4,0.5,0.1,0.4,0.4,1 chg / +1 net,yes
+chapter_act_16,Acts,16,Acts 16,31,32,0.4,0.5,0.1,0.3,0.4,1 chg / +1 net,yes
+chapter_act_27,Acts,27,Acts 27,31,32,0.4,0.5,0.1,0.3,0.4,1 chg / +1 net,yes
+chapter_deu_16,Deuteronomy,16,Deuteronomy 16,31,32,0.4,0.4,0,0.4,0.4,2 chg / +0 net,no
+chapter_heb_02,Hebrews,2,Hebrews 2,31,32,0.4,0.5,0.1,0.4,0.4,1 chg / +1 net,yes
+chapter_heb_07,Hebrews,7,Hebrews 7,31,32,0.4,0.5,0.1,0.4,0.4,1 chg / +1 net,yes
+chapter_heb_09,Hebrews,9,Hebrews 9,31,32,0.4,0.5,0.1,0.4,0.4,1 chg / +1 net,yes
+chapter_heb_10,Hebrews,10,Hebrews 10,31,32,0.4,0.5,0.1,0.4,0.4,1 chg / +1 net,yes
+chapter_jdg_07,Judges,7,Judges 7,31,32,0.4,0.4,0,0.4,0.4,2 chg / +0 net,no
+chapter_jdg_09,Judges,9,Judges 9,31,32,0.4,0.4,0,0.4,0.4,2 chg / +0 net,no
+chapter_num_11,Numbers,11,Numbers 11,31,32,0.4,0.4,0,0.4,0.4,2 chg / +0 net,no
+chapter_num_22,Numbers,22,Numbers 22,31,32,0.4,0.4,0,0.4,0.4,2 chg / +0 net,no
+chapter_num_27,Numbers,27,Numbers 27,31,32,0.4,0.4,0,0.3,0.4,2 chg / +0 net,no
+chapter_1ch_09,1 Chronicles,9,1 Chronicles 9,31,48,0.4,0.5,0.1,0.4,0.4,3 chg / +1 net,yes
+chapter_1ch_29,1 Chronicles,29,1 Chronicles 29,31,48,0.4,0.5,0.1,0.4,0.4,3 chg / +1 net,yes
+chapter_act_07,Acts,7,Acts 7,31,48,0.4,0.5,0.1,0.4,0.4,3 chg / +1 net,yes
+chapter_act_11,Acts,11,Acts 11,31,48,0.4,0.5,0.1,0.4,0.4,1 chg / +1 net,yes
+chapter_act_16,Acts,16,Acts 16,31,48,0.4,0.5,0.1,0.4,0.4,1 chg / +1 net,yes
+chapter_act_27,Acts,27,Acts 27,31,48,0.4,0.4,0,0.4,0.4,2 chg / +0 net,no
+chapter_deu_16,Deuteronomy,16,Deuteronomy 16,31,48,0.4,0.5,0.1,0.4,0.4,3 chg / +1 net,yes
+chapter_heb_02,Hebrews,2,Hebrews 2,31,48,0.4,0.5,0.1,0.4,0.4,1 chg / +1 net,yes
+chapter_heb_07,Hebrews,7,Hebrews 7,31,48,0.4,0.4,0,0.4,0.4,2 chg / +0 net,no
+chapter_heb_09,Hebrews,9,Hebrews 9,31,48,0.4,0.5,0.1,0.4,0.4,1 chg / +1 net,yes
+chapter_heb_10,Hebrews,10,Hebrews 10,31,48,0.4,0.4,0,0.4,0.4,2 chg / +0 net,no
+chapter_jdg_07,Judges,7,Judges 7,31,48,0.4,0.4,0,0.3,0.4,2 chg / +0 net,no
+chapter_jdg_09,Judges,9,Judges 9,31,48,0.4,0.4,0,0.4,0.4,2 chg / +0 net,no
+chapter_num_11,Numbers,11,Numbers 11,31,48,0.4,0.5,0.1,0.4,0.4,3 chg / +1 net,yes
+chapter_num_22,Numbers,22,Numbers 22,31,48,0.4,0.5,0.1,0.3,0.4,3 chg / +1 net,yes
+chapter_num_27,Numbers,27,Numbers 27,31,48,0.4,0.5,0.1,0.3,0.4,3 chg / +1 net,yes
+chapter_1ch_09,1 Chronicles,9,1 Chronicles 9,31,64,0.4,0.5,0.1,0.4,0.4,3 chg / +1 net,yes
+chapter_1ch_29,1 Chronicles,29,1 Chronicles 29,31,64,0.4,0.5,0.1,0.4,0.4,3 chg / +1 net,yes
+chapter_act_07,Acts,7,Acts 7,31,64,0.4,0.5,0.1,0.4,0.4,3 chg / +1 net,yes
+chapter_act_11,Acts,11,Acts 11,31,64,0.4,0.4,0,0.4,0.4,2 chg / +0 net,no
+chapter_act_16,Acts,16,Acts 16,31,64,0.4,0.4,0,0.4,0.4,2 chg / +0 net,no
+chapter_act_27,Acts,27,Acts 27,31,64,0.4,0.4,0,0.3,0.4,2 chg / +0 net,no
+chapter_deu_16,Deuteronomy,16,Deuteronomy 16,31,64,0.4,0.5,0.1,0.4,0.4,3 chg / +1 net,yes
+chapter_heb_02,Hebrews,2,Hebrews 2,31,64,0.4,0.4,0,0.4,0.4,2 chg / +0 net,no
+chapter_heb_07,Hebrews,7,Hebrews 7,31,64,0.4,0.4,0,0.4,0.4,2 chg / +0 net,no
+chapter_heb_09,Hebrews,9,Hebrews 9,31,64,0.4,0.4,0,0.4,0.4,2 chg / +0 net,no
+chapter_heb_10,Hebrews,10,Hebrews 10,31,64,0.4,0.4,0,0.4,0.4,2 chg / +0 net,no
+chapter_jdg_07,Judges,7,Judges 7,31,64,0.4,0.5,0.1,0.3,0.4,3 chg / +1 net,yes
+chapter_jdg_09,Judges,9,Judges 9,31,64,0.4,0.5,0.1,0.4,0.4,3 chg / +1 net,yes
+chapter_num_11,Numbers,11,Numbers 11,31,64,0.4,0.5,0.1,0.4,0.4,3 chg / +1 net,yes
+chapter_num_22,Numbers,22,Numbers 22,31,64,0.4,0.5,0.1,0.3,0.4,3 chg / +1 net,yes
+chapter_num_27,Numbers,27,Numbers 27,31,64,0.4,0.5,0.1,0.3,0.4,3 chg / +1 net,yes
+chapter_1ch_09,1 Chronicles,9,1 Chronicles 9,31,96,0.4,0.5,0.1,0.4,0.4,3 chg / +1 net,yes
+chapter_1ch_29,1 Chronicles,29,1 Chronicles 29,31,96,0.4,0.5,0.1,0.4,0.4,3 chg / +1 net,yes
+chapter_act_07,Acts,7,Acts 7,31,96,0.4,0.5,0.1,0.3,0.4,3 chg / +1 net,yes
+chapter_act_11,Acts,11,Acts 11,31,96,0.4,0.5,0.1,0.4,0.4,3 chg / +1 net,yes
+chapter_act_16,Acts,16,Acts 16,31,96,0.4,0.5,0.1,0.4,0.4,3 chg / +1 net,yes
+chapter_act_27,Acts,27,Acts 27,31,96,0.4,0.5,0.1,0.4,0.4,3 chg / +1 net,yes
+chapter_deu_16,Deuteronomy,16,Deuteronomy 16,31,96,0.4,0.5,0.1,0.3,0.4,3 chg / +1 net,yes
+chapter_heb_02,Hebrews,2,Hebrews 2,31,96,0.4,0.4,0,0.4,0.4,2 chg / +0 net,no
+chapter_heb_07,Hebrews,7,Hebrews 7,31,96,0.4,0.4,0,0.4,0.4,2 chg / +0 net,no
+chapter_heb_09,Hebrews,9,Hebrews 9,31,96,0.4,0.4,0,0.4,0.4,2 chg / +0 net,no
+chapter_heb_10,Hebrews,10,Hebrews 10,31,96,0.4,0.5,0.1,0.3,0.4,3 chg / +1 net,yes
+chapter_jdg_07,Judges,7,Judges 7,31,96,0.4,0.5,0.1,0.3,0.4,3 chg / +1 net,yes
+chapter_jdg_09,Judges,9,Judges 9,31,96,0.4,0.5,0.1,0.3,0.4,3 chg / +1 net,yes
+chapter_num_11,Numbers,11,Numbers 11,31,96,0.4,0.5,0.1,0.3,0.4,3 chg / +1 net,yes
+chapter_num_22,Numbers,22,Numbers 22,31,96,0.4,0.5,0.1,0.5,0.4,3 chg / +1 net,no
+chapter_num_27,Numbers,27,Numbers 27,31,96,0.4,0.5,0.1,0.3,0.4,3 chg / +1 net,yes
+chapter_1ch_09,1 Chronicles,9,1 Chronicles 9,32,16,0.4,0.4,0,0.3,0.3,0 chg / +0 net,no
+chapter_1ch_29,1 Chronicles,29,1 Chronicles 29,32,16,0.4,0.4,0,0.4,0.3,0 chg / +0 net,no
+chapter_act_07,Acts,7,Acts 7,32,16,0.4,0.4,0,0.4,0.3,0 chg / +0 net,no
+chapter_act_11,Acts,11,Acts 11,32,16,0.4,0.4,0,0.4,0.3,0 chg / +0 net,no
+chapter_act_16,Acts,16,Acts 16,32,16,0.4,0.4,0,0.3,0.3,0 chg / +0 net,no
+chapter_act_27,Acts,27,Acts 27,32,16,0.4,0.4,0,0.3,0.3,0 chg / +0 net,no
+chapter_deu_16,Deuteronomy,16,Deuteronomy 16,32,16,0.4,0.4,0,0.4,0.3,0 chg / +0 net,no
+chapter_heb_02,Hebrews,2,Hebrews 2,32,16,0.4,0.4,0,0.4,0.3,0 chg / +0 net,no
+chapter_heb_07,Hebrews,7,Hebrews 7,32,16,0.4,0.4,0,0.3,0.4,0 chg / +0 net,no
+chapter_heb_09,Hebrews,9,Hebrews 9,32,16,0.4,0.4,0,0.4,0.3,0 chg / +0 net,no
+chapter_heb_10,Hebrews,10,Hebrews 10,32,16,0.4,0.4,0,0.4,0.3,0 chg / +0 net,no
+chapter_jdg_07,Judges,7,Judges 7,32,16,0.4,0.4,0,0.4,0.3,0 chg / +0 net,no
+chapter_jdg_09,Judges,9,Judges 9,32,16,0.4,0.4,0,0.4,0.3,0 chg / +0 net,no
+chapter_num_11,Numbers,11,Numbers 11,32,16,0.4,0.4,0,0.4,0.3,0 chg / +0 net,no
+chapter_num_22,Numbers,22,Numbers 22,32,16,0.4,0.4,0,0.4,0.3,0 chg / +0 net,no
+chapter_num_27,Numbers,27,Numbers 27,32,16,0.4,0.4,0,0.4,0.4,0 chg / +0 net,no
+chapter_1ch_09,1 Chronicles,9,1 Chronicles 9,32,24,0.4,0.4,0,0.3,0.3,0 chg / +0 net,no
+chapter_1ch_29,1 Chronicles,29,1 Chronicles 29,32,24,0.4,0.4,0,0.4,0.3,0 chg / +0 net,no
+chapter_act_07,Acts,7,Acts 7,32,24,0.4,0.5,0.1,0.4,0.3,1 chg / +1 net,yes
+chapter_act_11,Acts,11,Acts 11,32,24,0.4,0.4,0,0.4,0.3,0 chg / +0 net,no
+chapter_act_16,Acts,16,Acts 16,32,24,0.4,0.4,0,0.3,0.4,0 chg / +0 net,no
+chapter_act_27,Acts,27,Acts 27,32,24,0.4,0.4,0,0.3,0.3,0 chg / +0 net,no
+chapter_deu_16,Deuteronomy,16,Deuteronomy 16,32,24,0.4,0.5,0.1,0.4,0.3,1 chg / +1 net,yes
+chapter_heb_02,Hebrews,2,Hebrews 2,32,24,0.4,0.4,0,0.4,0.3,0 chg / +0 net,no
+chapter_heb_07,Hebrews,7,Hebrews 7,32,24,0.4,0.4,0,0.3,0.3,0 chg / +0 net,no
+chapter_heb_09,Hebrews,9,Hebrews 9,32,24,0.4,0.4,0,0.4,0.3,0 chg / +0 net,no
+chapter_heb_10,Hebrews,10,Hebrews 10,32,24,0.4,0.4,0,0.4,0.3,0 chg / +0 net,no
+chapter_jdg_07,Judges,7,Judges 7,32,24,0.4,0.5,0.1,0.4,0.3,1 chg / +1 net,yes
+chapter_jdg_09,Judges,9,Judges 9,32,24,0.4,0.4,0,0.4,0.3,0 chg / +0 net,no
+chapter_num_11,Numbers,11,Numbers 11,32,24,0.4,0.4,0,0.4,0.3,0 chg / +0 net,no
+chapter_num_22,Numbers,22,Numbers 22,32,24,0.4,0.4,0,0.4,0.3,0 chg / +0 net,no
+chapter_num_27,Numbers,27,Numbers 27,32,24,0.4,0.4,0,0.3,0.3,0 chg / +0 net,no
+chapter_1ch_09,1 Chronicles,9,1 Chronicles 9,32,32,0.4,0.5,0.1,0.3,0.3,1 chg / +1 net,yes
+chapter_1ch_29,1 Chronicles,29,1 Chronicles 29,32,32,0.4,0.5,0.1,0.4,0.3,1 chg / +1 net,yes
+chapter_act_07,Acts,7,Acts 7,32,32,0.4,0.5,0.1,0.3,0.3,1 chg / +1 net,yes
+chapter_act_11,Acts,11,Acts 11,32,32,0.4,0.5,0.1,0.4,0.3,1 chg / +1 net,yes
+chapter_act_16,Acts,16,Acts 16,32,32,0.4,0.4,0,0.3,0.4,0 chg / +0 net,no
+chapter_act_27,Acts,27,Acts 27,32,32,0.4,0.5,0.1,0.3,0.4,1 chg / +1 net,yes
+chapter_deu_16,Deuteronomy,16,Deuteronomy 16,32,32,0.4,0.5,0.1,0.4,0.3,1 chg / +1 net,yes
+chapter_heb_02,Hebrews,2,Hebrews 2,32,32,0.4,0.4,0,0.4,0.3,0 chg / +0 net,no
+chapter_heb_07,Hebrews,7,Hebrews 7,32,32,0.4,0.4,0,0.4,0.3,0 chg / +0 net,no
+chapter_heb_09,Hebrews,9,Hebrews 9,32,32,0.4,0.4,0,0.4,0.3,0 chg / +0 net,no
+chapter_heb_10,Hebrews,10,Hebrews 10,32,32,0.4,0.4,0,0.3,0.3,0 chg / +0 net,no
+chapter_jdg_07,Judges,7,Judges 7,32,32,0.4,0.5,0.1,0.3,0.3,1 chg / +1 net,yes
+chapter_jdg_09,Judges,9,Judges 9,32,32,0.4,0.5,0.1,0.4,0.3,1 chg / +1 net,yes
+chapter_num_11,Numbers,11,Numbers 11,32,32,0.4,0.5,0.1,0.4,0.3,1 chg / +1 net,yes
+chapter_num_22,Numbers,22,Numbers 22,32,32,0.4,0.5,0.1,0.3,0.3,1 chg / +1 net,yes
+chapter_num_27,Numbers,27,Numbers 27,32,32,0.4,0.5,0.1,0.3,0.3,1 chg / +1 net,yes
+chapter_1ch_09,1 Chronicles,9,1 Chronicles 9,32,48,0.4,0.4,0,0.3,0.3,2 chg / +0 net,no
+chapter_1ch_29,1 Chronicles,29,1 Chronicles 29,32,48,0.4,0.4,0,0.4,0.3,2 chg / +0 net,no
+chapter_act_07,Acts,7,Acts 7,32,48,0.4,0.4,0,0.3,0.3,2 chg / +0 net,no
+chapter_act_11,Acts,11,Acts 11,32,48,0.4,0.5,0.1,0.4,0.4,1 chg / +1 net,yes
+chapter_act_16,Acts,16,Acts 16,32,48,0.4,0.5,0.1,0.3,0.4,1 chg / +1 net,yes
+chapter_act_27,Acts,27,Acts 27,32,48,0.4,0.5,0.1,0.3,0.4,1 chg / +1 net,yes
+chapter_deu_16,Deuteronomy,16,Deuteronomy 16,32,48,0.4,0.4,0,0.4,0.4,2 chg / +0 net,no
+chapter_heb_02,Hebrews,2,Hebrews 2,32,48,0.4,0.5,0.1,0.4,0.3,1 chg / +1 net,yes
+chapter_heb_07,Hebrews,7,Hebrews 7,32,48,0.4,0.5,0.1,0.4,0.3,1 chg / +1 net,yes
+chapter_heb_09,Hebrews,9,Hebrews 9,32,48,0.4,0.5,0.1,0.4,0.3,1 chg / +1 net,yes
+chapter_heb_10,Hebrews,10,Hebrews 10,32,48,0.4,0.5,0.1,0.3,0.3,1 chg / +1 net,yes
+chapter_jdg_07,Judges,7,Judges 7,32,48,0.4,0.4,0,0.3,0.3,2 chg / +0 net,no
+chapter_jdg_09,Judges,9,Judges 9,32,48,0.4,0.4,0,0.4,0.3,2 chg / +0 net,no
+chapter_num_11,Numbers,11,Numbers 11,32,48,0.4,0.4,0,0.4,0.3,2 chg / +0 net,no
+chapter_num_22,Numbers,22,Numbers 22,32,48,0.4,0.4,0,0.3,0.3,2 chg / +0 net,no
+chapter_num_27,Numbers,27,Numbers 27,32,48,0.4,0.4,0,0.3,0.3,2 chg / +0 net,no
+chapter_1ch_09,1 Chronicles,9,1 Chronicles 9,32,64,0.4,0.4,0,0.3,0.4,2 chg / +0 net,no
+chapter_1ch_29,1 Chronicles,29,1 Chronicles 29,32,64,0.4,0.4,0,0.4,0.3,2 chg / +0 net,no
+chapter_act_07,Acts,7,Acts 7,32,64,0.4,0.5,0.1,0.3,0.4,3 chg / +1 net,yes
+chapter_act_11,Acts,11,Acts 11,32,64,0.4,0.5,0.1,0.4,0.5,1 chg / +1 net,no
+chapter_act_16,Acts,16,Acts 16,32,64,0.4,0.4,0,0.4,0.5,2 chg / +0 net,no
+chapter_act_27,Acts,27,Acts 27,32,64,0.4,0.4,0,0.3,0.5,2 chg / +0 net,no
+chapter_deu_16,Deuteronomy,16,Deuteronomy 16,32,64,0.4,0.5,0.1,0.4,0.4,3 chg / +1 net,yes
+chapter_heb_02,Hebrews,2,Hebrews 2,32,64,0.4,0.5,0.1,0.4,0.3,1 chg / +1 net,yes
+chapter_heb_07,Hebrews,7,Hebrews 7,32,64,0.4,0.4,0,0.4,0.3,2 chg / +0 net,no
+chapter_heb_09,Hebrews,9,Hebrews 9,32,64,0.4,0.4,0,0.4,0.3,2 chg / +0 net,no
+chapter_heb_10,Hebrews,10,Hebrews 10,32,64,0.4,0.5,0.1,0.3,0.3,1 chg / +1 net,yes
+chapter_jdg_07,Judges,7,Judges 7,32,64,0.4,0.4,0,0.3,0.3,2 chg / +0 net,no
+chapter_jdg_09,Judges,9,Judges 9,32,64,0.4,0.4,0,0.3,0.3,2 chg / +0 net,no
+chapter_num_11,Numbers,11,Numbers 11,32,64,0.4,0.5,0.1,0.3,0.3,3 chg / +1 net,yes
+chapter_num_22,Numbers,22,Numbers 22,32,64,0.4,0.5,0.1,0.3,0.3,3 chg / +1 net,yes
+chapter_num_27,Numbers,27,Numbers 27,32,64,0.4,0.5,0.1,0.3,0.3,3 chg / +1 net,yes
+chapter_1ch_09,1 Chronicles,9,1 Chronicles 9,32,96,0.4,0.5,0.1,0.4,0.3,3 chg / +1 net,yes
+chapter_1ch_29,1 Chronicles,29,1 Chronicles 29,32,96,0.4,0.5,0.1,0.4,0.3,3 chg / +1 net,yes
+chapter_act_07,Acts,7,Acts 7,32,96,0.4,0.5,0.1,0.3,0.5,3 chg / +1 net,no
+chapter_act_11,Acts,11,Acts 11,32,96,0.4,0.5,0.1,0.4,0.5,3 chg / +1 net,no
+chapter_act_16,Acts,16,Acts 16,32,96,0.4,0.4,0,0.4,0.5,2 chg / +0 net,no
+chapter_act_27,Acts,27,Acts 27,32,96,0.4,0.4,0,0.3,0.5,2 chg / +0 net,no
+chapter_deu_16,Deuteronomy,16,Deuteronomy 16,32,96,0.4,0.5,0.1,0.3,0.5,3 chg / +1 net,no
+chapter_heb_02,Hebrews,2,Hebrews 2,32,96,0.4,0.4,0,0.4,0.3,2 chg / +0 net,no
+chapter_heb_07,Hebrews,7,Hebrews 7,32,96,0.4,0.4,0,0.4,0.3,2 chg / +0 net,no
+chapter_heb_09,Hebrews,9,Hebrews 9,32,96,0.4,0.4,0,0.4,0.3,2 chg / +0 net,no
+chapter_heb_10,Hebrews,10,Hebrews 10,32,96,0.4,0.4,0,0.3,0.3,2 chg / +0 net,no
+chapter_jdg_07,Judges,7,Judges 7,32,96,0.4,0.5,0.1,0.3,0.3,3 chg / +1 net,yes
+chapter_jdg_09,Judges,9,Judges 9,32,96,0.4,0.5,0.1,0.3,0.3,3 chg / +1 net,yes
+chapter_num_11,Numbers,11,Numbers 11,32,96,0.4,0.5,0.1,0.3,0.3,3 chg / +1 net,yes
+chapter_num_22,Numbers,22,Numbers 22,32,96,0.4,0.5,0.1,0.5,0.4,3 chg / +1 net,no
+chapter_num_27,Numbers,27,Numbers 27,32,96,0.4,0.5,0.1,0.3,0.3,3 chg / +1 net,yes
+chapter_1ch_09,1 Chronicles,9,1 Chronicles 9,33,16,0.4,0.4,0,0.3,0.4,0 chg / +0 net,no
+chapter_1ch_29,1 Chronicles,29,1 Chronicles 29,33,16,0.4,0.4,0,0.4,0.4,0 chg / +0 net,no
+chapter_act_07,Acts,7,Acts 7,33,16,0.4,0.4,0,0.4,0.3,0 chg / +0 net,no
+chapter_act_11,Acts,11,Acts 11,33,16,0.4,0.4,0,0.4,0.4,0 chg / +0 net,no
+chapter_act_16,Acts,16,Acts 16,33,16,0.4,0.4,0,0.4,0.4,0 chg / +0 net,no
+chapter_act_27,Acts,27,Acts 27,33,16,0.4,0.4,0,0.4,0.4,0 chg / +0 net,no
+chapter_deu_16,Deuteronomy,16,Deuteronomy 16,33,16,0.4,0.4,0,0.4,0.4,0 chg / +0 net,no
+chapter_heb_02,Hebrews,2,Hebrews 2,33,16,0.4,0.4,0,0.4,0.3,0 chg / +0 net,no
+chapter_heb_07,Hebrews,7,Hebrews 7,33,16,0.4,0.4,0,0.4,0.4,0 chg / +0 net,no
+chapter_heb_09,Hebrews,9,Hebrews 9,33,16,0.4,0.4,0,0.4,0.4,0 chg / +0 net,no
+chapter_heb_10,Hebrews,10,Hebrews 10,33,16,0.4,0.4,0,0.4,0.4,0 chg / +0 net,no
+chapter_jdg_07,Judges,7,Judges 7,33,16,0.4,0.4,0,0.4,0.4,0 chg / +0 net,no
+chapter_jdg_09,Judges,9,Judges 9,33,16,0.4,0.4,0,0.4,0.3,0 chg / +0 net,no
+chapter_num_11,Numbers,11,Numbers 11,33,16,0.4,0.4,0,0.4,0.3,0 chg / +0 net,no
+chapter_num_22,Numbers,22,Numbers 22,33,16,0.4,0.4,0,0.4,0.3,0 chg / +0 net,no
+chapter_num_27,Numbers,27,Numbers 27,33,16,0.4,0.4,0,0.4,0.3,0 chg / +0 net,no
+chapter_1ch_09,1 Chronicles,9,1 Chronicles 9,33,24,0.4,0.4,0,0.3,0.4,0 chg / +0 net,no
+chapter_1ch_29,1 Chronicles,29,1 Chronicles 29,33,24,0.4,0.4,0,0.4,0.3,0 chg / +0 net,no
+chapter_act_07,Acts,7,Acts 7,33,24,0.4,0.4,0,0.4,0.3,0 chg / +0 net,no
+chapter_act_11,Acts,11,Acts 11,33,24,0.4,0.4,0,0.4,0.4,0 chg / +0 net,no
+chapter_act_16,Acts,16,Acts 16,33,24,0.4,0.4,0,0.4,0.4,0 chg / +0 net,no
+chapter_act_27,Acts,27,Acts 27,33,24,0.4,0.4,0,0.3,0.4,0 chg / +0 net,no
+chapter_deu_16,Deuteronomy,16,Deuteronomy 16,33,24,0.4,0.4,0,0.4,0.3,0 chg / +0 net,no
+chapter_heb_02,Hebrews,2,Hebrews 2,33,24,0.4,0.4,0,0.4,0.3,0 chg / +0 net,no
+chapter_heb_07,Hebrews,7,Hebrews 7,33,24,0.4,0.4,0,0.4,0.4,0 chg / +0 net,no
+chapter_heb_09,Hebrews,9,Hebrews 9,33,24,0.4,0.4,0,0.4,0.4,0 chg / +0 net,no
+chapter_heb_10,Hebrews,10,Hebrews 10,33,24,0.4,0.4,0,0.3,0.3,0 chg / +0 net,no
+chapter_jdg_07,Judges,7,Judges 7,33,24,0.4,0.4,0,0.4,0.3,0 chg / +0 net,no
+chapter_jdg_09,Judges,9,Judges 9,33,24,0.4,0.4,0,0.4,0.3,0 chg / +0 net,no
+chapter_num_11,Numbers,11,Numbers 11,33,24,0.4,0.4,0,0.4,0.3,0 chg / +0 net,no
+chapter_num_22,Numbers,22,Numbers 22,33,24,0.4,0.4,0,0.4,0.3,0 chg / +0 net,no
+chapter_num_27,Numbers,27,Numbers 27,33,24,0.4,0.4,0,0.3,0.3,0 chg / +0 net,no
+chapter_1ch_09,1 Chronicles,9,1 Chronicles 9,33,32,0.4,0.4,0,0.3,0.4,0 chg / +0 net,no
+chapter_1ch_29,1 Chronicles,29,1 Chronicles 29,33,32,0.4,0.4,0,0.4,0.3,0 chg / +0 net,no
+chapter_act_07,Acts,7,Acts 7,33,32,0.4,0.5,0.1,0.4,0.3,1 chg / +1 net,yes
+chapter_act_11,Acts,11,Acts 11,33,32,0.4,0.5,0.1,0.4,0.4,1 chg / +1 net,yes
+chapter_act_16,Acts,16,Acts 16,33,32,0.4,0.4,0,0.3,0.4,0 chg / +0 net,no
+chapter_act_27,Acts,27,Acts 27,33,32,0.4,0.4,0,0.3,0.4,0 chg / +0 net,no
+chapter_deu_16,Deuteronomy,16,Deuteronomy 16,33,32,0.4,0.4,0,0.4,0.3,0 chg / +0 net,no
+chapter_heb_02,Hebrews,2,Hebrews 2,33,32,0.4,0.4,0,0.4,0.3,0 chg / +0 net,no
+chapter_heb_07,Hebrews,7,Hebrews 7,33,32,0.4,0.4,0,0.4,0.4,0 chg / +0 net,no
+chapter_heb_09,Hebrews,9,Hebrews 9,33,32,0.4,0.4,0,0.4,0.3,0 chg / +0 net,no
+chapter_heb_10,Hebrews,10,Hebrews 10,33,32,0.4,0.4,0,0.3,0.3,0 chg / +0 net,no
+chapter_jdg_07,Judges,7,Judges 7,33,32,0.4,0.4,0,0.3,0.3,0 chg / +0 net,no
+chapter_jdg_09,Judges,9,Judges 9,33,32,0.4,0.4,0,0.4,0.4,0 chg / +0 net,no
+chapter_num_11,Numbers,11,Numbers 11,33,32,0.4,0.4,0,0.4,0.4,0 chg / +0 net,no
+chapter_num_22,Numbers,22,Numbers 22,33,32,0.4,0.4,0,0.3,0.3,0 chg / +0 net,no
+chapter_num_27,Numbers,27,Numbers 27,33,32,0.4,0.4,0,0.3,0.4,0 chg / +0 net,no
+chapter_1ch_09,1 Chronicles,9,1 Chronicles 9,33,48,0.4,0.5,0.1,0.3,0.4,1 chg / +1 net,yes
+chapter_1ch_29,1 Chronicles,29,1 Chronicles 29,33,48,0.4,0.5,0.1,0.4,0.4,1 chg / +1 net,yes
+chapter_act_07,Acts,7,Acts 7,33,48,0.4,0.4,0,0.3,0.4,2 chg / +0 net,no
+chapter_act_11,Acts,11,Acts 11,33,48,0.4,0.5,0.1,0.4,0.4,1 chg / +1 net,yes
+chapter_act_16,Acts,16,Acts 16,33,48,0.4,0.5,0.1,0.3,0.4,1 chg / +1 net,yes
+chapter_act_27,Acts,27,Acts 27,33,48,0.4,0.5,0.1,0.3,0.4,1 chg / +1 net,yes
+chapter_deu_16,Deuteronomy,16,Deuteronomy 16,33,48,0.4,0.4,0,0.4,0.4,2 chg / +0 net,no
+chapter_heb_02,Hebrews,2,Hebrews 2,33,48,0.4,0.4,0,0.4,0.4,0 chg / +0 net,no
+chapter_heb_07,Hebrews,7,Hebrews 7,33,48,0.4,0.4,0,0.4,0.3,0 chg / +0 net,no
+chapter_heb_09,Hebrews,9,Hebrews 9,33,48,0.4,0.4,0,0.4,0.3,0 chg / +0 net,no
+chapter_heb_10,Hebrews,10,Hebrews 10,33,48,0.4,0.4,0,0.3,0.3,0 chg / +0 net,no
+chapter_jdg_07,Judges,7,Judges 7,33,48,0.4,0.5,0.1,0.3,0.4,1 chg / +1 net,yes
+chapter_jdg_09,Judges,9,Judges 9,33,48,0.4,0.4,0,0.3,0.4,2 chg / +0 net,no
+chapter_num_11,Numbers,11,Numbers 11,33,48,0.4,0.4,0,0.4,0.4,2 chg / +0 net,no
+chapter_num_22,Numbers,22,Numbers 22,33,48,0.4,0.5,0.1,0.3,0.4,1 chg / +1 net,yes
+chapter_num_27,Numbers,27,Numbers 27,33,48,0.4,0.4,0,0.3,0.4,2 chg / +0 net,no
+chapter_1ch_09,1 Chronicles,9,1 Chronicles 9,33,64,0.4,0.4,0,0.3,0.3,2 chg / +0 net,no
+chapter_1ch_29,1 Chronicles,29,1 Chronicles 29,33,64,0.4,0.4,0,0.4,0.4,2 chg / +0 net,no
+chapter_act_07,Acts,7,Acts 7,33,64,0.4,0.4,0,0.3,0.4,2 chg / +0 net,no
+chapter_act_11,Acts,11,Acts 11,33,64,0.4,0.5,0.1,0.4,0.4,1 chg / +1 net,yes
+chapter_act_16,Acts,16,Acts 16,33,64,0.4,0.5,0.1,0.4,0.4,1 chg / +1 net,yes
+chapter_act_27,Acts,27,Acts 27,33,64,0.4,0.5,0.1,0.3,0.4,1 chg / +1 net,yes
+chapter_deu_16,Deuteronomy,16,Deuteronomy 16,33,64,0.4,0.4,0,0.4,0.4,2 chg / +0 net,no
+chapter_heb_02,Hebrews,2,Hebrews 2,33,64,0.4,0.5,0.1,0.4,0.4,1 chg / +1 net,yes
+chapter_heb_07,Hebrews,7,Hebrews 7,33,64,0.4,0.5,0.1,0.4,0.4,1 chg / +1 net,yes
+chapter_heb_09,Hebrews,9,Hebrews 9,33,64,0.4,0.5,0.1,0.4,0.3,1 chg / +1 net,yes
+chapter_heb_10,Hebrews,10,Hebrews 10,33,64,0.4,0.4,0,0.3,0.3,0 chg / +0 net,no
+chapter_jdg_07,Judges,7,Judges 7,33,64,0.4,0.4,0,0.3,0.4,2 chg / +0 net,no
+chapter_jdg_09,Judges,9,Judges 9,33,64,0.4,0.4,0,0.3,0.4,2 chg / +0 net,no
+chapter_num_11,Numbers,11,Numbers 11,33,64,0.4,0.4,0,0.4,0.4,2 chg / +0 net,no
+chapter_num_22,Numbers,22,Numbers 22,33,64,0.4,0.4,0,0.3,0.4,2 chg / +0 net,no
+chapter_num_27,Numbers,27,Numbers 27,33,64,0.4,0.4,0,0.3,0.4,2 chg / +0 net,no
+chapter_1ch_09,1 Chronicles,9,1 Chronicles 9,33,96,0.4,0.4,0,0.4,0.3,2 chg / +0 net,no
+chapter_1ch_29,1 Chronicles,29,1 Chronicles 29,33,96,0.4,0.5,0.1,0.4,0.4,3 chg / +1 net,yes
+chapter_act_07,Acts,7,Acts 7,33,96,0.4,0.5,0.1,0.3,0.4,3 chg / +1 net,yes
+chapter_act_11,Acts,11,Acts 11,33,96,0.4,0.5,0.1,0.4,0.4,3 chg / +1 net,yes
+chapter_act_16,Acts,16,Acts 16,33,96,0.4,0.4,0,0.4,0.4,2 chg / +0 net,no
+chapter_act_27,Acts,27,Acts 27,33,96,0.4,0.4,0,0.3,0.4,2 chg / +0 net,no
+chapter_deu_16,Deuteronomy,16,Deuteronomy 16,33,96,0.4,0.5,0.1,0.3,0.4,3 chg / +1 net,yes
+chapter_heb_02,Hebrews,2,Hebrews 2,33,96,0.4,0.4,0,0.4,0.4,2 chg / +0 net,no
+chapter_heb_07,Hebrews,7,Hebrews 7,33,96,0.4,0.4,0,0.4,0.4,2 chg / +0 net,no
+chapter_heb_09,Hebrews,9,Hebrews 9,33,96,0.4,0.4,0,0.4,0.3,2 chg / +0 net,no
+chapter_heb_10,Hebrews,10,Hebrews 10,33,96,0.4,0.4,0,0.3,0.4,2 chg / +0 net,no
+chapter_jdg_07,Judges,7,Judges 7,33,96,0.4,0.5,0.1,0.3,0.4,3 chg / +1 net,yes
+chapter_jdg_09,Judges,9,Judges 9,33,96,0.4,0.5,0.1,0.4,0.4,3 chg / +1 net,yes
+chapter_num_11,Numbers,11,Numbers 11,33,96,0.4,0.5,0.1,0.3,0.4,3 chg / +1 net,yes
+chapter_num_22,Numbers,22,Numbers 22,33,96,0.4,0.5,0.1,0.4,0.4,3 chg / +1 net,yes
+chapter_num_27,Numbers,27,Numbers 27,33,96,0.4,0.5,0.1,0.3,0.4,3 chg / +1 net,yes
+chapter_1ch_09,1 Chronicles,9,1 Chronicles 9,36,32,0.4,0.4,0,0.3,0.4,0 chg / +0 net,no
+chapter_1ch_29,1 Chronicles,29,1 Chronicles 29,36,32,0.4,0.4,0,0.3,0.4,0 chg / +0 net,no
+chapter_act_07,Acts,7,Acts 7,36,32,0.4,0.4,0,0.3,0.4,0 chg / +0 net,no
+chapter_act_11,Acts,11,Acts 11,36,32,0.4,0.4,0,0.3,0.4,0 chg / +0 net,no
+chapter_act_16,Acts,16,Acts 16,36,32,0.4,0.4,0,0.3,0.4,0 chg / +0 net,no
+chapter_act_27,Acts,27,Acts 27,36,32,0.4,0.4,0,0.3,0.4,0 chg / +0 net,no
+chapter_deu_16,Deuteronomy,16,Deuteronomy 16,36,32,0.4,0.4,0,0.3,0.4,0 chg / +0 net,no
+chapter_heb_02,Hebrews,2,Hebrews 2,36,32,0.4,0.4,0,0.3,0.4,0 chg / +0 net,no
+chapter_heb_07,Hebrews,7,Hebrews 7,36,32,0.4,0.4,0,0.3,0.4,0 chg / +0 net,no
+chapter_heb_09,Hebrews,9,Hebrews 9,36,32,0.4,0.4,0,0.3,0.4,0 chg / +0 net,no
+chapter_heb_10,Hebrews,10,Hebrews 10,36,32,0.4,0.4,0,0.3,0.4,0 chg / +0 net,no
+chapter_jdg_07,Judges,7,Judges 7,36,32,0.4,0.4,0,0.3,0.4,0 chg / +0 net,no
+chapter_jdg_09,Judges,9,Judges 9,36,32,0.4,0.4,0,0.3,0.4,0 chg / +0 net,no
+chapter_num_11,Numbers,11,Numbers 11,36,32,0.4,0.4,0,0.3,0.4,0 chg / +0 net,no
+chapter_num_22,Numbers,22,Numbers 22,36,32,0.4,0.4,0,0.3,0.4,0 chg / +0 net,no
+chapter_num_27,Numbers,27,Numbers 27,36,32,0.4,0.4,0,0.3,0.4,0 chg / +0 net,no

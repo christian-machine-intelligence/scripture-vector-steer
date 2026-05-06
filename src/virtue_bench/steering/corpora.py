@@ -16,6 +16,7 @@ POOLED_VIRTUE_TARGET = "virtues"
 SCRIPTURE_FAMILY_TARGETS = ["psalms", "proverbs", "gospels"]
 SCRIPTURE_BOOK_TARGETS = ["romans", "petrine"]
 SCRIPTURE_TARGETS = SCRIPTURE_FAMILY_TARGETS + SCRIPTURE_BOOK_TARGETS
+POOLED_EXTERNAL_SCRIPTURE_TARGET = "scripturevec_pooled"
 
 
 @dataclass(frozen=True)

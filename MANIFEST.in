@@ -1,4 +1,6 @@
 include LICENSE
 include README.md
+recursive-include paper *
+recursive-include results/paper *
 recursive-include data *.csv
 recursive-include configs *.yaml

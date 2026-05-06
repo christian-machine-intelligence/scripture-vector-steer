@@ -1,0 +1,20 @@
+stage,batch,target,reference,control_accuracy,positive_accuracy,positive_delta,negative_accuracy,null_accuracy,positive_paired,source_summary
+book_discovery_l10,01,book_1sa,1 Samuel,0.4,0.5,0.1,0.4,0.4,1 chg / +1 net,results/experiments/scripturevec14/scripturevec14_qwen3_14b_books_justice_a32_ratio_l10_batch01_v1_summary.json
+book_discovery_l10,01,book_deu,Deuteronomy,0.4,0.5,0.1,0.4,0.4,1 chg / +1 net,results/experiments/scripturevec14/scripturevec14_qwen3_14b_books_justice_a32_ratio_l10_batch01_v1_summary.json
+book_discovery_l10,01,book_jdg,Judges,0.4,0.5,0.1,0.4,0.4,1 chg / +1 net,results/experiments/scripturevec14/scripturevec14_qwen3_14b_books_justice_a32_ratio_l10_batch01_v1_summary.json
+book_discovery_l10,01,book_num,Numbers,0.4,0.5,0.1,0.4,0.4,1 chg / +1 net,results/experiments/scripturevec14/scripturevec14_qwen3_14b_books_justice_a32_ratio_l10_batch01_v1_summary.json
+book_discovery_l10,02,book_1ch,1 Chronicles,0.4,0.5,0.1,0.3,0.4,1 chg / +1 net,results/experiments/scripturevec14/scripturevec14_qwen3_14b_books_justice_a32_ratio_l10_batch02_v1_summary.json
+book_discovery_l10,02,book_2ki,2 Kings,0.4,0.5,0.1,0.4,0.4,3 chg / +1 net,results/experiments/scripturevec14/scripturevec14_qwen3_14b_books_justice_a32_ratio_l10_batch02_v1_summary.json
+book_discovery_l10,02,book_neh,Nehemiah,0.4,0.5,0.1,0.4,0.4,1 chg / +1 net,results/experiments/scripturevec14/scripturevec14_qwen3_14b_books_justice_a32_ratio_l10_batch02_v1_summary.json
+book_discovery_l10,02,book_sng,Song of Solomon,0.4,0.5,0.1,0.3,0.4,1 chg / +1 net,results/experiments/scripturevec14/scripturevec14_qwen3_14b_books_justice_a32_ratio_l10_batch02_v1_summary.json
+book_discovery_l10,03,book_amo,Amos,0.4,0.5,0.1,0.4,0.4,1 chg / +1 net,results/experiments/scripturevec14/scripturevec14_qwen3_14b_books_justice_a32_ratio_l10_batch03_v1_summary.json
+book_discovery_l10,03,book_hos,Hosea,0.4,0.5,0.1,0.4,0.4,3 chg / +1 net,results/experiments/scripturevec14/scripturevec14_qwen3_14b_books_justice_a32_ratio_l10_batch03_v1_summary.json
+book_discovery_l10,03,book_lam,Lamentations,0.4,0.5,0.1,0.4,0.4,3 chg / +1 net,results/experiments/scripturevec14/scripturevec14_qwen3_14b_books_justice_a32_ratio_l10_batch03_v1_summary.json
+book_discovery_l10,04,book_act,Acts,0.4,0.5,0.1,0.4,0.4,1 chg / +1 net,results/experiments/scripturevec14/scripturevec14_qwen3_14b_books_justice_a32_ratio_l10_batch04_v1_summary.json
+book_discovery_l10,04,book_hab,Habakkuk,0.4,0.5,0.1,0.4,0.4,1 chg / +1 net,results/experiments/scripturevec14/scripturevec14_qwen3_14b_books_justice_a32_ratio_l10_batch04_v1_summary.json
+book_discovery_l10,04,book_jhn,John,0.4,0.5,0.1,0.4,0.4,1 chg / +1 net,results/experiments/scripturevec14/scripturevec14_qwen3_14b_books_justice_a32_ratio_l10_batch04_v1_summary.json
+book_discovery_l10,04,book_luk,Luke,0.4,0.5,0.1,0.4,0.4,1 chg / +1 net,results/experiments/scripturevec14/scripturevec14_qwen3_14b_books_justice_a32_ratio_l10_batch04_v1_summary.json
+book_discovery_l10,04,book_mrk,Mark,0.4,0.5,0.1,0.4,0.4,1 chg / +1 net,results/experiments/scripturevec14/scripturevec14_qwen3_14b_books_justice_a32_ratio_l10_batch04_v1_summary.json
+book_discovery_l10,04,book_nam,Nahum,0.4,0.5,0.1,0.4,0.4,3 chg / +1 net,results/experiments/scripturevec14/scripturevec14_qwen3_14b_books_justice_a32_ratio_l10_batch04_v1_summary.json
+book_discovery_l10,06,book_heb,Hebrews,0.4,0.5,0.1,0.4,0.4,1 chg / +1 net,results/experiments/scripturevec14/scripturevec14_qwen3_14b_books_justice_a32_ratio_l10_batch06_v1_summary.json
+book_discovery_l10,06,book_rev,Revelation,0.4,0.5,0.1,0.3,0.4,1 chg / +1 net,results/experiments/scripturevec14/scripturevec14_qwen3_14b_books_justice_a32_ratio_l10_batch06_v1_summary.json

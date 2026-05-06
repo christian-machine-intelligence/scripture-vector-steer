@@ -14,9 +14,5 @@ Run these from Windows by double-clicking or from `cmd.exe`.
 - `start_scripture_book_screen_manager.cmd`: preferred launcher for the
   book-level scripture screen across Psalms, Proverbs, Romans, and combined
   Petrine lanes at `1.0`, `2.0`, and `3.0`.
-- `start_scripture_study2_manager.cmd`: preferred launcher for the full
-  Scripture Vector Steer comparison across all five VirtueBench 2 slices with
-  Psalms, Romans, and combined Petrine lanes.
-
 Each launcher derives the repo root from its own location, so the Windows
 checkout can be named either `virtue-bench-2` or `psalm-vector-steer`.

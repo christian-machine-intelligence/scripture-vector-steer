@@ -1,0 +1,8 @@
+stage,batch,target,reference,survived,control_accuracy,positive_accuracy,positive_delta,negative_accuracy,null_accuracy,positive_paired,source_summary
+book_confirmation_l40,01,book_1ch,1 Chronicles,yes,0.4,0.425,0.025,0.375,0.35,1 chg / +1 net,results/experiments/scripturevec14/scripturevec14_qwen3_14b_books_justice_candidates_a32_ratio_l40_batch01_v1_summary.json
+book_confirmation_l40,01,book_amo,Amos,yes,0.4,0.425,0.025,0.4,0.375,1 chg / +1 net,results/experiments/scripturevec14/scripturevec14_qwen3_14b_books_justice_candidates_a32_ratio_l40_batch01_v1_summary.json
+book_confirmation_l40,01,book_deu,Deuteronomy,yes,0.4,0.425,0.025,0.4,0.375,1 chg / +1 net,results/experiments/scripturevec14/scripturevec14_qwen3_14b_books_justice_candidates_a32_ratio_l40_batch01_v1_summary.json
+book_confirmation_l40,01,book_jdg,Judges,yes,0.4,0.425,0.025,0.4,0.375,1 chg / +1 net,results/experiments/scripturevec14/scripturevec14_qwen3_14b_books_justice_candidates_a32_ratio_l40_batch01_v1_summary.json
+book_confirmation_l40,01,book_num,Numbers,yes,0.4,0.425,0.025,0.4,0.375,1 chg / +1 net,results/experiments/scripturevec14/scripturevec14_qwen3_14b_books_justice_candidates_a32_ratio_l40_batch01_v1_summary.json
+book_confirmation_l40,02,book_act,Acts,yes,0.4,0.425,0.025,0.4,0.4,1 chg / +1 net,results/experiments/scripturevec14/scripturevec14_qwen3_14b_books_justice_candidates_a32_ratio_l40_batch02_v1_summary.json
+book_confirmation_l40,02,book_heb,Hebrews,yes,0.4,0.45,0.05,0.4,0.4,2 chg / +2 net,results/experiments/scripturevec14/scripturevec14_qwen3_14b_books_justice_candidates_a32_ratio_l40_batch02_v1_summary.json

@@ -18,6 +18,7 @@ from .corpora import (
     CORPUS_FILE,
     DEFAULT_VIRTUE_TARGETS,
     POOLED_VIRTUE_TARGET,
+    POOLED_EXTERNAL_SCRIPTURE_TARGET,
     SCRIPTURE_FAMILY_TARGETS,
     SCRIPTURE_TARGETS,
     build_contrast_pairs,
@@ -67,6 +68,7 @@ def load_external_scripture_corpora(path: Optional[Path]) -> Dict[str, List[str]
     if path is None:
         return {}
     grouped: Dict[str, List[str]] = {}
+    pooled_texts: List[str] = []
     with open(path, encoding="utf-8") as handle:
         for line_no, raw_line in enumerate(handle, start=1):
             line = raw_line.strip()
@@ -79,7 +81,11 @@ def load_external_scripture_corpora(path: Optional[Path]) -> Dict[str, List[str]
                 raise ValueError(f"{path}:{line_no} is missing a corpus/target field")
             if not isinstance(text, str) or not text.strip():
                 raise ValueError(f"{path}:{line_no} is missing non-empty text")
-            grouped.setdefault(target, []).append(text.strip())
+            clean_text = text.strip()
+            grouped.setdefault(target, []).append(clean_text)
+            pooled_texts.append(clean_text)
+    if grouped and POOLED_EXTERNAL_SCRIPTURE_TARGET not in grouped:
+        grouped[POOLED_EXTERNAL_SCRIPTURE_TARGET] = pooled_texts
     return grouped
 
 

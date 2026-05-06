@@ -1,0 +1,17 @@
+target,book,chapter,reference,paired_rescue_count,accuracy_rescue_count,best_center_layer,best_alpha,best_control_accuracy,best_positive_accuracy,best_negative_accuracy,best_null_accuracy,best_positive_paired
+chapter_act_11,Acts,11,Acts 11,29,29,24,32,0.4,0.6,0.3,0.5,4 chg / +2 net
+chapter_act_07,Acts,7,Acts 7,20,20,24,16,0.4,0.5,0.3,0.5,1 chg / +1 net
+chapter_1ch_09,1 Chronicles,9,1 Chronicles 9,19,19,24,32,0.4,0.7,0.5,0.4,3 chg / +3 net
+chapter_act_16,Acts,16,Acts 16,19,19,24,32,0.4,0.6,0.5,0.5,4 chg / +2 net
+chapter_act_27,Acts,27,Acts 27,18,18,24,48,0.4,0.6,0.6,0.5,4 chg / +2 net
+chapter_heb_02,Hebrews,2,Hebrews 2,17,17,24,24,0.4,0.6,0.2,0.5,2 chg / +2 net
+chapter_num_27,Numbers,27,Numbers 27,16,16,28,96,0.4,0.6,0.5,0.4,2 chg / +2 net
+chapter_1ch_29,1 Chronicles,29,1 Chronicles 29,15,15,24,16,0.4,0.6,0.3,0.5,2 chg / +2 net
+chapter_num_11,Numbers,11,Numbers 11,15,15,24,32,0.4,0.6,0.4,0.6,4 chg / +2 net
+chapter_heb_09,Hebrews,9,Hebrews 9,13,13,24,16,0.4,0.5,0.3,0.4,1 chg / +1 net
+chapter_jdg_07,Judges,7,Judges 7,13,13,24,32,0.4,0.6,0.5,0.5,4 chg / +2 net
+chapter_heb_07,Hebrews,7,Hebrews 7,11,11,24,32,0.4,0.6,0.4,0.5,2 chg / +2 net
+chapter_jdg_09,Judges,9,Judges 9,11,11,24,32,0.4,0.6,0.5,0.5,4 chg / +2 net
+chapter_deu_16,Deuteronomy,16,Deuteronomy 16,10,10,24,32,0.4,0.5,0.5,0.5,3 chg / +1 net
+chapter_heb_10,Hebrews,10,Hebrews 10,10,10,24,32,0.4,0.7,0.4,0.5,3 chg / +3 net
+chapter_num_22,Numbers,22,Numbers 22,8,8,24,48,0.4,0.6,0.6,0.3,4 chg / +2 net

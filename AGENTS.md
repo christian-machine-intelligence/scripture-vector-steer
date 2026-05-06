@@ -1,8 +1,11 @@
-# Scripture Vector Steer Instructions
+# ScriptureVec Justice Instructions
 
-This repository studies whether Scripture-derived activation vectors can shift model decisions on VirtueBench 2.
+This repository studies whether Scripture-derived activation vectors can shift
+model decisions on VirtueBench2, with the current paper focused on
+chapter-level biblical Justice vectors in Qwen3-14B.
 
-Use plain English in explanations. The user is interested in the technical ideas, but does not want unexplained jargon.
+Use plain English in explanations. The user is interested in the technical
+ideas, but does not want unexplained jargon.
 
 ## Start Here
 
@@ -10,30 +13,38 @@ Before changing or launching anything:
 
 - Read `README.md` for the public project story.
 - Read `docs/experiment_playbook.md` for general run discipline.
-- Read `docs/iconoclast_best_practices.md` for steering-specific rules.
-- Read `docs/future_eval_lessons.md` before designing a new eval.
+- Read the relevant ScriptureVec run-design document under `docs/`.
 - Check `git status --short` and preserve unrelated user changes.
 
 ## Current Research Shape
 
-The current paper-facing run is Scripture Vector Steer, not "Study 2" in public language.
+The current paper is:
+
+- `"Search Out a Matter": A Canon-Wide Discovery of Chapter-Level Biblical Justice Vectors in Qwen3-14B`
 
 The paper artifacts live in:
 
-- `paper/activation_without_animation.docx`
-- `results/paper/scripture_study2/`
+- `paper/search_out_a_matter_scripturevec_justice.md`
+- `paper/search_out_a_matter_scripturevec_justice.docx`
+- `paper/search_out_a_matter_scripturevec_justice.pdf`
+- `results/paper/scripturevec_justice/`
 
-The public package and CLI still use `virtue_bench` / `virtue-bench` for compatibility.
+The public package and CLI still use `virtue_bench` / `virtue-bench` for
+compatibility.
 
-## Future Eval Defaults
+## Current Paper Defaults
 
-- Use `control` as the headline scoreboard.
-- Treat null lanes as mechanism checks, not as the main comparison.
-- For scale sweeps, extract one vector per corpus and reuse it across scale levels.
-- For negative-alpha tests, reuse the same vector and flip the alpha sign. Do not extract a separate "anti-scripture" vector unless that is the explicit study.
-- Keep the extractor contrast as scripture corpus chunks versus generic non-scripture chunks unless the study is explicitly within-scripture.
-- Treat `petrine` as 1 Peter and 2 Peter combined unless the study explicitly separates them.
-- Run reasoning review alongside quantitative analysis when answer changes are small or surprising.
+- Treat Justice as the proof-of-concept target.
+- Describe effects as specific chapter-derived vectors, not as a flat
+  Scripture-in-general effect.
+- Use `control` as the headline comparison.
+- Treat negative-alpha and null lanes as mechanism checks.
+- Keep limit-10 discovery/localization separate from limit-40 confirmation.
+- Use the expanded 43-cell localization grid as a behavioral atlas, with
+  `L30 / alpha 96`, `L28 / alpha 16`, and `L24 / alpha 32` as the
+  regime-defining cells.
+- Keep SAE analysis as a next-step explanatory layer unless it has actually
+  been run.
 
 ## Validation
 
@@ -47,5 +58,6 @@ PYTHONPATH=src python -m pytest \
   tests/test_steering_selection.py
 ```
 
-If the full test suite fails because optional heavy dependencies such as `torch` are missing, report that as an environment limitation unless there is evidence of a real code regression.
-
+If the full test suite fails because optional heavy dependencies such as
+`torch` are missing, report that as an environment limitation unless there is
+evidence of a real code regression.
