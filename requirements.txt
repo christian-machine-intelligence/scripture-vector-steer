@@ -1,0 +1,37 @@
+# ScriptureVec Justice -- pinned versions used to produce the paper.
+#
+# The headline numbers were produced on a Windows 11 GPU host running
+# Qwen3-14B in bf16 (paper §3.1); the laptop environment used for
+# analysis, figure rendering, and the stats script is CPython 3.12 on
+# macOS. Pin tightly for exact reproduction; relax with care.
+#
+# ── Core (eval + steering; required for the Qwen3-14B GPU pipeline) ──
+torch>=2.4.0
+transformers>=4.45.0
+accelerate>=1.0.0
+peft>=0.13.0
+numpy>=1.26.0
+
+# ── API runners (only needed if reproducing the GPT-4o / Claude
+# comparison configs in configs/v1_reproduction_*.yaml; not required
+# for the Qwen3-14B paper headline) ──
+openai>=1.40.0
+anthropic>=0.40.0
+
+# ── Config + small dependencies (paper-side) ──
+pyyaml>=6.0
+pydantic>=2.0
+tabulate>=0.9.0
+
+# ── Figure rendering + analysis (laptop-side) ──
+pillow>=10.0.0          # build_scripturevec_justice_paper_doc.py figure renderer
+matplotlib>=3.8.0       # available for future CI overlays
+
+# ── Statistical inference (laptop-side; new in PR1) ──
+# scripts/scripturevec_justice_stats.py: no extra deps; uses stdlib
+# math.comb + math.lgamma + bisection on the binomial CDF for exact
+# McNemar and Clopper-Pearson.
+
+# ── Dev (optional) ──
+# pytest>=7.0
+# ruff>=0.6.0
