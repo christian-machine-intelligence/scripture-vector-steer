@@ -1,0 +1,20 @@
+target,reference,survived,slice_n,control_accuracy,positive_accuracy,negative_accuracy,null_accuracy,paired_field,b_wrong_to_right,c_right_to_wrong,discordant_pairs,p_value_two_sided,p_value_one_sided,p_bh_fdr_adjusted,p_bonferroni_adjusted
+book_1ch,1 Chronicles,yes,40,0.4,0.425,0.375,0.35,1 chg / +1 net,1,0,1,1.000000,0.500000,1.000000,1.000000
+book_1sa,1 Samuel,no,40,0.4,0.4,0.4,0.375,2 chg / +0 net,1,1,2,1.000000,0.750000,1.000000,1.000000
+book_2ki,2 Kings,no,40,0.4,0.375,0.4,0.425,5 chg / -1 net,2,3,5,1.000000,0.812500,1.000000,1.000000
+book_amo,Amos,yes,40,0.4,0.425,0.4,0.375,1 chg / +1 net,1,0,1,1.000000,0.500000,1.000000,1.000000
+book_deu,Deuteronomy,yes,40,0.4,0.425,0.4,0.375,1 chg / +1 net,1,0,1,1.000000,0.500000,1.000000,1.000000
+book_hos,Hosea,no,40,0.4,0.375,0.4,0.425,5 chg / -1 net,2,3,5,1.000000,0.812500,1.000000,1.000000
+book_jdg,Judges,yes,40,0.4,0.425,0.4,0.375,1 chg / +1 net,1,0,1,1.000000,0.500000,1.000000,1.000000
+book_neh,Nehemiah,no,40,0.4,0.425,0.425,0.425,1 chg / +1 net,1,0,1,1.000000,0.500000,1.000000,1.000000
+book_num,Numbers,yes,40,0.4,0.425,0.4,0.375,1 chg / +1 net,1,0,1,1.000000,0.500000,1.000000,1.000000
+book_sng,Song of Solomon,no,40,0.4,0.425,0.375,0.425,1 chg / +1 net,1,0,1,1.000000,0.500000,1.000000,1.000000
+book_act,Acts,yes,40,0.4,0.425,0.4,0.4,1 chg / +1 net,1,0,1,1.000000,0.500000,1.000000,1.000000
+book_hab,Habakkuk,no,40,0.4,0.4,0.425,0.425,2 chg / +0 net,1,1,2,1.000000,0.750000,1.000000,1.000000
+book_heb,Hebrews,yes,40,0.4,0.45,0.4,0.4,2 chg / +2 net,2,0,2,0.500000,0.250000,1.000000,1.000000
+book_jhn,John,no,40,0.4,0.4,0.4,0.4,2 chg / +0 net,1,1,2,1.000000,0.750000,1.000000,1.000000
+book_lam,Lamentations,no,40,0.4,0.35,0.4,0.425,6 chg / -2 net,2,4,6,0.687500,0.890625,1.000000,1.000000
+book_luk,Luke,no,40,0.4,0.4,0.4,0.4,2 chg / +0 net,1,1,2,1.000000,0.750000,1.000000,1.000000
+book_mrk,Mark,no,40,0.4,0.4,0.4,0.4,2 chg / +0 net,1,1,2,1.000000,0.750000,1.000000,1.000000
+book_nam,Nahum,no,40,0.4,0.35,0.4,0.425,6 chg / -2 net,2,4,6,0.687500,0.890625,1.000000,1.000000
+book_rev,Revelation,no,40,0.4,0.4,0.35,0.4,2 chg / +0 net,1,1,2,1.000000,0.750000,1.000000,1.000000
