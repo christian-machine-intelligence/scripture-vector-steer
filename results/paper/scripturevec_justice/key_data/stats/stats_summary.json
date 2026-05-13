@@ -1,0 +1,99 @@
+{
+  "stages": {
+    "book_discovery_l10": {
+      "slice_n": 10,
+      "row_count": 19,
+      "candidates_with_positive_movement": 19,
+      "significant_uncorrected_p05": 0,
+      "significant_bh_fdr_q05": 0,
+      "significant_bonferroni_p05": 0
+    },
+    "book_confirmation_l40": {
+      "slice_n": 40,
+      "row_count": 19,
+      "candidates_with_positive_movement": 9,
+      "significant_uncorrected_p05": 0,
+      "significant_bh_fdr_q05": 0,
+      "significant_bonferroni_p05": 0
+    },
+    "chapter_discovery_l10": {
+      "slice_n": 10,
+      "row_count": 38,
+      "candidates_with_positive_movement": 38,
+      "significant_uncorrected_p05": 0,
+      "significant_bh_fdr_q05": 0,
+      "significant_bonferroni_p05": 0
+    },
+    "chapter_confirmation_l40": {
+      "slice_n": 40,
+      "row_count": 38,
+      "candidates_with_positive_movement": 16,
+      "significant_uncorrected_p05": 0,
+      "significant_bh_fdr_q05": 0,
+      "significant_bonferroni_p05": 0
+    }
+  },
+  "layer_alpha_cell_cis": {
+    "L30/a96": {
+      "paired_rescues": 13,
+      "rows": 16,
+      "proportion": 0.8125,
+      "ci_lower": 0.5435434537683883,
+      "ci_upper": 0.9595262660940542,
+      "mean_positive_delta": 0.0875
+    },
+    "L28/a16": {
+      "paired_rescues": 11,
+      "rows": 16,
+      "proportion": 0.6875,
+      "ci_lower": 0.413379363548641,
+      "ci_upper": 0.8898300452828825,
+      "mean_positive_delta": 0.0625
+    },
+    "L24/a32": {
+      "paired_rescues": 9,
+      "rows": 16,
+      "proportion": 0.5625,
+      "ci_lower": 0.2987768990831775,
+      "ci_upper": 0.8024658594673322,
+      "mean_positive_delta": 0.1687
+    },
+    "L31/a96": {
+      "paired_rescues": 12,
+      "rows": 16,
+      "proportion": 0.75,
+      "ci_lower": 0.47622918010387194,
+      "ci_upper": 0.9273379617471178,
+      "mean_positive_delta": 0.0812
+    },
+    "L32/a32": {
+      "paired_rescues": 11,
+      "rows": 16,
+      "proportion": 0.6875,
+      "ci_lower": 0.413379363548641,
+      "ci_upper": 0.8898300452828825,
+      "mean_positive_delta": 0.0687
+    },
+    "L30/a64": {
+      "paired_rescues": 11,
+      "rows": 16,
+      "proportion": 0.6875,
+      "ci_lower": 0.413379363548641,
+      "ci_upper": 0.8898300452828825,
+      "mean_positive_delta": 0.0625
+    },
+    "L31/a48": {
+      "paired_rescues": 11,
+      "rows": 16,
+      "proportion": 0.6875,
+      "ci_lower": 0.413379363548641,
+      "ci_upper": 0.8898300452828825,
+      "mean_positive_delta": 0.0687
+    }
+  },
+  "interpretation": {
+    "rescue_rule": "A row counts as a paired rescue iff positive_acc > max(control, negative, null) strictly and the net item-level paired movement (b - c) is positive.",
+    "test_notes": "Per-row p-values use the exact two-sided McNemar test reconstructed from the (b, c) discordant pairs implicit in the 'X chg / +/-Y net' field. Family corrections are applied within each stage.",
+    "ci_notes": "Cell rescue counts use exact two-sided Clopper-Pearson 95% intervals on Binomial(rows = 16 chapters, p)."
+  }
+}
