@@ -5,57 +5,6 @@ follow-up experiment listed as the next confirmation step in
 [paper §10](../../paper/search_out_a_matter_scripturevec_justice.md)
 and the (b) follow-up named in the PR1 stats commit.
 
-## Hi Lucius — short version
-
-The paper is in good shape after PR1 / PR2 / PR3, but there's one
-empirical gap that a careful reviewer is going to notice immediately,
-and we'd rather close it ourselves than have to defend it in review.
-This experiment closes it.
-
-**The gap.** Our "confirmation" stage at limit-40 is not statistically
-independent of our discovery stage at limit-10. Both stages share the
-same first 10 benchmark items because the sampler in `prepare_samples`
-is deterministic at seed=42 — `--limit 10` evaluates items 0–9,
-`--limit 40` evaluates items 0–39, so confirmation is just discovery
-plus 30 more items on top. The arithmetic shows the 30 new items
-contribute essentially no movement for the typical survivor (positive
-12, control 12). So the funnel narrative (66 → 19 → 7 → 38 → 16) reads
-like a sequence of tightening independent tests, but mechanically it's
-one test run at two slice sizes.
-
-**Why a reviewer will catch this.** A reasonably skeptical reader
-will read §3.5 / §4.2 / §4.4, notice that the discovery and
-confirmation share items 0–9, and then go straight to the PR1 stats
-output showing zero rows reach uncorrected p < 0.05 at any stage.
-That combination is hard to defend: small effects, on overlapping
-slices, with no inferential pass-through. Without the disjoint-slice
-retest the paper has to retreat fully to the "behavioural atlas, not
-confirmed effects" framing for every individual chapter.
-
-**What this retest does.** It evaluates the 16 candidate chapter
-directions at the three regime-illustrative cells against items
-**40–79** of the Justice ratio bank — 40 items the chapters were never
-screened on. Same model, same vectors, same four-condition controls,
-same strict pass rule. If chapters survive on the fresh slice, that's
-real upgrade evidence — we can promote them to confirmed effects in
-the next paper revision and the funnel narrative recovers its
-epistemic shape. If they don't, that's also a real result and we
-publish it: the paper becomes a method-development contribution
-(*how to search the canon for moral steering directions*) plus an
-honest behavioural atlas, which is smaller but more durable than the
-current framing.
-
-**Three possible outcomes for your paper:**
-
-| Outcome | What it means | What changes in the paper |
-| --- | --- | --- |
-| Most chapters *promoted* (pass rule + BH q < 0.05 on ≥1 cell) | Real evidence the directions carry effects | Discussion claims individual chapter effects; §7 readings get more weight |
-| Most chapters *candidate* (pass rule but no significance) | Directions move things but at the noise floor | Stay with PR1's "candidate cohort" framing; minor edits |
-| Most chapters *demoted* (fail rule on all 3 cells) | The cohort doesn't survive an independent test | Paper restructures around method + atlas, candidate cohort gets named as non-survivors honestly. Smaller claim, more defensible. |
-
-The runs are about 2–3 hours each on the 4090 (single GPU), three
-total. Detail and the exact commands are below.
-
 ## Why this exists
 
 The current paper's L40 "confirmation" stage is not statistically
