@@ -97,11 +97,15 @@ Retesting the nineteen preliminary book candidates at limit 40 with the same con
 
 The survival pattern is consistent with the slice nesting noted in §3.5: each surviving book moved one item at limit-10 (5/10 vs 4/10) and one item at limit-40 (17/40 vs 16/40), so the additional 30 items in the confirmation slice contributed no net new movement. The "wider behavioral test" reads as the L10 signal carrying forward into L40 unchanged, not as new evidence from independent items. Twelve of the nineteen preliminary candidates failed because positive lost its strict-inequality advantage over negative-α or null on the larger slice, not because positive itself reversed.
 
+![Figure 1. Book-level confirmation, control vs positive steering on the 19 preliminary candidates with the 7 survivors highlighted.](../results/paper/scripturevec_justice/figures/figure_1_book_confirmation.png)
+
 [**Figure 1 placeholder.** Book-level confirmation, control vs positive steering for all nineteen preliminary candidates with the seven survivors highlighted. Generated from `book_confirmation_l40_all_candidates.csv`.]
 
 ### 4.3 Chapter Discovery: 38 Hits
 
 Taking the seven confirmed books as the search region, the chapter-discovery screen swept 170 chapters and 952 verse-window rows at limit 10, α = 32. Thirty-eight clean preliminary chapter hits emerged, distributed unevenly: Acts contributed 14, Hebrews 6, Numbers 6, 1 Chronicles 4, Judges 3, Amos 3, Deuteronomy 2. The book-level signal sharpened into a clustered chapter map rather than into a single hot chapter per book.
+
+![Figure 2. Chapter hits per candidate book: preliminary at limit-10 (light) and confirmed-cohort at limit-40 (dark).](../results/paper/scripturevec_justice/figures/figure_2_chapter_hits_by_book.png)
 
 [**Figure 2 placeholder.** Chapter-discovery hits per confirmed book, grouped bar chart. Generated from `chapter_discovery_l10_clean_hits.csv`.]
 
@@ -123,6 +127,8 @@ This chapter set was the empirical object the rest of the paper would study. It 
 
 The localization study tested the sixteen confirmed chapter vectors across an expanded focused layer-by-α grid. The final packet contains forty-three completed behavior cells: full α ladders for layers 24, 28, 29, 30, 31, 32, and 33, plus the layer-36 anchor cell at α = 32. The layer-36 anchor produced no rescues, so it was intentionally not expanded.
 
+![Figure 3. Layer-by-α rescue heatmap; cell value is paired rescues out of 16 chapter vectors. CIs overlap between top cells (see §5.2).](../results/paper/scripturevec_justice/figures/figure_3_layer_alpha_heatmap.png)
+
 [**Figure 3 placeholder.** Layer-by-α rescue heatmap, x-axis α, y-axis center layer, cell value paired-rescue count out of sixteen. The expanded 43-cell grid is complete; unexpanded layer-36 cells are marked as not run. Generated from `layer_alpha_expected_grid.csv`.]
 
 ### 5.2 Three Illustrative Cells, with Overlapping Confidence Intervals
@@ -141,9 +147,13 @@ The three cells' 95% CIs all overlap pairwise (L30/α96 [0.54, 0.96] with L28/α
 
 Plotting paired rescue count against mean positive Δ across the forty-three completed cells exposes a separation between L24/α32 (largest mean Δ, smaller rescue set) and the L28–L31 high-α cells (largest rescue counts, smaller mean Δ). The cell-to-cell rescue-count differences sit inside overlapping CIs (§5.2), so this should be read as a *separation of axes* in the atlas rather than as a confirmed contrast between distinct regimes. The L24 α-collapse — sharp at α = 48 and total at α = 64 and α = 96 — is the sharpest cell-localised feature in the grid and survives the most aggressive reading: at L24, only the α = 24–32 window appears usable, and the columns to either side of it lose all rescues.
 
+![Figure 4. Breadth (paired-rescue count) versus strength (mean positive Δ) across the 43 completed cells, with the three illustrative cells labelled.](../results/paper/scripturevec_justice/figures/figure_4_breadth_strength.png)
+
 [**Figure 4 placeholder.** Breadth vs strength scatter: x = paired rescue count, y = mean positive Δ, points labeled with `L{layer}/α{α}`, the three regime-defining cells highlighted. Generated from `layer_alpha_cells.csv`.]
 
 The α trajectories make the cell-localised α behavior visible. Layer 24 rises sharply at α = 32 and then collapses under heavier pushes; layer 28 is largest at α = 16 and weakens as α rises; layer 30 improves with stronger pushes and reaches its largest rescue count at α = 96. The rescue-count differences between L28/α16, L30/α64, L31/α48, L32/α32 are all inside one another's 95% CIs (§5.2); the L24 α-collapse is the only feature that is clearly outside the CIs of its neighbours.
+
+![Figure 5. Alpha trajectories by layer: paired-rescue count vs α for layers 24, 28, 30, 31, 32, 33. L24 collapses sharply at α ≥ 48.](../results/paper/scripturevec_justice/figures/figure_5_alpha_trajectories.png)
 
 [**Figure 5 placeholder.** Alpha trajectories by layer: x = α, y = paired-rescue count out of sixteen, with layers 24, 28, 30, 31, 32, and 33 shown as separate trajectories and Clopper–Pearson 95% bands. Generated from `layer_alpha_cells.csv` and `key_data/stats/layer_alpha_cell_cis.csv`.]
 
@@ -153,6 +163,8 @@ This pattern is suggestive of an internally compound chapter-derived direction, 
 
 The localization grid afforded a second, orthogonal view of the chapter set. Across the forty-three completed cells, some chapters were rescued in many cells and others in only a few. Acts 11 was rescued in twenty-nine cells; Acts 7 in twenty; 1 Chronicles 9 and Acts 16 in nineteen each; Acts 27 in eighteen; Hebrews 2 in seventeen; and Numbers 27 in sixteen. Numbers 22, by contrast, surfaced in eight cells. The chapter set therefore has a stable core and a more selective edge. These per-chapter counts are sums across 43 cells; the cell-level inputs are limit-10 each, so the per-chapter stability ranking is itself a low-power read and is best interpreted as ordering candidates for follow-up, not as a confirmed property of the underlying chapters.
 
+![Figure 6. Per-chapter stability across the 43 completed cells, ranked. Acts 11 most stable (29 cells), Numbers 22 least (8 cells).](../results/paper/scripturevec_justice/figures/figure_6_chapter_stability.png)
+
 [**Figure 6 placeholder.** Chapter stability across layer-α cells, ranked horizontal bar chart. Generated from `chapter_stability_by_localization.csv`.]
 
 At this point, the sixteen confirmed chapters can be read in two ways at once: first as confirmed chapter-level movers from the limit-40 run, and second as differently stable vectors across the localization grid. Table 2 is therefore not just a list of discoveries; it is the bridge between the confirmation result and the layer/strength result.
@@ -160,6 +172,8 @@ At this point, the sixteen confirmed chapters can be read in two ways at once: f
 [**Table 2 placeholder.** The sixteen confirmed chapter movers, with biblical reference, book family, limit-40 control accuracy, limit-40 positive-steering accuracy, negative-α and null accuracies, localization rescue count, best layer/α cell, and brief biblical motif. Generated from `chapter_confirmation_l40_survivors.csv` and `chapter_stability_by_localization.csv`.]
 
 The structure grew more interesting still when the chapter-by-cell rescue matrix was read across α at fixed layer. At layer 28, α = 16 surfaced a broad New Testament-heavy family, especially Acts and Hebrews. At layer 30, the rescued family widened as α rose, reaching thirteen chapters at α = 96 and bringing in Deuteronomy, Judges, Numbers, Acts, Hebrews, and Chronicles together. At layer 24, by contrast, α = 32 concentrated high-movement effects in a smaller cluster, while heavier α values collapsed. Steering strength therefore selected different components of the chapter-derived geometry rather than simply amplifying the same effect at higher volume.
+
+![Figure 7. Chapter × (layer, α) rescue matrix: 16 chapter rows × 43 completed cells; vertical stripes of co-activation invite sparse-feature follow-up.](../results/paper/scripturevec_justice/figures/figure_7_rescue_matrix.png)
 
 [**Figure 7 placeholder.** Chapter-by-layer/α rescue matrix, sixteen rows by forty-three completed columns, binary heatmap. Generated from `chapter_x_layer_alpha_rescue_matrix.csv`.]
 
