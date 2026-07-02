@@ -1,0 +1,5 @@
+# Archived: ScriptureVec Justice
+
+This directory holds an earlier study — *"Search Out a Matter": A Canon-Wide Discovery of Chapter-Level Biblical Justice Vectors in Qwen3-14B* (Lucius) — together with its data and figures. It is retained for the record and for the motivation it articulates, and it is no longer the repository's active paper.
+
+The study searched the biblical canon for chapter-level Justice steering vectors in Qwen3-14B under a binary pass/fail metric, and returned a null: the surviving candidates did not reach statistical significance, and a later reading attributed the apparent signal to selection-on-noise, a coarse endpoint, and an answer-position artifact. The current paper, [*Form Upon Matter: Scripture-Steered Courage in Qwen3-32B*](../../paper/scripturevec_courage.md), corrects that method — a continuous choice margin, an A/B-split position control, reversed-steering asymmetry, and a pre-registered confirmatory pass — and studies courage at a scale where Scripture is behaviorally receptive. What was learned from the Justice attempt shaped that design; the paper is preserved here so the lineage stays visible.

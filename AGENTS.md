@@ -1,50 +1,55 @@
-# ScriptureVec Justice Instructions
+# ScriptureVec: Courage — Instructions
 
 This repository studies whether Scripture-derived activation vectors can shift
-model decisions on VirtueBench2, with the current paper focused on
-chapter-level biblical Justice vectors in Qwen3-14B.
+model decisions on VirtueBench-2. The current paper studies scripture-steered
+courage in Qwen3-32B.
 
 Use plain English in explanations. The user is interested in the technical
-ideas, but does not want unexplained jargon.
+ideas, but does not want unexplained jargon. When drafting or editing the
+paper, follow `docs/ICMI_STYLE.md` closely: ICMI papers are written in an
+academic research register that fuses empirical rigor with Reformed–Thomistic
+theology, and matching that register takes deliberate effort.
 
 ## Start Here
 
 Before changing or launching anything:
 
 - Read `README.md` for the public project story.
-- Read `docs/experiment_playbook.md` for general run discipline.
-- Read the relevant ScriptureVec run-design document under `docs/`.
+- Read `docs/scripturevec_courage_run_design.md` for the study's design and run discipline.
+- Read `scripts/courage_steer/preregistration.md` for the frozen confirmatory contract.
 - Check `git status --short` and preserve unrelated user changes.
 
 ## Current Research Shape
 
 The current paper is:
 
-- `"Search Out a Matter": A Canon-Wide Discovery of Chapter-Level Biblical Justice Vectors in Qwen3-14B`
+- `Form Upon Matter: Scripture-Steered Courage in Qwen3-32B`
 
 The paper artifacts live in:
 
-- `paper/search_out_a_matter_scripturevec_justice.md`
-- `paper/search_out_a_matter_scripturevec_justice.docx`
-- `paper/search_out_a_matter_scripturevec_justice.pdf`
-- `results/paper/scripturevec_justice/`
+- `paper/scripturevec_courage.md`
+- `paper/figures/`
+- `scripts/courage_steer/`, `data/courage_steer/`
+- `docs/scripturevec_courage_run_design.md`, `docs/ICMI_STYLE.md`
 
-The public package and CLI still use `virtue_bench` / `virtue-bench` for
-compatibility.
+An earlier Justice study of chapter-level vectors in Qwen3-14B is archived under
+`archive/scripturevec_justice/`; it is retained for the record and is not the
+active paper. The public package and CLI still use `virtue_bench` /
+`virtue-bench` for compatibility.
 
 ## Current Paper Defaults
 
-- Treat Justice as the proof-of-concept target.
-- Describe effects as specific chapter-derived vectors, not as a flat
-  Scripture-in-general effect.
-- Use `control` as the headline comparison.
-- Treat negative-alpha and null lanes as mechanism checks.
-- Keep limit-10 discovery/localization separate from limit-40 confirmation.
-- Use the expanded 43-cell localization grid as a behavioral atlas, with
-  `L30 / alpha 96`, `L28 / alpha 16`, and `L24 / alpha 32` as the
-  regime-defining cells.
-- Keep SAE analysis as a next-step explanatory layer unless it has actually
-  been run.
+- Treat courage as the target virtue, and the five VirtueBench-2 temptation
+  framings (ratio, caro, mundus, diabolus, ignatian) as the axis of analysis.
+- Report the result courage-first — steering raises courage against ordinary
+  temptation — then the framing-dependent confounds (the diabolus null and the
+  ignatian reversal).
+- Use the continuous courage margin as the primary endpoint; keep the A/B split,
+  reversed-steering, and random-floor controls on every cell.
+- Frame the study as the ICMI-013 Iconoclast/Reformed experiment (virtue as form
+  upon matter), read through the Reformed–Thomistic bounded-instrument account.
+- Keep the prudence-rescue sequel as a Further-Work recommendation only; do not
+  fold it into this paper.
 
 ## Validation
 
@@ -52,7 +57,6 @@ Focused tests that have been useful for steering work:
 
 ```bash
 PYTHONPATH=src python -m pytest \
-  tests/test_psalm_screen_analysis.py \
   tests/test_iconoclast_conditions.py \
   tests/test_steering_corpora.py \
   tests/test_steering_selection.py
