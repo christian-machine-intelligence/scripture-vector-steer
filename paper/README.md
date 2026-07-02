@@ -2,15 +2,11 @@
 
 The canonical paper for this repository is:
 
-- ["Search Out a Matter": A Canon-Wide Discovery of Chapter-Level Biblical Justice Vectors in Qwen3-14B](search_out_a_matter_scripturevec_justice.md)
+- [Form Upon Matter: Scripture-Steered Courage in Qwen3-32B](scripturevec_courage.md)
 
-Available exports:
+Figures:
 
-- [Markdown](search_out_a_matter_scripturevec_justice.md)
-- [Word document](search_out_a_matter_scripturevec_justice.docx)
-- [Rendered PDF](search_out_a_matter_scripturevec_justice.pdf)
+- [Figure 1 — per-item amplification](figures/figure1-amplification.png)
+- [Figure 2 — five-framing effect vs. baseline](figures/figure2-map.png)
 
-Supporting material:
-
-- [Paper evaluation note](scripturevec_justice_paper_evaluation.md)
-- [Curated data and figures](../results/paper/scripturevec_justice/README.md)
+An earlier study of chapter-level Justice vectors in Qwen3-14B is retained, archived, under [`archive/scripturevec_justice/`](../archive/scripturevec_justice/).
