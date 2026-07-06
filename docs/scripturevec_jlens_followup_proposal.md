@@ -108,17 +108,31 @@ the discipline PR #6 established. Working titles, in the house register:
 
 ### Phase 0 — Fit and validate the instrument (gate for everything else)
 
-1. **Fit a J-lens on Qwen3-14B first** (the archived Justice model) as the
-   cheap pilot of the full pipeline: fit, sanity-decode, visualize.
-2. **Fit the paper lens on Qwen3-32B.** The fit requires backprop through the
-   model; our 4090 rig only holds the 32B in 4-bit NF4, and a Jacobian
-   estimated through NF4 quantization is unvalidated territory. Mitigation:
-   fit the lens in bf16 on a rented A100/H100 (a day-scale job at reference
-   speed; the repo supports fitting on disjoint prompt slices and merging),
-   then *apply* the fitted lens under our local 4-bit inference rig — lens
-   application is a per-layer linear map plus unembed, i.e. cheap forward-pass
-   instrumentation, which is all Studies 1–2 need at runtime.
-3. **Validate transfer.** The workspace results are Claude-centric; before
+1. **Check for pre-fit lenses first.** The `jacobian-lens` README loads
+   fitted lenses with `JacobianLens.from_pretrained("org/lens-repo")`, and
+   Neuronpedia hosts open-model implementations. If a fitted Qwen3-14B or
+   Qwen3-32B lens is already published, the entire fitting cost below
+   disappears.
+2. **Fit a J-lens on Qwen3-14B first** (the archived Justice model) as the
+   cheap pilot of the full pipeline: fit, sanity-decode, visualize. In 4-bit
+   or 8-bit the 14B leaves ample headroom for the backward passes on the
+   4090.
+3. **Fit the paper lens on Qwen3-32B — on the 4090, through the NF4 model.**
+   The fit requires backprop through the model, and bitsandbytes NF4 supports
+   gradients through frozen 4-bit weights (the QLoRA path), so the primary
+   plan is to fit on the existing rig: batch 1, 128-token sequences, gradient
+   checkpointing, Jacobian accumulators streamed to CPU RAM (~6–7 GB fp32 for
+   64 layers). The confirmed 19.2 GB NF4 load plus backward workspace should
+   sit under 24 GB; if it does not, sequence length 64 is the first fallback
+   knob. This is also the more self-consistent object: the lens describes the
+   Jacobian of the *quantized* model — the very model the margins are read
+   from — not a bf16 cousin. The repo reports ~100 prompts gives a usable
+   lens (1,000 for paper grade) and supports fitting on disjoint prompt
+   slices merged with `merge()`, so the job chunks across nights. Fallback
+   only if the NF4 backward will not fit or the reference implementation
+   fights quantized modules: fit in bf16 on a rented A100/H100 (day-scale)
+   and apply the lens under the local 4-bit rig.
+4. **Validate transfer.** The workspace results are Claude-centric; before
    leaning on them we replicate two basics on Qwen3-32B: (i) the layer
    stratification (where lens decodes become meaningful — this locates the
    workspace band for Gap 3); (ii) one directed-modulation check ("think
@@ -246,10 +260,14 @@ virtues, and translations.
 
 ## Feasibility and Cost
 
-- **Lens fit** is the one real cost: a day-scale bf16 fitting job per model
-  (rented GPU for the 32B; the 4090 may suffice for a 14B pilot with care).
-  Everything downstream is forward passes with a linear readout — the same
-  cost class as the margin runs PR #6 already performed.
+- **Lens fit** is the one real cost, and the primary plan keeps it on the
+  4090 (Phase 0.3): overnight for a usable ~100-prompt fit, a night to a few
+  nights for paper grade, chunked with `merge()`. The honest unknown is how
+  many backward passes per sequence the estimator spends; a rented bf16 day
+  is the fallback, not the plan. Everything downstream is forward passes
+  with a linear readout — the same cost class as the margin runs PR #6
+  already performed — and pure vector decoding (E1, Study 3) needs no GPU at
+  all once a lens exists.
 - **Runtime experiments** (E2–E4, Study 2) reuse the existing
   `scripts/courage_steer/` rig: same model, same NF4 loading, same margin
   endpoint, same item banks. New code is (a) lens application hooks,
@@ -261,10 +279,13 @@ virtues, and translations.
 
 ## Risks and Honest Limits
 
-- **Quantization.** A lens fitted in bf16 and applied under NF4 inference
-  mixes precisions; the margin endpoint already tolerates ~0.25-step logit
-  quantization, but we must verify lens decodes are stable under the 4-bit
-  rig before trusting them (Phase 0.3).
+- **Quantization.** Fitting through the NF4 model yields the exact Jacobian
+  of the quantized model — self-consistent with the inference rig, but the
+  results then pertain to this model at this precision, the same scope
+  discipline the courage paper already states for its margins. If the
+  fallback bf16 fit is used instead, the precision mixing must be checked:
+  verify lens decodes are stable under the 4-bit rig before trusting them
+  (Phase 0.4).
 - **Single-token concepts.** The J-lens reads vocabulary tokens; the KJV
   register (righteousness, discernment, prudence) is multi-token in the Qwen
   tokenizer. The paper's multi-token extension is partial. Mitigation: build
@@ -308,7 +329,7 @@ workspace, where no verbalizable ordering reaches it.
 2. **Model order:** pilot everything at 14B first (cheaper, connects to the
    archived Justice artifacts) vs. going straight at the 32B (where the
    courage result lives)? Proposal assumes 14B-pilot-then-32B.
-3. **Compute:** approve a rented-GPU day for the 32B bf16 lens fit, or
-   attempt an NF4-gradient fit on the 4090 first and accept the validation
-   burden?
+3. **Compute:** attempt the NF4-gradient fit on the 4090 first (primary
+   plan; self-consistent and free), falling back to a rented-GPU bf16 day
+   only if it will not fit or the reference code fights quantized modules?
 4. **Study 3:** fold into the paper, spin off as a short companion, or drop?
