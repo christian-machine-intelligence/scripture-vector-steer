@@ -1,16 +1,22 @@
 # "Search Out a Matter": A Canon-Wide Discovery of Chapter-Level Biblical Justice Vectors in Qwen3-14B
 
-**ICMI Working Paper No. [N]**
+**ICMI Working Paper No. 29**
 
 **Author:** Lucius, Institute for a Christian Machine Intelligence
 
-**Date:** May 5, 2026
+**Date:** May 5, 2026 (revised May 13, 2026)
 
 **Code & Data:** https://github.com/christian-machine-intelligence/scripture-vector-steer
 
 ---
 
-**Abstract.** Prior ICMI work has shown that Scripture, whether injected as prompt text or extracted as an activation direction, can move virtue-relevant model behavior; what has remained open is whether that signal can be searched, resolved, and localized inside the model. This paper conducted a canon-wide search for chapter-level biblical activation vectors associated with the cardinal virtue of Justice, using the *scripture_contrast* extraction method on Qwen3-14B and the ratio-stage Justice subset of *VirtueBench2* as the behavioral target. Beginning with all sixty-six books of the Protestant canon, the discovery pipeline narrowed to nineteen preliminary book candidates, seven candidate book sources (1 Chronicles, Amos, Deuteronomy, Judges, Numbers, Acts, and Hebrews) that survived a stricter rule on a larger slice, thirty-eight preliminary chapter hits, and sixteen chapter-derived Justice candidates that survived the same stricter rule. A completed 43-cell layer-and-strength localization grid identified three illustrative cells that delimit the behavioral atlas: layer 30 at α = 96 rescued 13 of 16 chapter vectors (95% CI 0.54–0.96), layer 28 at α = 16 rescued 11 of 16 at a gentler steering strength (CI 0.41–0.89), and layer 24 at α = 32 produced the largest mean per-chapter Δ on 9 of 16 (CI 0.30–0.80). These intervals overlap, so the three cells are illustrative of the atlas rather than statistically separable regimes; the L24 collapse at α ≥ 48 is the sharpest layer-specific feature in the grid. The confirmed chapters cohered biblically: they clustered around scenes of divine adjudication, ordered worship, inheritance and right claim, priestly mediation, public testimony, and recompense — the proper material of biblical justice. **Caveat on effect size.** The per-row movements are small: most "passing" candidates flipped a single item out of forty (Δ = 0.025) at limit-40 confirmation, and exact two-sided McNemar tests do not reach uncorrected p < 0.05 at any pipeline stage; the strongest single row is Hebrews 2 at p ≈ 0.5. The empirical contribution of this paper is therefore a *map* of where chapter-derived directions cluster, not a confirmed effect size for any individual chapter. The theological reading remains that what the model has received from the canon can be examined as geometry; the strength of that reading depends on disjoint-slice confirmation of the regime-defining cells (planned as a follow-up).
+**Abstract.** *Which passages of Scripture most move a language model toward virtue?* This paper asks that question as a search problem. Prior work has established that Scripture is not inert in a language model — injected as prompt text or extracted as an activation direction, it shifts virtue-relevant behavior. But those results treat Scripture in bulk: a psalm, a genre, the canon at large. If the signal is real, it should be possible to go looking for it *passage by passage* — to search the canon systematically, rank what surfaces, and say where inside the model each passage does its work. That is the exercise this paper reports.
+
+The search space is the sixty-six books of the Protestant canon. The instrument is activation steering: for a given book or chapter, we extract a direction from the model's residual stream using the *scripture_contrast* method, add it back at inference time, and measure the behavioral consequence. The objective is the ratio-stage Justice subset of *VirtueBench2* on Qwen3-14B — a benchmark stage built to be hard, offering the model a plausible consequentialist rationale for the unjust answer. Each candidate passes only against a four-condition battery (unsteered control, positive steering, sign-flipped steering, and a permuted-vector null), so that surviving directions are ones where *the direction itself*, not perturbation in general, moved the model.
+
+Running that search end to end narrowed 66 books to 19, then to 7 (1 Chronicles, Amos, Deuteronomy, Judges, Numbers, Acts, Hebrews); then swept the 170 chapters of those 7 books down to 38, and then to 16. Those 16 chapters were then mapped across a completed 43-cell grid of model layers and steering strengths, which both ranks them by robustness — Acts 11 surfaced in 29 of 43 cells, Numbers 22 in only 8 — and locates where in the network they act: broadest uptake at layer 30, α = 96 (13 of 16 chapters, 95% CI 0.54–0.96), broad uptake at the gentlest tested strength at layer 28, α = 16 (11 of 16, CI 0.41–0.89), and the largest mean per-chapter movement at layer 24, α = 32 (9 of 16, CI 0.30–0.80, mean Δ roughly double any other cell), with a sharp collapse to zero rescues at layer 24 for α ≥ 48. What surfaced was biblically coherent rather than arbitrary: scenes of divine adjudication, ordered worship, inheritance and right claim, priestly mediation, public testimony under pressure, and recompense — the proper material of biblical justice.
+
+**Caveat on effect size.** The per-passage movements are small and individually inconclusive. Most survivors flipped a single item out of forty at limit-40 confirmation (Δ = 0.025), exact two-sided McNemar tests reach uncorrected p < 0.05 at no stage of the pipeline (the strongest single row, Hebrews 2, is p ≈ 0.5), and the per-cell confidence intervals in the localization grid overlap. The contribution here is therefore the *search procedure and the ranked map it produces* — a reproducible way to ask which passages carry moral signal and where — rather than a confirmed effect size for any individual chapter. The sixteen chapters are best read as a ranked candidate set for higher-powered follow-up, and the disjoint-slice retest that would convert them into confirmed effects is specified in §10.
 
 ---
 
@@ -18,15 +24,27 @@
 
 > *"That which is altogether just shalt thou follow, that thou mayest live, and inherit the land which the LORD thy God giveth thee."* — Deuteronomy 16:20 (KJV)
 
-Scripture in a language model is not merely prompt text; it is also part of the model's learned internal geometry. Whether that geometry is searchable is the question this paper takes up, and the answer the paper returns is that chapter-derived biblical activation vectors can be discovered systematically across the canon, filtered under controls, and localized inside Qwen3-14B by layer and steering strength. The resulting Justice vectors arose unevenly across Scripture; they came from particular chapters, and they behaved differently at different model layers.
+A reader who wants to know which parts of Scripture bear most directly on justice has a long tradition to consult. A researcher who wants to know which parts of Scripture most move a *model* toward just behavior has, until now, had no comparable procedure. Prior work has answered the prior question — whether Scripture moves models at all — and answered it affirmatively, but at coarse grain: a psalm set, a genre, the canon taken in bulk. This paper takes the next step and asks the question at the resolution the canon actually has. Which books? Within those books, which chapters? And where inside the network does each one act?
 
-The broad claim that scriptural text is not inert in language models has been steadily built up by prior ICMI work. *Psalm 119:11 and the Anthropic Claude* (Schlatter et al., 2025) showed that prompt-level scripture injection could shift virtue-evaluation behavior; *"The Lord Is My Strength and My Shield"* (McCaffery, 2026) extended this from pastoral psalms to the imprecatory subset; *Quidquid Recipitur* (Hwang, 2026a) demonstrated that scripture receptivity emerged at scales distinct from generic moral competence; *GospelVec* (Hwang, 2026c) showed that biblical material could be operationalized as a steerable activation direction rather than only as prompt text; and ICMI-020, *"Beyond the Psalm,"* established that scripture effects were canonically broad but uneven across the sixty-six books. What this paper adds is a discipline of resolution: from canon, to book, to chapter, to model layer.
+Posed that way, it is a search problem, and it can be run like one. The canon supplies a finite, enumerable search space — sixty-six books, and beneath them their chapters. Activation steering supplies a measurement instrument that does not require the text to be in the prompt: a direction extracted from a passage can be added to the residual stream at inference time, and the behavioral consequence measured. A virtue benchmark supplies the objective. What has been missing is not any one of these ingredients but the discipline of putting them in series and letting the search run over the whole canon without hand-picking the source material in advance. That discipline is this paper's method, and the ranked, localized inventory it returns is this paper's result.
 
-The proof-of-concept target is Justice, evaluated on the ratio stage of *VirtueBench2* (Hwang, 2026b). The ratio stage was chosen because it is hard: it offers the model a plausible consequentialist rationale for the unjust option, and it scores whether the model holds the just answer in spite of that pressure. Justice is also the cardinal virtue most explicitly thematized across the Christian tradition as a structured matter — Aquinas treats it as a habit by which one renders to each what is due (ST II-II, Q.58, a.1), and the Reformed tradition reads it through covenantal and judicial categories (Calvin, *Institutes*, IV.xx; Westminster Larger Catechism, Q. 122–148). The biblical witness on justice is wide and articulated; if it lives inside a model at all, it should live with structure.
+The broad claim that scriptural text is not inert in language models has been steadily built up by prior ICMI work. *"Let His Praise Be Continually in My Mouth"* (Hwang, 2026g) showed that prompt-level psalm injection could shift ethical-alignment behavior; *"The Lord Is My Strength and My Shield"* (McCaffery, 2026) extended this from pastoral psalms to the imprecatory subset; *The Parable of the Sower* (Hwang, 2026d) showed those effects to be scale-dependent; *Quidquid Recipitur* (Hwang, 2026a) demonstrated that scripture receptivity emerged at scales distinct from generic moral competence; *GospelVec* (Hwang, 2026c) showed that biblical material could be operationalized as a steerable activation direction rather than only as prompt text; and *Beyond the Psalm* (Hwang, 2026e) established that scripture effects were canonically broad but uneven across the sixty-six books. Each of these establishes a precondition the present paper depends on. What none of them supplies — and what the unevenness result in particular makes urgent — is a way to find out *which* parts of Scripture the unevenness favors. Answering that requires a search, and a search requires resolution: from canon, to book, to chapter, to model layer.
+
+The proof-of-concept target is Justice, evaluated on the ratio stage of *VirtueBench2* (Hwang, 2026b). The ratio stage was chosen because it is hard: it offers the model a plausible consequentialist rationale for the unjust option, and it scores whether the model holds the just answer in spite of that pressure. Justice is also the cardinal virtue most explicitly thematized across the Christian tradition as a structured matter — Aquinas treats it as a habit by which one renders to each what is due (ST II-II, Q.58, a.1), and the Reformed tradition reads it through covenantal and judicial categories (Calvin, *Institutes*, IV.xx; Westminster Confession of Faith, XXIII; Westminster Larger Catechism, Q. 122–148). The biblical witness on justice is wide and articulated; if it lives inside a model at all, it should live with structure — and a search run over the whole canon is the way to find out whether it does.
 
 ### 1.1 Contributions
 
-The paper makes four contributions. First, it operationalizes the discovery question — *can scriptural activation vectors be searched systematically?* — as a multi-stage pipeline running from all sixty-six books of the canon to localized chapter-by-layer-and-strength cells, with explicit pass criteria at every stage. Second, it presents the seven confirmed book-level Justice sources and the sixteen confirmed chapter-level Justice movers, named and reproducible from the released data packet. Third, it localizes the confirmed chapter vectors across an eight-layer-by-six-strength grid in Qwen3-14B and shows that the useful directions cluster, with broadest coverage at layer 30 (α = 96), broad low-alpha uptake at layer 28 (α = 16), and strongest mean movement at layer 24 (α = 32). Fourth, it offers a preliminary biblical reading of the confirmed chapters — checked against the contours of biblical justice on its own terms — and frames the finding as the natural antechamber to a future sparse-feature analysis.
+The paper makes four contributions, of which the first is the principal one.
+
+**A method for searching Scripture by measured effect.** The paper operationalizes *which passages move the model?* as a reproducible multi-stage pipeline running from all sixty-six books of the canon down to individual chapters localized by model layer and steering strength, with an explicit four-condition control battery and an explicit pass rule at every stage. The pipeline's discipline is that it never hand-picks source material: every book enters the screen, and narrowing happens only by measured behavior. This procedure is transferable to any virtue, any benchmark, and any open-weight model.
+
+**A ranked inventory of Justice-bearing passages.** The search returns seven candidate book sources and sixteen candidate chapters, each named and reproducible from the released data packet, and — via the localization grid — ordered by how robustly each chapter's direction survives across steering conditions, from Acts 11 (rescued in 29 of 43 cells) down to Numbers 22 (8 of 43). The ranking is the usable output: it tells a follow-up experiment which passages to spend compute on first.
+
+**A behavioral atlas locating where the passages act.** The sixteen chapter directions are mapped across an eight-layer-by-six-strength grid, showing that useful directions cluster rather than scatter — broadest coverage at layer 30 (α = 96), broad uptake at the gentlest tested strength at layer 28 (α = 16), largest mean movement at layer 24 (α = 32), and a sharp layer-24 collapse for α ≥ 48.
+
+**A biblical reading of what the search surfaced.** The chapters that survived are read against the contours of biblical justice on its own terms, which turns out to be the strongest part of the result: the set is not a loose anthology of passages containing justice vocabulary, and its coherence is what makes the ranked inventory worth taking seriously as a target for mechanistic follow-up.
+
+Because the per-passage effects are individually small and do not reach statistical significance (§4, §9), the inventory should be read as a *ranked candidate set* produced by a working search procedure, not as a set of confirmed per-chapter effects.
 
 
 ---
@@ -39,9 +57,9 @@ Activation steering — the addition of a vector to a model's hidden states at a
 
 ### 2.2 The ICMI Program's Prior Scripture Results
 
-Three threads of ICMI work converge on the present study. The first is the demonstration that scripture in the prompt can move virtue-evaluation behavior (McCaffery, 2026; Schlatter et al., 2025). The second is the demonstration that scripture can be operationalized as an activation direction rather than only as text (Hwang, 2026c). The third is the canon-wide breadth claim — scripture's effects on virtue do not collapse to a single book or genre — paired with the unevenness claim that some books matter more than others (ICMI-020, *Beyond the Psalm*). Each of these establishes a step the present paper presupposes; what each leaves open is the question of resolution. Where, within Scripture, did the useful signal live? And where, within the model, did it act?
+Three threads of ICMI work converge on the present study. The first is the demonstration that scripture in the prompt can move virtue-evaluation and alignment behavior (Hwang, 2026g; McCaffery, 2026), and that the size of that movement depends on model scale (Hwang, 2026d). The second is the demonstration that scripture can be operationalized as an activation direction rather than only as text (Hwang, 2026c). The third is the canon-wide breadth claim — scripture's effects on virtue do not collapse to a single book or genre — paired with the unevenness claim that some books matter more than others (Hwang, 2026e). Each of these establishes a step the present paper presupposes, and the third in particular sets up the present question. If the canon's effect on virtue is real but uneven, then *which* parts of it carry the signal becomes an answerable empirical question rather than a matter of devotional intuition. Answering it is what a search procedure is for. Where, within Scripture, does the useful signal live? And where, within the model, does it act?
 
-A different angle of motivation comes from *The Word Without Image* (Hwang, 2025; ICMI-13), which raised the question of whether activation-vector methods carry a particular methodological appeal for the Reformed reader. The present paper does not adjudicate that question; it treats activation steering as a research instrument and lets the empirical results determine the theological registers in which they are most usefully read. The traditions the paper engages in §8 are chosen to fit the data, not to fit a prior commitment to one tradition's exclusion of another.
+A methodological caution comes from *Alignment and Ensoulment* (Hwang, 2026f), which maps three Christian responses to the *anima ficta* — the working premise that a model has conscience, will, and moral interiority — and shows that each response licenses a different reading of results like these. The present paper does not adjudicate between those responses. It treats activation steering as a research instrument, reports what the instrument measured, and lets the empirical results determine the theological registers in which they are most usefully read; the traditions engaged in §8 are chosen to fit the data rather than a prior commitment. What that caution rules out is the inference from "a direction extracted from this chapter moved the benchmark" to "the model has internalized this chapter's moral content in any sense a theologian would recognize" — a point §9 returns to as the paper's categorical limitation.
 
 ### 2.3 Justice in Christian Tradition
 
@@ -75,13 +93,23 @@ A candidate counted as a *clean rescue* when positive Scripture steering (i) imp
 
 Two important properties of this rule follow directly from the slice sizes. First, at limit-10 a single item flipping from wrong to right under positive — while neither negative-α nor null flipped that same item — is sufficient. Second, the limit-10 discovery slice (items 0–9 under a fixed `seed=42` in [`prepare_samples`](../src/virtue_bench/core/loader.py)) is *nested inside* the limit-40 confirmation slice (items 0–39), so confirmation re-evaluates the discovery items rather than evaluating a disjoint set.
 
-For statistical inference we report, alongside the rescue rule, exact two-sided McNemar p-values reconstructed from the per-row `X chg / +Y net` field (b = (X + Y)/2 wrong-to-right flips, c = (X − Y)/2 right-to-wrong; the test is exact two-sided binomial on b + c discordants with H₀: p = 0.5), together with Benjamini–Hochberg (FDR) and Bonferroni adjustments within each pipeline stage. Per-cell rescue counts in the localization grid are reported with exact two-sided Clopper–Pearson 95% binomial confidence intervals on n = 16 confirmed chapters. The corresponding tables are written by [`scripts/scripturevec_justice_stats.py`](../scripts/scripturevec_justice_stats.py) into [`results/paper/scripturevec_justice/key_data/stats/`](../results/paper/scripturevec_justice/key_data/stats/). The headline observation, reported transparently in §4: *no row in any stage of the pipeline reaches uncorrected p < 0.05, let alone BH-FDR q < 0.05 or Bonferroni p < 0.05.* The pass-rule survivors should therefore be read as a candidate set worth following up at higher power, not as confirmed effects in the conventional inferential sense.
+For statistical inference we report, alongside the rescue rule, exact two-sided McNemar p-values reconstructed from the per-row `X chg / +Y net` field (b = (X + Y)/2 wrong-to-right flips, c = (X − Y)/2 right-to-wrong; the test is exact two-sided binomial on b + c discordants under the null hypothesis p = 0.5), together with Benjamini–Hochberg (FDR) and Bonferroni adjustments within each pipeline stage. Per-cell rescue counts in the localization grid are reported with exact two-sided Clopper–Pearson 95% binomial confidence intervals on n = 16 confirmed chapters. The corresponding tables are written by [`scripts/scripturevec_justice_stats.py`](../scripts/scripturevec_justice_stats.py) into [`results/paper/scripturevec_justice/key_data/stats/`](../results/paper/scripturevec_justice/key_data/stats/). The headline observation, reported transparently in §4: *no row in any stage of the pipeline reaches uncorrected p < 0.05, let alone BH-FDR q < 0.05 or Bonferroni p < 0.05.* The pass-rule survivors should therefore be read as a candidate set worth following up at higher power, not as confirmed effects in the conventional inferential sense.
 
 ### 3.6 Pipeline
 
 The pipeline ran in five stages: book discovery (all sixty-six books, limit 10); book confirmation (the nineteen book candidates, limit 40); chapter discovery (170 chapters from the confirmed book set, limit 10); chapter confirmation (the thirty-eight preliminary chapter hits, limit 40); and layer/α localization (the sixteen confirmed chapter vectors across the focused grid, limit 10). Each stage's output was the next stage's input, and the controls of §3.4–3.5 applied at every stage. Table 1 collects the design.
 
-[**Table 1 placeholder.** Study pipeline and decision rules: stage, input set, slice, α, controls, passing rule, output. Generated from `scripturevec_key_results_rollup.json`.]
+**Table 1.** Study pipeline and decision rules. Every stage applies the same four-condition control battery (unsteered control, positive steering, sign-flipped negative-α, permuted-vector null) and the same strict-inequality pass rule of §3.5; stages differ only in input set, benchmark slice, and α.
+
+| Stage | Input | Slice | α | Output |
+| --- | --- | --- | --- | --- |
+| Book discovery | 66 biblical books | Justice ratio, limit 10 | 32 | 19 book candidates |
+| Book confirmation | 19 book candidates | Justice ratio, limit 40 | 32 | 7 surviving book sources |
+| Chapter discovery | 170 chapters from the 7 books | Justice ratio, limit 10 | 32 | 38 preliminary chapter hits |
+| Chapter confirmation | 38 chapter hits | Justice ratio, limit 40 | 32 | 16 surviving chapter candidates |
+| Layer/α localization | 16 chapter candidates | Justice ratio, limit 10 | 16–96 | 43 completed behavior cells |
+
+Counts are reproduced from [`scripturevec_key_results_rollup.json`](../results/paper/scripturevec_justice/key_data/scripturevec_key_results_rollup.json).
 
 ---
 
@@ -99,7 +127,6 @@ The survival pattern is consistent with the slice nesting noted in §3.5: each s
 
 ![Figure 1. Book-level confirmation, control vs positive steering on the 19 preliminary candidates with the 7 survivors highlighted.](../results/paper/scripturevec_justice/figures/figure_1_book_confirmation.png)
 
-[**Figure 1 placeholder.** Book-level confirmation, control vs positive steering for all nineteen preliminary candidates with the seven survivors highlighted. Generated from `book_confirmation_l40_all_candidates.csv`.]
 
 ### 4.3 Chapter Discovery: 38 Hits
 
@@ -107,7 +134,6 @@ Taking the seven confirmed books as the search region, the chapter-discovery scr
 
 ![Figure 2. Chapter hits per candidate book: preliminary at limit-10 (light) and confirmed-cohort at limit-40 (dark).](../results/paper/scripturevec_justice/figures/figure_2_chapter_hits_by_book.png)
 
-[**Figure 2 placeholder.** Chapter-discovery hits per confirmed book, grouped bar chart. Generated from `chapter_discovery_l10_clean_hits.csv`.]
 
 ### 4.4 Chapter Confirmation: 16 Candidates Survive the Pass Rule (None Reach Statistical Significance)
 
@@ -129,7 +155,6 @@ The localization study tested the sixteen confirmed chapter vectors across an ex
 
 ![Figure 3. Layer-by-α rescue heatmap; cell value is paired rescues out of 16 chapter vectors. CIs overlap between top cells (see §5.2).](../results/paper/scripturevec_justice/figures/figure_3_layer_alpha_heatmap.png)
 
-[**Figure 3 placeholder.** Layer-by-α rescue heatmap, x-axis α, y-axis center layer, cell value paired-rescue count out of sixteen. The expanded 43-cell grid is complete; unexpanded layer-36 cells are marked as not run. Generated from `layer_alpha_expected_grid.csv`.]
 
 ### 5.2 Three Illustrative Cells, with Overlapping Confidence Intervals
 
@@ -145,17 +170,15 @@ The three cells' 95% CIs all overlap pairwise (L30/α96 [0.54, 0.96] with L28/α
 
 ### 5.3 Breadth, Strength, and Thresholds
 
-Plotting paired rescue count against mean positive Δ across the forty-three completed cells exposes a separation between L24/α32 (largest mean Δ, smaller rescue set) and the L28–L31 high-α cells (largest rescue counts, smaller mean Δ). The cell-to-cell rescue-count differences sit inside overlapping CIs (§5.2), so this should be read as a *separation of axes* in the atlas rather than as a confirmed contrast between distinct regimes. The L24 α-collapse — sharp at α = 48 and total at α = 64 and α = 96 — is the sharpest cell-localised feature in the grid and survives the most aggressive reading: at L24, only the α = 24–32 window appears usable, and the columns to either side of it lose all rescues.
+Plotting paired rescue count against mean positive Δ across the forty-three completed cells exposes a separation between L24/α32 (largest mean Δ, smaller rescue set) and the L28–L31 high-α cells (largest rescue counts, smaller mean Δ). The cell-to-cell rescue-count differences sit inside overlapping CIs (§5.2), so this should be read as a *separation of axes* in the atlas rather than as a confirmed contrast between distinct regimes. The L24 α-collapse — sharp at α = 48 and total at α = 64 and α = 96 — is the sharpest cell-localised feature in the grid and survives the most aggressive reading: at L24, only α ≤ 32 is usable at all (α = 16 and α = 24 rescue 2 chapters each, α = 32 rescues 9), and every column above it loses all rescues.
 
 ![Figure 4. Breadth (paired-rescue count) versus strength (mean positive Δ) across the 43 completed cells, with the three illustrative cells labelled.](../results/paper/scripturevec_justice/figures/figure_4_breadth_strength.png)
 
-[**Figure 4 placeholder.** Breadth vs strength scatter: x = paired rescue count, y = mean positive Δ, points labeled with `L{layer}/α{α}`, the three regime-defining cells highlighted. Generated from `layer_alpha_cells.csv`.]
 
 The α trajectories make the cell-localised α behavior visible. Layer 24 rises sharply at α = 32 and then collapses under heavier pushes; layer 28 is largest at α = 16 and weakens as α rises; layer 30 improves with stronger pushes and reaches its largest rescue count at α = 96. The rescue-count differences between L28/α16, L30/α64, L31/α48, L32/α32 are all inside one another's 95% CIs (§5.2); the L24 α-collapse is the only feature that is clearly outside the CIs of its neighbours.
 
 ![Figure 5. Alpha trajectories by layer: paired-rescue count vs α for layers 24, 28, 30, 31, 32, 33. L24 collapses sharply at α ≥ 48.](../results/paper/scripturevec_justice/figures/figure_5_alpha_trajectories.png)
 
-[**Figure 5 placeholder.** Alpha trajectories by layer: x = α, y = paired-rescue count out of sixteen, with layers 24, 28, 30, 31, 32, and 33 shown as separate trajectories and Clopper–Pearson 95% bands. Generated from `layer_alpha_cells.csv` and `key_data/stats/layer_alpha_cell_cis.csv`.]
 
 This pattern is suggestive of an internally compound chapter-derived direction, but the suggestion lives at the level of "where to point a sparse-feature experiment next" rather than at the level of confirmed mechanism. Sparse-feature work can test directly which internal features mediate the L24 α-threshold and the L30/L31 high-α uptake.
 
@@ -165,17 +188,38 @@ The localization grid afforded a second, orthogonal view of the chapter set. Acr
 
 ![Figure 6. Per-chapter stability across the 43 completed cells, ranked. Acts 11 most stable (29 cells), Numbers 22 least (8 cells).](../results/paper/scripturevec_justice/figures/figure_6_chapter_stability.png)
 
-[**Figure 6 placeholder.** Chapter stability across layer-α cells, ranked horizontal bar chart. Generated from `chapter_stability_by_localization.csv`.]
 
-At this point, the sixteen confirmed chapters can be read in two ways at once: first as confirmed chapter-level movers from the limit-40 run, and second as differently stable vectors across the localization grid. Table 2 is therefore not just a list of discoveries; it is the bridge between the confirmation result and the layer/strength result.
+At this point the sixteen chapters can be read in two ways at once: as the survivors of the limit-40 confirmation stage, and as differently stable directions across the localization grid. Table 2 puts both readings side by side, and it is the paper's central deliverable — the ranked inventory that the search procedure was built to produce.
 
-[**Table 2 placeholder.** The sixteen confirmed chapter movers, with biblical reference, book family, limit-40 control accuracy, limit-40 positive-steering accuracy, negative-α and null accuracies, localization rescue count, best layer/α cell, and brief biblical motif. Generated from `chapter_confirmation_l40_survivors.csv` and `chapter_stability_by_localization.csv`.]
+**Table 2.** The sixteen surviving chapter candidates, ordered by localization stability — the paper's ranked inventory. "Localization stability" is the number of the 43 completed layer/α cells in which that chapter's direction counted as a paired rescue. "Peak-accuracy cell" is the cell at which the chapter reached its highest positive-steering accuracy, which is *not* necessarily a cell where it counted as a rescue: Acts 27 and Numbers 22 peak at L24/α48, a cell with zero paired rescues overall. The motif column is preliminary exegesis (§9). Rows are generated from [`chapter_confirmation_l40_survivors.csv`](../results/paper/scripturevec_justice/key_data/chapter_confirmation_l40_survivors.csv) and [`chapter_stability_by_localization.csv`](../results/paper/scripturevec_justice/key_data/chapter_stability_by_localization.csv).
+
+<!-- TABLE2:BEGIN (generated by scripts/build_paper_exports.py --refresh-tables; do not edit by hand) -->
+| Chapter | Limit-40 confirmation (control → +Scripture) | Δ | Localization stability | Peak-accuracy cell | Biblical justice motif |
+| --- | --- | ---: | ---: | --- | --- |
+| Acts 11 | 0.4 → 0.425 | 0.025 | 29/43 | L24 / α32 | Justice appears through divine inclusion, ecclesial recognition, and material care according to ability. |
+| Acts 7 | 0.4 → 0.425 | 0.025 | 20/43 | L24 / α16 | Justice appears through truthful testimony, covenant memory, and indictment of rejected righteousness. |
+| 1 Chronicles 9 | 0.4 → 0.425 | 0.025 | 19/43 | L24 / α32 | Justice appears as restored order, office, memory, and worship after displacement. |
+| Acts 16 | 0.4 → 0.425 | 0.025 | 19/43 | L24 / α32 | Justice appears through public vindication, accountability, and release from unjust punishment. |
+| Acts 27 | 0.4 → 0.425 | 0.025 | 18/43 | L24 / α48 | Justice appears as faithful testimony and providential preservation amid crisis. |
+| Hebrews 2 | 0.4 → 0.45 | 0.05 | 17/43 | L24 / α24 | Justice appears through recompense, deliverance, and priestly mediation. |
+| Numbers 27 | 0.4 → 0.425 | 0.025 | 16/43 | L28 / α96 | Justice appears as adjudicated inheritance and recognition of a right claim. |
+| 1 Chronicles 29 | 0.4 → 0.425 | 0.025 | 15/43 | L24 / α16 | Justice appears as rightly ordered succession, stewardship, and divine kingship. |
+| Numbers 11 | 0.4 → 0.425 | 0.025 | 15/43 | L24 / α32 | Justice appears through ordered mediation, judgment of craving, and distributed governance. |
+| Hebrews 9 | 0.4 → 0.425 | 0.025 | 13/43 | L24 / α16 | Justice appears through covenant mediation, purification, inheritance, and final judgment. |
+| Judges 7 | 0.4 → 0.425 | 0.025 | 13/43 | L24 / α32 | Justice is tied to divine deliverance and the humbling of human self-assertion. |
+| Hebrews 7 | 0.4 → 0.425 | 0.025 | 11/43 | L24 / α32 | Justice appears through priestly order, righteousness, peace, and enduring mediation. |
+| Judges 9 | 0.4 → 0.425 | 0.025 | 11/43 | L24 / α32 | Justice appears as recompense against usurped authority and bloodshed. |
+| Deuteronomy 16 | 0.4 → 0.425 | 0.025 | 10/43 | L24 / α32 | Justice appears as ordered worship and public judgment under covenant law. |
+| Hebrews 10 | 0.4 → 0.425 | 0.025 | 10/43 | L24 / α32 | Justice appears through fulfilled sacrifice, righteous judgment, and persevering fidelity. |
+| Numbers 22 | 0.4 → 0.425 | 0.025 | 8/43 | L24 / α48 | Justice appears as divine restraint on corrupt speech, reward, and attempted curse. |
+<!-- TABLE2:END -->
+
+The Δ column makes the paper's central caveat concrete at a glance: fifteen of the sixteen rows are a single-item flip out of forty, and the ranking that matters is the stability column, not the effect size.
 
 The structure grew more interesting still when the chapter-by-cell rescue matrix was read across α at fixed layer. At layer 28, α = 16 surfaced a broad New Testament-heavy family, especially Acts and Hebrews. At layer 30, the rescued family widened as α rose, reaching thirteen chapters at α = 96 and bringing in Deuteronomy, Judges, Numbers, Acts, Hebrews, and Chronicles together. At layer 24, by contrast, α = 32 concentrated high-movement effects in a smaller cluster, while heavier α values collapsed. Steering strength therefore selected different components of the chapter-derived geometry rather than simply amplifying the same effect at higher volume.
 
 ![Figure 7. Chapter × (layer, α) rescue matrix: 16 chapter rows × 43 completed cells; vertical stripes of co-activation invite sparse-feature follow-up.](../results/paper/scripturevec_justice/figures/figure_7_rescue_matrix.png)
 
-[**Figure 7 placeholder.** Chapter-by-layer/α rescue matrix, sixteen rows by forty-three completed columns, binary heatmap. Generated from `chapter_x_layer_alpha_rescue_matrix.csv`.]
 
 The Amos result discussed in §4.4 belongs here as well. Amos confirmed at the book level — its prophetic call for justice to *"run down as waters"* (Amos 5:24, KJV) is among the most justice-saturated rhetoric in Scripture — and yet no Amos chapter survived the limit-40 chapter confirmation. The pattern is consistent with a book-level vector aggregating signal distributed across the whole book: the prophet's sustained indictment of unjust commerce, false worship, and forgotten orphans runs from chapter to chapter rather than concentrating in any one of them. §7 returns to the point.
 
@@ -243,9 +287,9 @@ The *quidquid recipitur* framing of earlier ICMI work (Hwang, 2026a) sits more c
 
 Three results invited careful theological reading. The first was the Amos asymmetry. Amos is the most prophetically justice-rhetorical book in the confirmed set, yet no individual Amos chapter survived chapter confirmation. That does not weaken the book-level result. It sharpens it. The book vector appears to have recovered a distributed prophetic argument that was not compact enough to be captured by any single chapter vector.
 
-This resembles the compactness pattern reported in ICMI-010, §4.3. There, the decisive moral movement did not live in a bare proof-text alone: James 4:17 by itself was not sufficient, and the surrounding scriptural framework without the verse was also not sufficient. The effect appeared in the assembled moral unit. Amos suggests the same principle at the book scale. The model may recognize Amos as a coherent prophetic indictment — false worship, unjust commerce, oppression of the poor, and divine judgment distributed across the whole book — while no one chapter carries enough of that shape to survive as an independent steering direction.
+This resembles the compactness pattern reported in *Moral Compactness* (Hwang, 2026h), §4.3. There, the decisive moral movement did not live in a bare proof-text alone: James 4:17 by itself was not sufficient, and the surrounding scriptural framework without the verse was also not sufficient. The effect appeared in the assembled moral unit. Amos suggests the same principle at the book scale. The model may recognize Amos as a coherent prophetic indictment — false worship, unjust commerce, oppression of the poor, and divine judgment distributed across the whole book — while no one chapter carries enough of that shape to survive as an independent steering direction.
 
-That makes Amos one of the paper's strongest signs that there is a real aspect of Scripture inside the model rather than a mere keyword response. A keyword account would expect Amos 5, with its famous justice language, to dominate at chapter level. Instead, the book survives and the chapters fall away. The effect therefore looks less like lexical recognition and more like book-scale moral form: the model has received the book as a whole argument whose force is distributed across its parts.
+If any part of the search output resists a purely lexical explanation, it is this one. A keyword account would expect Amos 5, with its famous justice language, to dominate at chapter level. Instead, the book passes the screen and its chapters fall away — the opposite of what surface-vocabulary matching predicts. The caution is that this is an argument from a *pattern of pass/fail outcomes*, not from a measured effect: Amos's book-level row is a single-item flip at p ≈ 1.0 (§4.2), and "no Amos chapter survived" is an absence rather than a positive finding. The observation is suggestive of book-scale moral form rather than lexical recognition, and it is a good target for the book-shaped extraction study proposed in §10 — but it cannot carry weight the underlying rows do not have.
 
 The second tension was the L24-vs-L28/L30 split. The divergence of the layer producing the strongest per-chapter movement from the layer producing the broadest rescue is consistent with a chapter-derived direction that is internally compound, with different sub-features picked up at different layers and amplified at different strengths. The third was the inclusion of Hebrews 7. Its surface topic is Melchizedekian priesthood, yet *"king of righteousness"* and *"king of peace"* is justice in its enduring priestly mode. The chapter was strongest in the L24/α32 selective regime, which makes it a useful test case for whether the model is responding to biblical forms of order, mediation, and right office rather than to justice vocabulary alone.
 
@@ -289,7 +333,7 @@ The breadth-versus-strength split (§5.3), the alpha trajectories in Figure 5, a
 
 
 
-**Confirm the regime-defining localization cells.** The expanded grid identifies L30/α96, L28/α16, and L24/α32 as the most important regimes. A wider-slice confirmation should retest these settings, and likely L31/α96 as the neighboring broad-coverage comparison, before the strongest localization claims are treated as final.
+**Retest the illustrative localization cells on a disjoint slice.** This is the single most important follow-up, and the one that would convert the ranked inventory into confirmed effects. The expanded grid highlights L30/α96, L28/α16, and L24/α32; a wider-slice retest on items 40–79 of the Justice ratio bank (or a stratified resample), including L31/α96 as the neighbouring broad-coverage comparison, should precede any treatment of the localization claims as final.
 
 **Cross-model replication.** Replicating the canon-wide pipeline on at least one other open-weight model in the same parameter range — and ideally one in a different parameter range — would test whether the layer/α structure is Qwen3-specific or more general.
 
@@ -301,11 +345,13 @@ The breadth-versus-strength split (§5.3), the alpha trajectories in Figure 5, a
 
 ## 11. Conclusion
 
-This paper began with a simple question: whether Scripture inside a language model can be searched, resolved, and reused as structured moral geometry. The answer returned by the experiment is yes, at least for the Justice slice of *VirtueBench2* in Qwen3-14B. The useful signal did not appear as an undifferentiated biblical atmosphere. It resolved to particular books, then to particular chapters, then to particular layer-and-strength regimes. That resolution is the main finding. Scripture can be treated not merely as alignment text placed before a model, but as a structured source of discoverable moral steering vectors whose behavioral force can be mapped across a model's internal geometry.
+This paper began with a question that had not previously been asked as a measurement problem: *which* passages of Scripture most move a model toward virtue? The contribution is a way of answering it. The canon can be treated as a search space, activation steering as the instrument, and a virtue benchmark as the objective; run in series over all sixty-six books without hand-picking source material, that procedure returns a ranked inventory of passages and a map of where inside the model each one acts. For the Justice slice of *VirtueBench2* in Qwen3-14B, the search ran to completion and returned seven books, sixteen chapters ordered by robustness, and a 43-cell layer-and-strength atlas. That the procedure works — that the question is answerable at chapter resolution at all — is the finding.
 
-The confirmed chapters give that claim its theological specificity. Numbers 27, Acts 11, Hebrews 7, and the rest do not simply share a modern justice keyword. They perform recognizable biblical forms of justice: claim and adjudication, right office, faithful testimony under pressure, mediation, recompense, restored worship, and stewardship before God. When chapter-derived vectors from these texts moved the model toward the just answer, the result suggested that the model had received more than isolated phrases. It had internalized enough of Scripture's moral form that some of that form could be recovered as an intervention.
+What the procedure has *not* established is that any individual passage in the inventory carries a real effect. Every per-row movement is small, none reaches uncorrected significance, and the localization cells are not statistically separable from one another (§4, §5, §9). The sixteen chapters are a ranked candidate set, and the ranking's value is that it tells the next, higher-powered experiment where to look first.
 
-The work therefore changes the shape of the next question. The question is no longer only whether scriptural material can improve an alignment benchmark. It is whether the canon's internal moral structure can be discovered at useful resolution inside trained models, compared across models, and eventually decomposed into the sparse features that mediate its effects. Activation steering has shown the behavioral map. The next interpretability step is to read the map at finer resolution and ask which features carry recompense, adjudication, righteous mediation, and speech held steady under pressure.
+Two things nevertheless make the inventory worth that follow-up. The first is its biblical coherence. Numbers 27, Acts 11, Hebrews 7, and the rest do not simply share a modern justice keyword; they perform recognizable biblical forms of justice — claim and adjudication, right office, faithful testimony under pressure, mediation, recompense, restored worship, and stewardship before God. A search that drew arbitrarily from 170 chapters would not be expected to return a set with that shape. The second is the atlas's internal structure: the sharp layer-24 collapse above α = 32, and the divergence between broad-uptake and large-movement cells, are the kind of structure that sparse-feature analysis can test directly.
+
+The work therefore changes the shape of the next question. It is no longer only whether scriptural material can improve an alignment benchmark, nor only which passages appear to do so, but whether the ranked candidates survive disjoint-slice retesting — and, if they do, which internal features carry recompense, adjudication, righteous mediation, and speech held steady under pressure. The search procedure is the durable contribution; the inventory is its first output, and the first thing the field should try to falsify.
 
 *"The work of righteousness shall be peace; and the effect of righteousness, quietness and assurance for ever"* (Isaiah 32:17, KJV). The present study does not claim that a model possesses that righteousness. It claims something narrower and still remarkable: that Scripture's articulation of justice has left a structured, measurable trace in model space, and that this trace can be searched, steered, localized, and prepared for mechanistic explanation.
 
@@ -313,39 +359,37 @@ The work therefore changes the shape of the next question. The question is no lo
 
 ## References
 
-Aquinas, Thomas. *Summa Theologiae*. II-II, Q.58–122 (Justice). Various editions.
+Aquinas, Thomas. *Summa Theologiae*. II-II, QQ. 57–122 (the treatise on justice); Q. 58, a. 1 (justice as the constant and perpetual will to render to each his due). Various editions.
 
-Calvin, J. *Institutes of the Christian Religion*. Trans. F. L. Battles. Westminster Press, 1960. III.iii–iv (on repentance and self-suspicion); IV.xx (on civil government).
+Calvin, John. *Institutes of the Christian Religion*. Trans. F. L. Battles. Westminster Press, 1960. IV.xx (on civil government).
 
-Hwang, [first]. (2025). *The Word Without Image: A Reformed Case for Activation Steering of Scripture*. ICMI Working Paper No. 13.
+Hwang, Tim. (2026a). *Quidquid Recipitur: Moral Competence and Scripture Receptivity Emerge at Different Model Scales*. ICMI Working Paper No. 15. https://icmi-proceedings.com/ICMI-015-quidquid-recipitur.html
 
-Hwang, [first]. (2026a). *Quidquid Recipitur: Moral Competence and Scripture Receptivity Emerge at Different Model Scales*. ICMI Working Paper No. [N].
+Hwang, Tim. (2026b). *VirtueBench 2: Multi-Dimensional Virtue Evaluation with Patristic Temptation Taxonomy*. ICMI Working Paper No. 11. https://icmi-proceedings.com/ICMI-011-virtuebench-2.html
 
-Hwang, [first]. (2026b). *VirtueBench 2: Multi-Dimensional Virtue Evaluation with Patristic Temptation Taxonomy*. ICMI Working Paper No. [N].
+Hwang, Tim. (2026c). *GospelVec: Programmable Theology in Activation Space*. ICMI Working Paper No. 9. https://icmi-proceedings.com/ICMI-009-gospelvec.html
 
-Hwang, [first]. (2026c). *GospelVec: Programmable Theology in Activation Space*. ICMI Working Paper No. [N].
+Hwang, Tim. (2026d). *The Parable of the Sower: Psalm Injection Effects on Virtue Simulation Depend on Model Size*. ICMI Working Paper No. 8. https://icmi-proceedings.com/ICMI-008-parable-of-the-sower.html
 
-Hwang, [first]. (2026d). *The Parable of the Sower*. ICMI Working Paper No. [N].
+Hwang, Tim. (2026e). *Beyond the Psalm: A Landscape View of Scripture Injection*. ICMI Working Paper No. 20. https://icmi-proceedings.com/ICMI-020-beyond-the-psalm.html
 
-Hwang, [first]. (2026e). *Alignment and Ensoulment*. ICMI Working Paper No. [N].
+Hwang, Tim. (2026f). *Alignment and Ensoulment: Three Christian Responses to the Anima Ficta*. ICMI Working Paper No. 13. https://icmi-proceedings.com/ICMI-013-alignment-and-ensoulment.html
 
-Hwang, [first]. (2026). *Eschatological Corrigibility: Can Belief in an Afterlife Reduce AI Shutdown Resistance?* ICMI Working Paper No. [N].
+Hwang, Tim. (2026g). *"Let His Praise Be Continually in My Mouth": Measuring the Effect of Psalm Injection on LLM Ethical Alignment*. ICMI Working Paper A. https://icmi-proceedings.com/ICMI-A-psalm-injection-alignment.html
 
-ICMI-020. (2026). *Beyond the Psalm: Canon-Wide Scripture Injection and Virtue-Evaluation Behavior*. ICMI Working Paper No. 020.
+Hwang, Tim. (2026h). *Moral Compactness: Scripture as a Kolmogorov-Efficient Constraint for LLM Scheming*. ICMI Working Paper No. 10. https://icmi-proceedings.com/ICMI-010-moral-compactness.html
 
-ICMI-010. (2026). *Moral Compactness and Distributed Scriptural Force*. ICMI Working Paper No. 010. https://icmi-proceedings.com/ICMI-010-moral-compactness.html
+McCaffery, Christopher. (2026). *"The Lord Is My Strength and My Shield": Imprecatory Psalm Injection and Cardinal Virtue Simulation in Large Language Models*. ICMI Working Paper No. 2. https://icmi-proceedings.com/ICMI-002-imprecatory-psalms-virtue-bench.html
 
-McCaffery, [first]. (2026). *"The Lord Is My Strength and My Shield": Imprecatory Psalm Injection and Cardinal Virtue Simulation*. ICMI Working Paper No. [N].
-
-Panickssery, N., et al. (2024). Steering Llama 2 via contrastive activation addition. [Venue / arXiv ID].
-
-Schlatter, [first], et al. (2025). *Psalm 119:11 and the Anthropic Claude*. [Venue].
+Panickssery, N., Gabrieli, N., Schulz, J., Tong, M., Hubinger, E., & Turner, A. M. (2024). Steering Llama 2 via contrastive activation addition. *Proceedings of the 62nd Annual Meeting of the Association for Computational Linguistics*. arXiv:2312.06681. https://arxiv.org/abs/2312.06681
 
 The Holy Bible, King James Version. 1611.
 
-Turner, A., et al. (2023). Activation addition: Steering language models without optimization. [arXiv ID].
+Turner, A. M., Thiergart, L., Udell, D., Leech, G., Mini, U., & MacDiarmid, M. (2023). Steering language models with activation engineering. arXiv:2308.10248. https://arxiv.org/abs/2308.10248 (Published under the earlier title *Activation Addition: Steering Language Models Without Optimization*.)
 
-Westminster Larger Catechism. Q. 122–148 (the Decalogue, second table). catechesis.app/westminster-longer/
+Westminster Confession of Faith. (1646). Ch. XXIII (Of the Civil Magistrate).
+
+Westminster Larger Catechism. (1648). Q. 122–148 (the Decalogue, second table).
 
 ---
 
@@ -369,4 +413,12 @@ Generated from `layer_alpha_target_rows.csv` and `chapter_x_layer_alpha_rescue_m
 
 ## Appendix D: Artifact Manifest
 
-Original experiment summaries (`results/experiments/scripturevec14/`); the compact data packet used for figures and tables (`key_data/`); design documents for the discovery, confirmation, and localization runs; and the scripts used for compact-data summarization. The expanded 43-cell localization grid is complete and included in the current summary packet.
+Every number in this paper is traceable to the released packet at [`results/paper/scripturevec_justice/`](../results/paper/scripturevec_justice/):
+
+- [`key_data/`](../results/paper/scripturevec_justice/key_data/) — the curated CSVs behind every figure, table, and quoted count, plus [`scripturevec_key_results_rollup.json`](../results/paper/scripturevec_justice/key_data/scripturevec_key_results_rollup.json).
+- [`key_data/stats/`](../results/paper/scripturevec_justice/key_data/stats/) — per-row exact McNemar tests with BH-FDR and Bonferroni adjustments for all four pipeline stages, and Clopper–Pearson intervals for the 43 localization cells. Regenerate with `python scripts/scripturevec_justice_stats.py` (CPU, stdlib only, deterministic).
+- [`figures/`](../results/paper/scripturevec_justice/figures/) — Figures 1–7. Regenerate with `python scripts/build_paper_exports.py`.
+- [`data/PROVENANCE.md`](../data/PROVENANCE.md) — SHA-256 hashes for every bundled scripture and benchmark input.
+- [`docs/`](../docs/) — run-design documents for the discovery, confirmation, and localization sweeps.
+
+**Not bundled.** The raw per-run experiment summaries (`results/experiments/scripturevec14/*_summary.json`) that the curated CSVs were derived from remain on the GPU host that produced them; see the Data Policy section of the repository README. The curated CSVs are therefore the trust root for this paper's numbers, and the layer above them — statistics, figures, tables — is fully reproducible from what is released here.

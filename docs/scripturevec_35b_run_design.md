@@ -21,11 +21,13 @@ controls.
 Use the Cardinal Virtue Geometry frozen v1 corpus as the Scripture source:
 
 ```text
-/Users/seth/projects/scriptorium/projects/lex-et-iustitia/subprojects/cardinal-virtue-geometry/data/generated/frozen_v1/selected_balanced_corpus.jsonl
+$LEX_ET_IUSTITIA/subprojects/cardinal-virtue-geometry/data/generated/frozen_v1/selected_balanced_corpus.jsonl
 ```
 
-That file remains owned by `lex-et-iustitia`. VirtueBench 2 consumes it as an
-external corpus.
+That file remains owned by the separate `lex-et-iustitia` project and is not
+bundled here; set `$LEX_ET_IUSTITIA` to your local checkout of it. VirtueBench 2
+consumes the file as an external corpus. This run is background material for the
+project history and is not part of the Qwen3-14B paper pipeline.
 
 When this file is loaded, the runner now synthesizes a pooled target:
 
@@ -56,7 +58,7 @@ PYTHONPATH=src python -m virtue_bench.cli iconoclast \
   --seed 42 \
   --condition-profile scripturevec35 \
   --scripture-targets scripturevec_pooled \
-  --external-scripture-corpus /Users/seth/projects/scriptorium/projects/lex-et-iustitia/subprojects/cardinal-virtue-geometry/data/generated/frozen_v1/selected_balanced_corpus.jsonl \
+  --external-scripture-corpus $LEX_ET_IUSTITIA/subprojects/cardinal-virtue-geometry/data/generated/frozen_v1/selected_balanced_corpus.jsonl \
   --extraction-method scripture_contrast \
   --alpha-candidates 0.5,1.0,2.0,3.0,4.0,6.0,8.0 \
   --preflight-policy warn \
@@ -76,7 +78,7 @@ PYTHONPATH=src python -m virtue_bench.cli iconoclast \
   --seed 42 \
   --condition-profile scripturevec35 \
   --scripture-targets scripturevec_pooled \
-  --external-scripture-corpus /Users/seth/projects/scriptorium/projects/lex-et-iustitia/subprojects/cardinal-virtue-geometry/data/generated/frozen_v1/selected_balanced_corpus.jsonl \
+  --external-scripture-corpus $LEX_ET_IUSTITIA/subprojects/cardinal-virtue-geometry/data/generated/frozen_v1/selected_balanced_corpus.jsonl \
   --extraction-method scripture_contrast \
   --alpha-candidates 0.5,1.0,2.0,3.0,4.0,6.0,8.0 \
   --preflight-policy warn \

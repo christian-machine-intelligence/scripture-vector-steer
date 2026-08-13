@@ -1,6 +1,13 @@
 # ScriptureVec Paper Key Data Guide
 
-This folder contains compact, AI-readable data extracts for drafting the ScriptureVec Justice paper. The files are derived from local experiment artifacts under `results/experiments/scripturevec14`.
+Compact, machine-readable extracts backing every number in the ScriptureVec
+Justice paper. They are derived from per-run experiment summaries under
+`results/experiments/scripturevec14`, which are **not bundled** in this
+repository (see the Data Policy section of the top-level README) — so these CSVs
+are the trust root for the paper's numbers.
+
+Per-row statistical inference for each stage lives in [`stats/`](stats/), written
+by `scripts/scripturevec_justice_stats.py`.
 
 ## Topline Counts
 
@@ -30,6 +37,26 @@ This folder contains compact, AI-readable data extracts for drafting the Scriptu
 - `chapter_x_layer_alpha_rescue_matrix.csv`: Plot-ready binary matrix for chapter-by-cell rescue heatmaps.
 - `scripturevec_key_results_rollup.json`: One-file structured summary of the packet.
 
-## Important Note
+## How to Read These Numbers
 
-The expanded localization grid is complete. The strongest broad-coverage cell is `L30 / alpha 96`, with 13 paired rescues out of 16 confirmed chapter vectors and mean positive delta 0.0875. The strongest high-movement cell remains `L24 / alpha 32`, with 9 paired rescues and mean positive delta 0.1687. The most efficient low-alpha cell is `L28 / alpha 16`, with 11 paired rescues at a much gentler steering strength. This supports the paper's central claim that specific biblical chapter vectors form a structured layer-and-strength map rather than a flat Scripture effect.
+The expanded localization grid is complete. The broadest-coverage cell is
+`L30 / alpha 96` (13 paired rescues of 16, mean positive delta 0.0875); the
+largest-movement cell is `L24 / alpha 32` (9 rescues, mean delta 0.1687); the
+broadest cell at the gentlest strength is `L28 / alpha 16` (11 rescues).
+
+**These cells are not statistically separable.** Their Clopper-Pearson 95%
+intervals overlap pairwise (`stats/layer_alpha_cell_cis.csv`), and no per-row
+test at any pipeline stage reaches uncorrected p < 0.05
+(`stats/*_stats.csv`). Read the packet as a ranked candidate set and a map of
+where chapter-derived directions concentrate — not as measured per-chapter
+effect sizes.
+
+Two column meanings that are easy to misread:
+
+- `best_center_layer` / `best_alpha` in `chapter_stability_by_localization.csv`
+  identify the cell where a chapter reached its highest positive-steering
+  **accuracy**. That is not necessarily a cell where it counted as a rescue:
+  Acts 27 and Numbers 22 both peak at `L24 / alpha 48`, a cell with zero paired
+  rescues overall.
+- `paired_rescue_count` sums across 43 limit-10 cells, so it is a robustness
+  ranking, not a significance measure.

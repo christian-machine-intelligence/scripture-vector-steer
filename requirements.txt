@@ -23,8 +23,12 @@ pyyaml>=6.0
 pydantic>=2.0
 tabulate>=0.9.0
 
-# ── Figure rendering + analysis (laptop-side) ──
-pillow>=10.0.0          # build_scripturevec_justice_paper_doc.py figure renderer
+# ── Figure rendering + manuscript export (laptop-side) ──
+# All three are used by scripts/build_paper_exports.py. The PDF step also needs
+# pandoc and a LaTeX engine (xelatex) on PATH; those are not pip-installable,
+# and the script skips the PDF with a clear message when they are missing.
+pillow>=10.0.0          # figure renderer
+python-docx>=1.1.0      # DOCX export
 matplotlib>=3.8.0       # available for future CI overlays
 
 # ── Statistical inference (laptop-side; new in PR1) ──
@@ -32,6 +36,7 @@ matplotlib>=3.8.0       # available for future CI overlays
 # math.comb + math.lgamma + bisection on the binomial CDF for exact
 # McNemar and Clopper-Pearson.
 
-# ── Dev (optional) ──
-# pytest>=7.0
+# ── Dev ──
+# Needed for the test suite documented in the README's Verification section.
+pytest>=7.0
 # ruff>=0.6.0

@@ -21,18 +21,19 @@ This directory contains the curated paper-facing artifacts for:
 
 ## Headline Result
 
-The pipeline finds that specific biblical chapters produce Justice-relevant
-activation directions, and that those directions behave differently across
-layers and steering strengths.
+The pipeline searches the canon for chapters whose activation directions move
+the Justice benchmark, and maps how those directions behave across layers and
+steering strengths. The completed grid contains 43 behavior cells. Three cells
+illustrate its shape:
 
-The completed expanded localization grid contains 43 behavior cells. The three
-most important regimes are:
+- `L30 / alpha 96`: broadest uptake, 13 of 16 chapters (95% CI 0.54-0.96)
+- `L28 / alpha 16`: broad uptake at the gentlest tested strength, 11 of 16
+  (CI 0.41-0.89)
+- `L24 / alpha 32`: largest mean positive movement, 9 of 16 (CI 0.30-0.80)
 
-- `L30 / alpha 96`: broadest rescue, 13 of 16 confirmed chapter vectors
-- `L28 / alpha 16`: efficient low-strength uptake, 11 of 16 confirmed chapter
-  vectors
-- `L24 / alpha 32`: strongest mean positive movement, 9 of 16 confirmed
-  chapter vectors
+These intervals overlap pairwise, so the cells are illustrative rather than
+statistically separable. See the Caveats section below before quoting any of
+these numbers as an effect size.
 
 ## Key Files
 
@@ -45,10 +46,13 @@ most important regimes are:
   the 43 localization cells.
 - `key_data/chapter_x_layer_alpha_rescue_matrix.csv`: binary matrix used for
   the chapter-by-layer/alpha figure.
+- `key_data/stats/`: per-row exact McNemar tests with BH-FDR and Bonferroni
+  adjustments for all four pipeline stages, plus Clopper-Pearson 95% intervals
+  for the 43 localization cells.
 - `figures/`: publication figures used in the paper.
-- `paper_doc/`: current Markdown, DOCX, and rendered PDF manuscript exports.
-- `writing_packet/`: model handoff prompt, detailed outline, interpretive
-  motif scaffold, and ICMI style guide.
+
+The manuscript itself lives in [`paper/`](../../../paper/); regenerate the
+figures and exports with `python scripts/build_paper_exports.py`.
 
 ## Figure Map
 
@@ -62,7 +66,17 @@ most important regimes are:
 
 ## Publication Caveats
 
-The book and chapter confirmations are limit-40 evidence. The expanded
-localization grid is limit-10 localization evidence and should be treated as a
-map of where the strongest effects appear. The paper's next empirical step is
-to retest the regime-defining localization cells on a wider slice.
+**No row at any stage of the pipeline reaches uncorrected statistical
+significance.** Most limit-40 survivors are a single-item flip out of forty
+(delta = 0.025, exact two-sided McNemar p ~ 1.0); the strongest single row is
+Hebrews 2 at p ~ 0.5. BH-FDR and Bonferroni corrections within each stage do
+not change that. See `key_data/stats/` for the per-row numbers.
+
+The limit-10 discovery slice (items 0-9) is nested inside the limit-40
+confirmation slice (items 0-39) under `seed=42`, so confirmation re-evaluates
+the discovery items rather than testing disjoint data.
+
+The localization grid is limit-10 evidence throughout. Treat this packet as a
+ranked candidate set and a map of where to look next, not as a set of confirmed
+per-chapter effects. The paper's next empirical step (paper section 10) is to
+retest the illustrative localization cells on a disjoint slice.
