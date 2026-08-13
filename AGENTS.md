@@ -13,6 +13,10 @@ Before changing or launching anything:
 
 - Read `README.md` for the public project story.
 - Read `docs/experiment_playbook.md` for general run discipline.
+- Read `docs/icmi_style_guide.md` before editing the paper. It is the house
+  style for the Proceedings: long varied sentences, theology as analytical
+  vocabulary rather than decoration, no hedge phrases, and prose in preference
+  to bullet lists.
 - Read the relevant ScriptureVec run-design document under `docs/`.
 - Check `git status --short` and preserve unrelated user changes.
 
