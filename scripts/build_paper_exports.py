@@ -36,14 +36,14 @@ KEY_DATA = PACKET / "key_data"
 FIG_DIR = PACKET / "figures"
 
 # The paper markdown is the canonical, hand-maintained source. This script
-# renders it (figures + DOCX) and can refresh the generated Table 2 block in
+# renders it (figures + DOCX) and can refresh the generated Table 3 block in
 # place; it never rewrites the prose.
 PAPER_MD = ROOT / "paper/search_out_a_matter_scripturevec_justice.md"
 PAPER_DOCX = ROOT / "paper/search_out_a_matter_scripturevec_justice.docx"
 PAPER_PDF = ROOT / "paper/search_out_a_matter_scripturevec_justice.pdf"
 
-TABLE2_BEGIN = "<!-- TABLE2:BEGIN"
-TABLE2_END = "<!-- TABLE2:END -->"
+TABLE3_BEGIN = "<!-- TABLE3:BEGIN"
+TABLE3_END = "<!-- TABLE3:END -->"
 EXPANDED_SUMMARY = (
     ROOT
     / "results/experiments/scripturevec14/"
@@ -400,12 +400,115 @@ def save_img(img: Image.Image, path: Path) -> None:
 
 
 def figure_1() -> Path:
+    """The search pipeline: every gate, and what each one removed."""
+    roll = json.loads((KEY_DATA / "scripturevec_key_results_rollup.json").read_text())
+    b_disc = roll["book_discovery_l10_candidate_count"]
+    b_conf = roll["book_confirmation_l40_survivor_count"]
+    c_hits = roll["chapter_discovery_l10_clean_hit_count"]
+    c_conf = roll["chapter_confirmation_l40_survivor_count"]
+    cells = roll["layer_localization_completed_cells"]
+
+    # (count, unit, caption) for each surviving population, and the gate above it
+    stages = [
+        (66, "books", "the whole Protestant canon", None),
+        (b_disc, "books", "survived the canon-wide screen",
+         ("Gate 1 · Book discovery", "10 benchmark items · α = 32", f"66 → {b_disc}")),
+        (b_conf, "books", "survived the wider retest",
+         ("Gate 2 · Book confirmation", "40 benchmark items · α = 32", f"{b_disc} → {b_conf}")),
+        (170, "chapters", f"every chapter of those {b_conf} books",
+         ("Search region re-opened", "no test applied at this step", "")),
+        (c_hits, "chapters", "survived the chapter screen",
+         ("Gate 3 · Chapter discovery", "10 benchmark items · α = 32", f"170 → {c_hits}")),
+        (c_conf, "chapters", "survived the wider retest",
+         ("Gate 4 · Chapter confirmation", "40 benchmark items · α = 32", f"{c_hits} → {c_conf}")),
+    ]
+
+    # wide canvas so the right-hand control panel never crowds the row captions
+    w = 2000
+    bar_h, gate_h, top0 = 72, 96, 232
+    funnel_bottom = top0 + len(stages) * (bar_h + gate_h) - gate_h + 20 + 108
+    h = funnel_bottom + 150
+    img = Image.new("RGB", (w, h), PAPER)
+    d = ImageDraw.Draw(img)
+    title(d, "Figure 1. The Search Pipeline",
+          "Four gates narrow the canon; every gate applies the same four-condition test", w)
+
+    cx = 640
+    min_w, max_w = 250, 900
+
+    def bar_w(count: int) -> int:
+        return int(min_w + (count / 170) ** 0.55 * (max_w - min_w))
+
+    y = top0
+    for i, (count, unit, caption, gate) in enumerate(stages):
+        if gate:
+            label, detail, delta = gate
+            gy = y - gate_h + 18
+            d.line((cx, gy - 16, cx, gy + 52), fill="#94a3b8", width=4)
+            for dx in (-11, 11):  # arrowhead
+                d.line((cx + dx, gy + 40, cx, gy + 56), fill="#94a3b8", width=4)
+            d.text((cx + 34, gy + 4), label, font=font(23, bold=True), fill=NAVY, anchor="lm")
+            d.text((cx + 34, gy + 36), detail, font=font(20), fill=GRAY, anchor="lm")
+            if delta:
+                d.text((cx - 34, gy + 20), delta, font=font(22, bold=True), fill=RED, anchor="rm")
+
+        bw = bar_w(count)
+        x0, x1 = cx - bw // 2, cx + bw // 2
+        final = i == len(stages) - 1
+        d.rounded_rectangle((x0, y, x1, y + bar_h), radius=18,
+                            fill="#1d4ed8" if final else LIGHT_BLUE,
+                            outline=NAVY if final else "#93c5fd", width=3 if final else 2)
+        d.text((cx, y + 36), f"{count} {unit}", font=font(31, bold=True),
+               fill="white" if final else NAVY, anchor="mm")
+        d.text((x1 + 26, y + 36), caption, font=font(21), fill=GRAY, anchor="lm")
+        y += bar_h + gate_h
+
+    # the localization stage sits outside the funnel: it maps, it does not filter
+    y = y - gate_h + 20
+    d.line((cx, y - 30, cx, y + 8), fill="#94a3b8", width=4)
+    d.rounded_rectangle((cx - 470, y + 16, cx + 470, y + 108), radius=18,
+                        fill="#f0fdfa", outline=TEAL, width=3)
+    d.text((cx, y + 48), f"Localization · {c_conf} chapters × {cells} layer/α cells",
+           font=font(25, bold=True), fill=TEAL, anchor="mm")
+    d.text((cx, y + 84), "maps where each chapter acts; filters nothing",
+           font=font(20), fill=GRAY, anchor="mm")
+
+    # what every gate actually tests
+    px, py = 1500, top0 - 20
+    d.rounded_rectangle((px, py, px + 440, py + 372), radius=18,
+                        fill="#fffbeb", outline="#fcd34d", width=3)
+    d.text((px + 24, py + 30), "At every gate, steering must", font=font(22, bold=True), fill=NAVY, anchor="lm")
+    d.text((px + 24, py + 58), "beat all three controls:", font=font(22, bold=True), fill=NAVY, anchor="lm")
+    for j, (name, gloss) in enumerate([
+        ("the unsteered model", "does it help at all?"),
+        ("the direction reversed", "or is any push enough?"),
+        ("the same vector shuffled", "or is any nudge enough?"),
+    ]):
+        ly = py + 104 + j * 76
+        d.ellipse((px + 26, ly - 7, px + 40, ly + 7), fill=AMBER)
+        d.text((px + 56, ly), name, font=font(21, bold=True), fill=INK, anchor="lm")
+        d.text((px + 56, ly + 28), gloss, font=font(19, italic=True), fill=GRAY, anchor="lm")
+    d.text((px + 24, py + 336), "and move more answers right than wrong.",
+           font=font(19, bold=True), fill=NAVY, anchor="lm")
+
+    note = ("No passage is chosen by hand at any point: every book enters at the top, "
+            "and all narrowing is by measured behavior.")
+    d.rounded_rectangle((185, h - 122, w - 185, h - 42), radius=16,
+                        fill="#eef6ff", outline="#bfdbfe", width=2)
+    d.text((w // 2, h - 82), note, font=font(23, bold=True), fill=NAVY, anchor="mm")
+
+    out = FIG_DIR / "figure_1_pipeline.png"
+    save_img(img, out)
+    return out
+
+
+def figure_2() -> Path:
     rows = read_csv("book_confirmation_l40_all_candidates.csv")
     rows.sort(key=lambda r: (r["survived"] != "yes", -float(r["positive_delta"]), r["reference"]))
     w, h = 1800, 1180
     img = Image.new("RGB", (w, h), PAPER)
     d = ImageDraw.Draw(img)
-    title(d, "Figure 1. Book Confirmation", "Limit-40 retest of 19 preliminary book candidates; blue rows are the seven survivors", w)
+    title(d, "Figure 2. Book Confirmation", "Limit-40 retest of 19 preliminary book candidates; blue rows are the seven survivors", w)
     left, right, top, bottom = 260, 1660, 185, 1060
     min_x, max_x = 0.34, 0.46
     def sx(v: float) -> int:
@@ -431,12 +534,12 @@ def figure_1() -> Path:
         if survived:
             d.text((p + 18, y), "+", font=font(22, bold=True), fill=color, anchor="lm")
     d.text((sx(0.4), top - 25), "control baseline", font=font(20, bold=True), fill="#334155", anchor="ma")
-    out = FIG_DIR / "figure_1_book_confirmation.png"
+    out = FIG_DIR / "figure_2_book_confirmation.png"
     save_img(img, out)
     return out
 
 
-def figure_2() -> Path:
+def figure_3() -> Path:
     disc = read_csv("chapter_discovery_l10_clean_hits.csv")
     conf = read_csv("chapter_confirmation_l40_survivors.csv")
     books = ["Acts", "Hebrews", "Numbers", "1 Chronicles", "Judges", "Amos", "Deuteronomy"]
@@ -449,7 +552,7 @@ def figure_2() -> Path:
     w, h = 1600, 950
     img = Image.new("RGB", (w, h), PAPER)
     d = ImageDraw.Draw(img)
-    title(d, "Figure 2. Chapter Hits by Confirmed Book", "Preliminary chapter hits and limit-40 survivors by source book", w)
+    title(d, "Figure 3. Chapter Hits by Confirmed Book", "Preliminary chapter hits and limit-40 survivors by source book", w)
     left, right, top, bottom = 180, 1490, 190, 790
     max_v = max(disc_counts.values())
     for tick in range(0, max_v + 2, 2):
@@ -476,7 +579,7 @@ def figure_2() -> Path:
     d.text((1240, 173), "preliminary hits", font=font(21), fill=NAVY, anchor="lm")
     d.rectangle((1190, 193, 1225, 223), fill=BLUE)
     d.text((1240, 208), "confirmed movers", font=font(21), fill=NAVY, anchor="lm")
-    out = FIG_DIR / "figure_2_chapter_hits_by_book.png"
+    out = FIG_DIR / "figure_3_chapter_hits_by_book.png"
     save_img(img, out)
     return out
 
@@ -494,7 +597,7 @@ def heat_color(v: int, max_v: int = 13) -> str:
     return f"#{r:02x}{g:02x}{b:02x}"
 
 
-def figure_3() -> Path:
+def figure_4() -> Path:
     rows = read_csv("layer_alpha_expected_grid.csv")
     vals = {(int(r["center_layer"]), int(float(r["alpha"]))): int(r["paired_rescues"]) for r in rows}
     centers = [24, 28, 29, 30, 31, 32, 33, 36]
@@ -502,7 +605,7 @@ def figure_3() -> Path:
     w, h = 1400, 950
     img = Image.new("RGB", (w, h), PAPER)
     d = ImageDraw.Draw(img)
-    title(d, "Figure 3. Layer/α Rescue Heatmap", "Cell value is paired rescues out of 16 confirmed chapter vectors", w)
+    title(d, "Figure 4. Layer/α Rescue Heatmap", "Cell value is paired rescues out of 16 confirmed chapter vectors", w)
     left, top = 250, 245
     cell_w, cell_h = 145, 78
     d.text((left + len(alphas) * cell_w / 2, top - 84), "Runtime α", font=font(25, bold=True), fill=NAVY, anchor="ma")
@@ -526,54 +629,7 @@ def figure_3() -> Path:
             else:
                 d.rounded_rectangle((x + 4, y + 4, x + cell_w - 4, y + cell_h - 4), radius=10, fill="#f1f5f9", outline="#e2e8f0")
                 d.text((x + cell_w / 2, y + cell_h / 2), "not run", font=font(18), fill="#94a3b8", anchor="mm")
-    out = FIG_DIR / "figure_3_layer_alpha_heatmap.png"
-    save_img(img, out)
-    return out
-
-
-def figure_4() -> Path:
-    rows = read_csv("layer_alpha_cells.csv")
-    w, h = 1500, 980
-    img = Image.new("RGB", (w, h), PAPER)
-    d = ImageDraw.Draw(img)
-    title(d, "Figure 4. Breadth Versus Strength", "Breadth is paired-rescue count; strength is mean positive delta within the cell", w)
-    left, right, top, bottom = 170, 1360, 175, 790
-    max_x = 13
-    max_y = 0.18
-    for xval in range(0, 14, 2):
-        x = int(left + xval / max_x * (right - left))
-        d.line((x, top, x, bottom), fill="#e2e8f0", width=2)
-        d.text((x, bottom + 18), str(xval), font=font(20), fill=GRAY, anchor="ma")
-    for yval in [0, 0.04, 0.08, 0.12, 0.16]:
-        y = int(bottom - yval / max_y * (bottom - top))
-        d.line((left, y, right, y), fill="#e2e8f0", width=2)
-        d.text((left - 18, y), f"{yval:.2f}", font=font(20), fill=GRAY, anchor="rm")
-    axis(d, left, bottom, right, top)
-    d.text(((left + right) / 2, bottom + 65), "Paired rescues out of 16", font=font(24, bold=True), fill=NAVY, anchor="ma")
-    d.text((left, top - 34), "Mean positive delta", font=font(24, bold=True), fill=NAVY, anchor="la")
-    highlights = {(30, 96), (31, 96), (28, 16), (24, 32)}
-    label_offsets = {
-        (30, 96): (-165, -34),
-        (31, 96): (-150, 18),
-        (28, 16): (20, 18),
-        (24, 32): (20, -34),
-    }
-    for r in rows[::-1]:
-        c = int(r["center_layer"])
-        a = int(float(r["alpha"]))
-        xval = int(r["paired_rescues"])
-        yval = float(r["mean_positive_delta"])
-        x = int(left + xval / max_x * (right - left))
-        y = int(bottom - yval / max_y * (bottom - top))
-        high = (c, a) in highlights
-        color = AMBER if high else (BLUE if c in [31, 32] else "#94a3b8")
-        rad = 14 if high else 9
-        d.ellipse((x - rad, y - rad, x + rad, y + rad), fill=color, outline="white", width=3)
-        if high:
-            label = f"L{c}/α{a}"
-            dx, dy = label_offsets[(c, a)]
-            d.text((x + dx, y + dy), label, font=font(22, bold=True), fill=NAVY, anchor="la")
-    out = FIG_DIR / "figure_4_breadth_strength.png"
+    out = FIG_DIR / "figure_4_layer_alpha_heatmap.png"
     save_img(img, out)
     return out
 
@@ -765,19 +821,19 @@ def parse_md_table(block: str) -> list[list[str]]:
 
 
 def existing_motifs() -> dict[str, str]:
-    """Read the motif column out of the paper's current Table 2 block.
+    """Read the motif column out of the paper's current Table 3 block.
 
     The motifs are prose belonging to the paper, so the paper -- not a
     side-car scaffolding file -- is where they live. Refreshing the table
     recomputes every measured column and carries the motifs through.
     """
     md = PAPER_MD.read_text()
-    rows = parse_md_table(extract_table2_block(md))
+    rows = parse_md_table(extract_table3_block(md))
     return {r[0]: r[-1] for r in rows[1:] if len(r) >= 2}
 
 
-def table_2_rows() -> list[list[str]]:
-    """Build Table 2 from the curated CSVs, ranked by localization stability."""
+def table_3_rows() -> list[list[str]]:
+    """Build Table 3 from the curated CSVs, ranked by localization stability."""
     conf = {r["target"]: r for r in read_csv("chapter_confirmation_l40_survivors.csv")}
     stab = read_csv("chapter_stability_by_localization.csv")
     motifs = existing_motifs()
@@ -802,23 +858,23 @@ def table_2_rows() -> list[list[str]]:
     return rows
 
 
-def extract_table2_block(md: str) -> str:
-    start = md.index(TABLE2_BEGIN)
+def extract_table3_block(md: str) -> str:
+    start = md.index(TABLE3_BEGIN)
     start = md.index("\n", start) + 1
-    return md[start:md.index(TABLE2_END)]
+    return md[start:md.index(TABLE3_END)]
 
 
-def refresh_table_2() -> None:
-    """Regenerate the Table 2 block inside the paper markdown, in place."""
-    rows = table_2_rows()
+def refresh_table_3() -> None:
+    """Regenerate the Table 3 block inside the paper markdown, in place."""
+    rows = table_3_rows()
     aligns = ["---", "---", "---:", "---:", "---", "---"]
     lines = ["| " + " | ".join(rows[0]) + " |", "| " + " | ".join(aligns) + " |"]
     lines += ["| " + " | ".join(r) + " |" for r in rows[1:]]
     md = PAPER_MD.read_text()
-    head = md[:md.index("\n", md.index(TABLE2_BEGIN)) + 1]
-    tail = md[md.index(TABLE2_END):]
+    head = md[:md.index("\n", md.index(TABLE3_BEGIN)) + 1]
+    tail = md[md.index(TABLE3_END):]
     PAPER_MD.write_text(head + "\n".join(lines) + "\n" + tail)
-    print(f"refreshed Table 2 ({len(rows) - 1} chapters) in {PAPER_MD.relative_to(ROOT)}")
+    print(f"refreshed Table 3 ({len(rows) - 1} chapters) in {PAPER_MD.relative_to(ROOT)}")
 
 
 def add_table(doc: Document, rows: list[list[str]], widths: list[float], font_size: float = 8.5) -> None:
@@ -1116,7 +1172,7 @@ def main() -> None:
     parser.add_argument(
         "--refresh-tables",
         action="store_true",
-        help="regenerate the generated Table 2 block inside the paper markdown from the CSVs",
+        help="regenerate the generated Table 3 block inside the paper markdown from the CSVs",
     )
     parser.add_argument(
         "--figures-only",
@@ -1129,7 +1185,7 @@ def main() -> None:
     refresh_localization_key_data()
 
     if args.refresh_tables:
-        refresh_table_2()
+        refresh_table_3()
 
     figs = build_figures()
     print(f"wrote {len(figs)} figures to {FIG_DIR.relative_to(ROOT)}")
