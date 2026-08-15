@@ -28,8 +28,14 @@ passages — Acts 11 surfaced in 29 of 43 cells, Numbers 22 in only 8 — togeth
 with a map of where in the network each one acts.
 
 > [!IMPORTANT]
-> **The headline effect does not survive held-out testing, and the paper reports
-> that as its main result.** The ten benchmark items used to *select* candidates
+> **Every effect in this study is one benchmark question wide, and it does not
+> survive held-out testing.** Fifteen of the sixteen surviving chapters changed
+> the model's answer on exactly one question out of forty (16 correct → 17); the
+> sole exception managed two. Across all 745 measurements, 79% of every non-zero
+> movement is a single question, and the largest improvement seen anywhere is
+> three questions out of ten.
+>
+> **And it does not survive held-out testing.** The ten benchmark items used to *select* candidates
 > are nested inside the forty used to *confirm* them. On the thirty items
 > selection never touched, positive steering finishes behind the unsteered model
 > on 22 of 38 chapters and ahead on 1 (exact sign test p = 0.000006). Survival at
