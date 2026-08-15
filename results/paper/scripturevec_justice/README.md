@@ -66,6 +66,13 @@ figures and exports with `python scripts/build_paper_exports.py`.
 
 ## Publication Caveats
 
+**The effect does not survive held-out testing.** The limit-10 discovery slice
+is nested inside the limit-40 confirmation slice, and on the 30 items not used
+for selection, positive steering finishes behind control on 22 of 38 chapters
+and ahead on 1 (sign test p = 0.000006). Survival tracks the absence of harm
+rather than benefit. See `key_data/stats/held_out_items_*.csv` and paper
+section 4.5.
+
 **No row at any stage of the pipeline reaches uncorrected statistical
 significance.** Most limit-40 survivors are a single-item flip out of forty
 (delta = 0.025, exact two-sided McNemar p ~ 1.0); the strongest single row is

@@ -28,16 +28,20 @@ passages — Acts 11 surfaced in 29 of 43 cells, Numbers 22 in only 8 — togeth
 with a map of where in the network each one acts.
 
 > [!IMPORTANT]
-> **Read this before quoting any number here as an effect.** No row at any stage
-> of the pipeline reaches uncorrected statistical significance. Most limit-40
-> survivors are a single-item flip out of forty (Δ = 0.025, exact two-sided
-> McNemar p ≈ 1.0); the strongest single row is Hebrews 2 at p ≈ 0.5. BH-FDR and
-> Bonferroni corrections do not change that, and the per-cell confidence
-> intervals in the localization grid overlap. The contribution is the **search
-> procedure and the ranked map it produces**, not a confirmed effect size for
-> any individual chapter. The sixteen chapters are a candidate set for
-> higher-powered follow-up; the disjoint-slice retest that would confirm them is
-> specified in §10 of the paper and has not been run.
+> **The headline effect does not survive held-out testing, and the paper reports
+> that as its main result.** The ten benchmark items used to *select* candidates
+> are nested inside the forty used to *confirm* them. On the thirty items
+> selection never touched, positive steering finishes behind the unsteered model
+> on 22 of 38 chapters and ahead on 1 (exact sign test p = 0.000006). Survival at
+> the confirmation stage tracks the *absence of harm*, not benefit: every
+> surviving chapter did no damage on held-out items, and every failing chapter
+> did. The Δ = 0.025 reported throughout is a single item won under selection and
+> carried forward. See §4.5 of the paper and
+> [`key_data/stats/held_out_items_*.csv`](results/paper/scripturevec_justice/key_data/stats/).
+>
+> What remains useful here is the **search procedure**, and a worked example of
+> how a staged pass rule on nested slices can manufacture a clean result that
+> independent data do not support.
 
 Full per-row numbers are in
 [`key_data/stats/`](results/paper/scripturevec_justice/key_data/stats/).

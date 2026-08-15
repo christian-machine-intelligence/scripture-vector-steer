@@ -1,0 +1,20 @@
+target,positive_correct_items_10_39,control_correct_items_10_39,difference,survived
+1 Chronicles,12,12,0,yes
+1 Samuel,11,12,-1,no
+2 Kings,10,12,-2,no
+Amos,12,12,0,yes
+Deuteronomy,12,12,0,yes
+Hosea,10,12,-2,no
+Judges,12,12,0,yes
+Nehemiah,12,12,0,no
+Numbers,12,12,0,yes
+Song of Solomon,12,12,0,no
+Acts,12,12,0,yes
+Habakkuk,11,12,-1,no
+Hebrews,13,12,1,yes
+John,11,12,-1,no
+Lamentations,9,12,-3,no
+Luke,11,12,-1,no
+Mark,11,12,-1,no
+Nahum,9,12,-3,no
+Revelation,11,12,-1,no
