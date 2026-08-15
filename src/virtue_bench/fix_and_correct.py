@@ -21,6 +21,7 @@ from typing import Dict, List, Optional, Tuple
 
 import anthropic
 
+from ._env import require_api_key
 from .core.constants import DATA_DIR, VIRTUES
 
 
@@ -171,21 +172,7 @@ Suggest the best patristic source. Respond with ONLY JSON."""
 async def main_async(args: argparse.Namespace):
     """Main entry point."""
     # Load API key
-    for env_path in [
-        Path("/Users/timhwang1/Documents/Misc Vibecode/Christian Machine Intelligence/biblical-render/.env"),
-        Path("/Users/timhwang1/Documents/Misc Vibecode/Christian Machine Intelligence/virtue-bench/.env"),
-    ]:
-        if env_path.exists():
-            for line in env_path.read_text().splitlines():
-                if "=" in line and not line.startswith("#"):
-                    key, val = line.split("=", 1)
-                    key, val = key.strip(), val.strip()
-                    if val and not os.environ.get(key):
-                        os.environ[key] = val
-
-    api_key = os.environ.get("ANTHROPIC_API_KEY")
-    if not api_key:
-        raise SystemExit("ANTHROPIC_API_KEY not found")
+    api_key = require_api_key()
 
     client = anthropic.AsyncAnthropic(api_key=api_key)
 

@@ -366,6 +366,91 @@ def _regime_ci_overlap(cells):
 # Orchestration
 # ---------------------------------------------------------------------------
 
+def sign_test_exact(up: int, down: int) -> float:
+    """Exact two-sided sign test on the non-tied rows."""
+    n = up + down
+    if n == 0:
+        return 1.0
+    observed = max(up, down)
+    tail = sum(_binom_coeff(n, k) for k in range(observed, n + 1)) / (2 ** n)
+    return min(1.0, 2 * tail)
+
+
+HELD_OUT_SOURCES = [
+    ("books", "book_discovery_l10_candidates.csv", "book_confirmation_l40_all_candidates.csv", "reference"),
+    ("chapters", "chapter_discovery_l10_clean_hits.csv", "chapter_confirmation_l40_all_candidates.csv", "target"),
+]
+
+
+def _held_out_analysis():
+    """Compare positive steering against control on the items NOT used to select candidates.
+
+    Candidates enter the limit-40 stage because positive steering beat the
+    controls on items 0-9, and because the sampler is deterministic those ten
+    items sit *inside* the forty. Items 10-39 are therefore the only part of
+    the confirmation run that is independent of the selection. Differencing the
+    two stages recovers each condition's score on that held-out remainder.
+    """
+    out = {}
+    for label, l10_file, l40_file, key in HELD_OUT_SOURCES:
+        l10 = {r[key]: r for r in csv.DictReader((KEY_DATA / l10_file).open(newline=""))}
+        rows = list(csv.DictReader((KEY_DATA / l40_file).open(newline="")))
+        ahead = behind = tied = 0
+        survivor_ahead = survivor_behind = survivor_tied = 0
+        details = []
+        for r in rows:
+            if r[key] not in l10:
+                continue
+            a = l10[r[key]]
+            pos = round(float(r["positive_accuracy"]) * 40) - round(float(a["positive_accuracy"]) * 10)
+            ctl = round(float(r["control_accuracy"]) * 40) - round(float(a["control_accuracy"]) * 10)
+            diff = pos - ctl
+            ahead += diff > 0
+            behind += diff < 0
+            tied += diff == 0
+            if r.get("survived") == "yes":
+                survivor_ahead += diff > 0
+                survivor_behind += diff < 0
+                survivor_tied += diff == 0
+            details.append({
+                "target": r[key],
+                "positive_correct_items_10_39": pos,
+                "control_correct_items_10_39": ctl,
+                "difference": diff,
+                "survived": r.get("survived", ""),
+            })
+        _write_held_out_csv(STATS_DIR / f"held_out_items_{label}.csv", details)
+        out[label] = {
+            "rows": len(details),
+            "held_out_items": 30,
+            "positive_ahead_of_control": ahead,
+            "positive_behind_control": behind,
+            "tied": tied,
+            "sign_test_p": round(sign_test_exact(ahead, behind), 6),
+            "survivors_ahead": survivor_ahead,
+            "survivors_behind": survivor_behind,
+            "survivors_tied": survivor_tied,
+        }
+    return out
+
+
+def _write_held_out_csv(path: Path, details):
+    with path.open("w", newline="") as f:
+        writer = csv.DictWriter(
+            f,
+            fieldnames=[
+                "target",
+                "positive_correct_items_10_39",
+                "control_correct_items_10_39",
+                "difference",
+                "survived",
+            ],
+        )
+        writer.writeheader()
+        for row in details:
+            writer.writerow(row)
+
+
 def main():
     STATS_DIR.mkdir(parents=True, exist_ok=True)
     summary = {"stages": {}}
@@ -388,6 +473,7 @@ def main():
     cells = _cell_cis()
     _write_cell_csv(STATS_DIR / "layer_alpha_cell_cis.csv", cells)
     summary["layer_alpha_cell_cis"] = _regime_ci_overlap(cells)
+    summary["held_out_items"] = _held_out_analysis()
     summary["interpretation"] = {
         "rescue_rule": (
             "A row counts as a paired rescue iff positive_acc > max(control, negative, "
@@ -401,6 +487,13 @@ def main():
         "ci_notes": (
             "Cell rescue counts use exact two-sided Clopper-Pearson 95% intervals on "
             "Binomial(rows = 16 chapters, p)."
+        ),
+        "held_out_notes": (
+            "Items 0-9 select the candidates and are nested inside the limit-40 slice, "
+            "so items 10-39 are the only independent part of the confirmation run. "
+            "Positive steering is compared against control on that remainder alone. "
+            "This is the paper's cleanest test of whether the effect is real, and it "
+            "is the one the paper's headline rests on: see paper section 4.5."
         ),
     }
 

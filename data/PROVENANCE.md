@@ -52,8 +52,15 @@ L2-normalised.
 ## Model Pin
 
 The paper's headline numbers were produced on **Qwen/Qwen3-14B** in bf16. The
-specific Hugging Face revision used for every paper run is pinned in
-[`src/virtue_bench/_model_pin.py`](../src/virtue_bench/_model_pin.py); see
-that file for the commit SHA and the `last_modified` timestamp on Hugging
-Face. Override with the `--model-revision` flag on the CLI runners if you
-need to test a different snapshot.
+model revision is recorded in
+[`src/virtue_bench/_model_pin.py`](../src/virtue_bench/_model_pin.py). Override
+with the `--model-revision` flag on the CLI runners to test a different
+snapshot.
+
+> **The model pin is not yet verified.** Unlike the data hashes above, the pin
+> currently records `revision="main"` rather than the exact commit SHA used for
+> the May 2026 sweeps (`PINNING_STATUS: needs_verification`). `main` is a moving
+> reference, so it does **not** guarantee you are loading the same weights the
+> paper used. The SHA must be confirmed against the GPU host that ran the sweeps
+> before this file can support an exact model-level reproduction. The data
+> provenance below is unaffected by this.

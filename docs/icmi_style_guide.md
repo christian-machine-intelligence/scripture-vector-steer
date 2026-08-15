@@ -2,7 +2,9 @@
 
 A comprehensive style guide for writing papers in the format of the *Proceedings of the Institute for a Christian Machine Intelligence* (ICMI). This guide is written for use by any language model tasked with producing ICMI-style papers, and covers every aspect of the house style: structure, voice, citations, scripture usage, theological-empirical fusion, and the specific anti-patterns to avoid.
 
-The guide is descriptive, derived from close reading of ICMI papers including *GospelVec* (Hwang, 2026c), *Alignment and Ensoulment* (Hwang, 2026e), *The Parable of the Sower* (Hwang, 2026d), *Eschatological Corrigibility* (Hwang, 2026), and *"The Lord Is My Strength and My Shield"* (McCaffery, 2026).
+The guide is descriptive, derived from close reading of ICMI papers including *GospelVec* (ICMI-009), *Alignment and Ensoulment* (ICMI-013), *The Parable of the Sower* (ICMI-008), *Eschatological Corrigibility* (ICMI-012), and *"The Lord Is My Strength and My Shield"* (ICMI-002). Papers are referenced here by ICMI number rather than by author-year key, since year-letter suffixes are assigned per paper and do not carry across the Proceedings.
+
+This is org-level reference material rather than an artifact of the ScriptureVec Justice study. It lives here because this repository held the only copy; if a shared Proceedings location is established, it belongs there.
 
 ---
 

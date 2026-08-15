@@ -91,9 +91,34 @@
       "mean_positive_delta": 0.0687
     }
   },
+  "held_out_items": {
+    "books": {
+      "rows": 19,
+      "held_out_items": 30,
+      "positive_ahead_of_control": 1,
+      "positive_behind_control": 10,
+      "tied": 8,
+      "sign_test_p": 0.011719,
+      "survivors_ahead": 1,
+      "survivors_behind": 0,
+      "survivors_tied": 6
+    },
+    "chapters": {
+      "rows": 38,
+      "held_out_items": 30,
+      "positive_ahead_of_control": 1,
+      "positive_behind_control": 22,
+      "tied": 15,
+      "sign_test_p": 6e-06,
+      "survivors_ahead": 1,
+      "survivors_behind": 0,
+      "survivors_tied": 15
+    }
+  },
   "interpretation": {
     "rescue_rule": "A row counts as a paired rescue iff positive_acc > max(control, negative, null) strictly and the net item-level paired movement (b - c) is positive.",
     "test_notes": "Per-row p-values use the exact two-sided McNemar test reconstructed from the (b, c) discordant pairs implicit in the 'X chg / +/-Y net' field. Family corrections are applied within each stage.",
-    "ci_notes": "Cell rescue counts use exact two-sided Clopper-Pearson 95% intervals on Binomial(rows = 16 chapters, p)."
+    "ci_notes": "Cell rescue counts use exact two-sided Clopper-Pearson 95% intervals on Binomial(rows = 16 chapters, p).",
+    "held_out_notes": "Items 0-9 select the candidates and are nested inside the limit-40 slice, so items 10-39 are the only independent part of the confirmation run. Positive steering is compared against control on that remainder alone. This is the paper's cleanest test of whether the effect is real, and it is the one the paper's headline rests on: see paper section 4.5."
   }
 }

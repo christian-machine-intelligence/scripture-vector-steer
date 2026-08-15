@@ -3,6 +3,13 @@ import importlib.machinery
 import sys
 import types
 
+import pytest
+
+# hf_local pulls in transformers, which is not installed in the CPU-only
+# analysis environment. Skip the module rather than failing collection for the
+# whole suite.
+pytest.importorskip("transformers", reason="hf_local runner requires transformers")
+
 fake_openai = types.ModuleType("openai")
 fake_openai.__spec__ = importlib.machinery.ModuleSpec("openai", loader=None)
 
